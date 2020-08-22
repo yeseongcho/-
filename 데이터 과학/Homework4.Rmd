@@ -1,0 +1,545 @@
+---
+title: "Homework 4"
+output: html_document
+---
+## Decision Tree
+
+
+```{r setup}
+prs <- read.csv("C:/Users/sec/Desktop/교과목들/데이터 과학/PRSA_data.csv")
+library(tidyr)
+library(caret)
+library(lubridate)
+library(ggplot2)
+library(reshape2)
+library(ROCR)
+library(rpart)
+library(rpart.plot)
+library(class)
+library(kknn)
+```
+
+자료 구조 확인
+```{r}
+str(prs)
+```
+
+Q1.
+
+타겟 변수가 될 bad_air column 추가의 과정을 거친다.
+
+이를 위해 NA를 없애는 등 기본적인 전처리를 거친다
+```{r}
+prs <- na.omit(prs)
+sum(is.na(prs))
+```
+
+bad_air행 추가
+
+```{r}
+prs$bad_air <- ifelse(prs$pm2.5>75, TRUE, FALSE)
+```
+
+학습 데이터, 테스트 데이터 구분
+```{r}
+train <- prs[which(prs$year!=2014), ]
+test <- prs[which(prs$year==2014), ]
+```
+
+```{r}
+# no 항목 제거
+train <- train[, -1]
+test <- test[, -1]
+```
+
+각 항목에 있는 년월일시간 데이터는 모두 날짜화하여 한꺼번에 처리해준다
+```{r}
+train <- unite(train, date, year, month, day, hour, sep="-")
+train$date <- ymd_h(train$date)
+
+test <- unite(test, date, year, month, day, hour, sep="-")
+test$date <- ymd_h(test$date)
+```
+
+잘 구분되었는지 확인하고 타겟 변수의 전반적은 분포흐름을 본다
+```{r}
+str(train)
+```
+
+```{r}
+str(test)
+```
+
+```{r}
+table(train$bad_air)
+```
+
+```{r}
+table(test$bad_air)
+```
+전반적으로 bad_air와 그렇지 않은 데이터 셋이 균등하게 분포한다
+
+이는 imbalanced data는 아님을 확인할 수 있다.
+
+
+Q2.
+
+우선 타겟 변수에 영향을 미치는 변수는 어떠한 것이 있을지 대략적인 것을 확인하기 위해 시각화 과정을 거친다
+
+시각화는 melt를 이용하여 변수가 타겟에 영향을 미치는 흐름을 확인한다
+
+```{r}
+# bad_air 정보 제거
+train.formelt <- train[, -1]
+head(train.formelt)
+```
+
+변수들의 수치 scale이 다 제각각이기에 정규화 과정을 거쳐준다
+```{r}
+# 정규화 과정을 거침
+train.formelt <- data.frame(scale(train.formelt[,c(2,3,4,6,7,8)]))
+train.formelt$bad_air <- train$bad_air
+```
+
+melt과정을 거쳐준다.
+```{r}
+melting <- melt(train.formelt, id.var = "bad_air")
+```
+
+우선 풍향을 제외한 나머지 변수가 영향을 미치는 부분을 boxplot을 이용해 확인
+```{r}
+ggplot(data = melting, aes(x=bad_air, y=value)) + geom_boxplot() + facet_wrap(~variable, ncol=3)
+```
+
+전반적으로 이슬점, 기압이 어느 정도 영향이 미치는 것 같고 온도도 비슷하게 영향을 미쳤다. 풍향도 아주 미세하지만 True, False가 구분되는 것처럼 보였다
+
+나머지 Is, Ir은 boxplot대비 아웃라이어가 너무 커 좋은 변수처럼 보이지는 않았다.
+
+풍속의 경우도 확인을 해보자
+
+```{r}
+table(train$cbwd, train$bad_air)
+```
+```{r}
+prop.table(table(train$cbwd, train$bad_air), margin = 1)
+```
+학습 데이터에서 개략적으로
+
+cv인 경우가 63%, SE경우 61%로 미세먼지 농도가 나쁨에 반해
+
+NE, NW는 21%, 28%로 상대적으로 낮았다.
+
+이런 부분도 유의미하게 작용할 것으로 판단된다
+
+
+고로 우선은 
+
+이슬점, 기압, 온도, 풍향, 풍속을 변수로 사용하여 예측을 시도해본다
+```{r}
+#d <- rpart(bad_air~DEWP+PRES+cbwd+TEMP+Iws, data = train, method = 'class', control = rpart.control(cp=0))
+model_A <- rpart(bad_air~DEWP+PRES+cbwd+TEMP+Iws, data = train, method = 'class', control = rpart.control(cp=0))
+pred_new <- predict(model_A, newdata=train, type='class')
+mean(train$bad_air==pred_new)
+```
+
+우선 학습 데이터에서는 이 모델이(필자가 시도해본 모델링 중) 가장 성능이 좋았다. 이를 모델 A로 설정하겠다. 
+
+해당 모델로 혼동 행렬을 그려보면
+```{r}
+tb1 <- table(pred_new, train$bad_air)
+tb1
+```
+
+precision은 0.81정도가 나왔고
+```{r}
+precision <- sum(tb1[2,2])/sum(tb1[2,])
+precision
+```
+
+recall은 0.84정도가 나왔고
+```{r}
+recall <- sum(tb1[2,2])/sum(tb1[,2])
+recall
+```
+
+accuracy는 0.82정도가 나왔고
+```{r}
+accuracy <- sum(diag(tb1))/sum(tb1)
+accuracy
+```
+
+F1 score는 0.83정도가 나왔다.
+```{r}
+f1 <- 2* {(precision*recall)/(precision+recall)}
+f1
+```
+
+Q3.
+Overfitting의 문제가 있을 수도 있어
+
+test셋에서의 성능을 확인해보면
+```{r}
+pred_test <- predict(model_A, newdata=test, type='class')
+mean(test$bad_air==pred_test)
+```
+0.67로 기능이 확 줄어듦을 알 수 있다.
+
+이는 어느 정도 과적합의 가능성이 있을 수 있음을 시사한다. 왜냐하면 학습 데이터에 비해 성능이 확연히 떨어지기 때문이다.
+
+Q4.
+
+과적합의 문제를 줄이는 과정을 들어가보자 
+
+우선 Pre & Post pruning 과정을 통해 어느 경우가 가장 적합한 minsplit이 되는 지를 모델의 내장 기능인 cptable을 통해 확인해본다
+```{r}
+tail(model_A$cptable)
+```
+
+이 경우 맨 마지막의 경우를 제외하고
+
+cp가 7.771215e-06이고, nsplit이 1129일때 가장 real error가 줄어듦을 확인할 수 있다.
+
+이는 plot을 통해서도 쉽게 확인할 수 있다.
+```{r}
+plotcp(model_A)
+```
+
+고로 cp = 7.771215e-06와 minsplit = 1129로 설정하여 모델을 다시 설정한다.
+
+```{r}
+model_A_prune <- rpart(bad_air~DEWP+PRES+cbwd+TEMP+Iws, data = train, method = 'class', control = rpart.control(minsplit = 1129))
+model_A_prune <- prune(model_A_prune, cp = 7.771215e-06)
+```
+
+split과 비슷하게 트리를 쪼개주는 method인 minbucket의 변화에 따라 
+어느 경우가 더 정확도가 높은 지를 확인해주는 반복문을 추가적으로 수행해보자
+```{r}
+score_test <- c()
+for (i in 1:50){
+  m <- rpart(bad_air~DEWP+PRES+cbwd+TEMP+Iws, data = train, method = 'class', control = rpart.control(cp = 7.771215e-06, minbucket =i, minsplit=1129))
+  val_var <- predict(m, newdata = test, type = 'class')
+  score_test <- c(score_test,mean(val_var == test$bad_air))
+}
+score_test
+```
+
+대강 4~50개로 minbucket을 잡았을 때 조금 더 예측력이 높았다.
+
+이러한 과적합 극복 모형을 가지고 모형을 조금 더 개선시켜보자
+
+Q5.
+```{r}
+model_A_prune <- rpart(bad_air~DEWP+PRES+cbwd+TEMP+Iws, data = train, method = 'class', control = rpart.control(cp =  7.771215e-06, minsplit = 1129, minbucket = 50))
+pred_adjust <- predict(model_A_prune,newdata = test,type = 'class')
+mean(pred_adjust == test$bad_air)
+```
+
+학습 데이터의 예측도가 어느정도 올라감을 확인할 수 있다.
+```{r}
+pred_adjust_train <- predict(model_A_prune,newdata = train,type = 'class')
+mean(pred_adjust_train==train$bad_air)
+```
+
+물론 학습 데이터 내에서의 예측성은 줄었지만, 과적합을 많이 줄이고 test 데이터의 예측도를 높인 점에서 더 유의미한 결과가 나왔다고 판단할 수 있다.
+
+이렇게 개선된 모델을 model B로 설정하자
+```{r}
+model_B <- model_A_prune
+```
+
+Q6.
+최종적으로 구현된 모델을 가지고 혼동행렬을 구해보자
+```{r}
+prediction_final <- predict(model_B, newdata=test, type='class')
+table(pred = prediction_final, actual = test$bad_air)
+```
+
+이 경우
+
+False Positive는 (2, 1)부분, 즉 1580개의 수치부분을 의미하는데
+
+이는 실제로 미세먼지 농도가 나쁘다고 예측을 했는데 실제로 나쁘지 않았을 경우를 의미하고
+
+False Negative는 (1, 2)부분, 즉 995개의 수치부분을 의미하는데
+
+이는 실제로 미세먼지 농도가 나쁘지 않다고 예측을 했는데 실제로 나빴을 경우를 의미한다.
+
+실제 사회적인 맥락을 고려하면, 미세먼지 농도가 나쁘다고 예측을 했는데 나쁘지 않는 경우는 사회적 cost가 크지 않지만 반면 나쁘지 않다고 예측을 했는데 실제로 나쁘게 되면 이에 대한 사회적 cost는 더 크게 된다. 왜냐하면 나쁘지 않다고 예측을 하여 대비하지 않고 있다가 손해를 보게 될 수 있기 때문이다. 
+
+따라서 이의 경우 precision 값이 감소하더라도 recall값을 늘리는 방향이 더 사회적인 맥락으로 적당하다고 볼 수 있다!!
+
+model_B에 대해 각각의 ROCR커브를 그리기 위한 
+prediction 모형을 구축한다.
+```{r}
+TrainForROC <- predict(model_B, newdata=train, type = 'prob')[,2] # 이렇게 2번째 컬럼을 이용함을 인지!!
+TestForROC <- predict(model_B, newdata=test, type = 'prob')[,2]
+p1 <- prediction(TrainForROC, train$bad_air)
+p2 <- prediction(TestForROC, test$bad_air)
+```
+
+학습 데이터의 ROCR의 경우
+```{r}
+plot(performance(p1, 'tpr', 'fpr'))
+```
+테스트 데이터의 ROCR의 경우
+```{r}
+plot(performance(p2, 'tpr', 'fpr'))
+```
+AUC의 경우
+
+학습 데이터의 경우
+```{r}
+auc1<- performance(p1, 'auc')
+auc1@y.values[[1]]
+```
+```{r}
+auc2 <- performance(p2, 'auc')
+auc2@y.values[[1]]
+```
+다음과 같이 나옴을 확인할 수 있다!!
+
+## KNN
+
+Q1.
+Knn을 쓰기 위해서는 변수가 연속형 변수일 경우 이를 표준화하는 작업이 필요, scale이 다르기 때문에 이러한 전처리를 거쳐준다.
+
+
+학습, 테스트데이터를 나누기 전에 데이터셋에 표준화를해주는 작업을 거친다.
+```{r}
+# No행 제거
+prs_scales <- prs[, -1]
+```
+
+```{r}
+# 표준화 실시
+prs_scales$DEWP <- scale(prs_scales$DEWP)
+prs_scales$TEMP <- scale(prs_scales$TEMP)
+prs_scales$PRES <- scale(prs_scales$PRES)
+prs_scales$Iws <- scale(prs_scales$Iws)
+```
+
+풍향의 변수 경우 더미 변수이므로 one hot coding처리를 해준다.
+```{r}
+prs_scale <- predict(dummyVars(~cbwd, data=prs_scales), prs_scales)
+prs_scale <- cbind(prs_scale, prs_scales)
+head(prs_scale)
+```
+
+```{r}
+# 학습 데이터와 훈련 데이터셋 나눔
+train_k <- prs_scale[prs_scale$year != 2014, ]
+test_k <- prs_scale[prs_scale$year == 2014, ]
+head(train_k)
+```
+
+기압, 온도, 풍속, 이슬점과 같은 데이터에 표준화를 적용해준다
+
+```{r}
+# 예측 변수들을 기준으로 모형 구축 -- 날짜, pm2.5등의 불필요 데이터 제거
+# 기존에 사용했던 변수들 중 가장 예측이 좋았던, 이슬점, 온도, 기압, 풍속 데이터로 비교한다.
+train_k <- train_k[, c(1, 2, 3, 4,10,11,12,14,17)]
+test_k <- test_k[, c(1,2,3,4,10,11,12,14,17)]
+head(train_k)
+```
+
+따라서 train_k 데이터프레임에는 각 변수를 정규화한 변수들과 예측 값인 bad_air로 담겨져 있게 된다.
+
+
+Q2.
+우선 배운대로 관측치 수의 제곱근 값을 k로 취한다
+```{r}
+sqrt(nrow(train_k))
+```
+
+대략 180개 정도로 잡고 예측 모형을 돌린다
+
+```{r}
+knn.model1 <- knn(train = train_k[,-9], test = test_k[,-9], cl = train_k$bad_air, k = 180)
+tb <- table(pred=knn.model1, test_k$bad_air)
+tb
+```
+
+Accuracy는 대강 0.71정도 나오고
+```{r}
+mean(knn.model1==test_k$bad_air)
+```
+
+precision의 경우 0.66
+```{r}
+pred <- sum(tb[2,2])/sum(tb[2,])
+pred
+```
+
+recall의 경우 0.81정도가 나왔다.
+```{r}
+rec <- sum(tb[2,2])/sum(tb[,2])
+rec
+```
+
+
+Q10.
+교차검증을 이용하여 여러번 가장 좋은 k값의 범위를 찾아보니, 대강 20정도씩 변화시켜야 조금씩 정확도가 변하는 추이를 확인했다. 
+
+```{r, eval = F}
+grid <- expand.grid(.k = seq(100,300,by=20))
+control <- trainControl(method = 'cv')
+
+set.seed(2020)
+train_k$bad_air <- as.factor(train_k$bad_air) #--- train.kknn 모델을 적용하기 위해 factor형 전환
+test_k$bad_air <- as.factor(test_k$bad_air)
+
+knn.trains <- train(bad_air~., data = train_k, method = 'knn', trControl = control, tuneGrid = grid)
+
+train_k$bad_air <- as.logical(train_k$bad_air) #--- train.kknn 모델을 적용하기 위해 factor형 전환
+test_k$bad_air <- as.logical(test_k$bad_air)
+```
+
+
+180을 기준으로 대략 k를 100부터 400까지 늘려가면서 그에 따른 accuracy, precision, recall, F1, AUC값을 추적하기 위해 
+
+k가 변할떄마다 각각의 값들을 계산해주는 for문을 구성한다.
+
+```{r}
+# 해당 값들이 들어가 있는 벡터 set
+acc <- c()
+pred <- c()
+rec <- c()
+F1 <- c()
+Auc <- c()
+```
+
+```{r}
+for(i in seq(100,400,by=20)){
+  modeling <- knn(train = train_k[,-9], test = test_k[,-9], cl = train_k$bad_air, k = i, prob = T)
+  tb <- table(pred=modeling, actual = test_k$bad_air)
+  acc <- c(acc, sum(diag(tb))/sum(tb))
+  pred <- c(pred, sum(tb[2,2])/sum(tb[2,]))
+  rec <- c(rec, sum(tb[2,2])/sum(tb[,2]))
+  F1 <- c(F1, 2*(acc*pred)/(acc+pred))
+  testing <- ifelse(modeling == TRUE, attributes(modeling)$prob, 1-attributes(modeling)$prob)
+  make_p <- prediction(testing, test_k$bad_air)
+  acus <- performance(make_p, 'auc')
+  Auc <- c(Auc, acus@y.values[[1]])
+}
+```
+
+
+```{r}
+k <- seq(100,400, by=20)
+F1 <- 2*(pred*rec)/(pred+rec)
+```
+
+k변화에 따른 각 변수들의 변량을 확인해보면
+
+1) accuracy의 경우
+```{r}
+plot(k, acc)
+```
+
+2) precision의 경우
+```{r}
+plot(k, pred)
+```
+
+3) recall의 경우
+```{r}
+plot(k, rec)
+```
+4) Auc의 경우
+```{r}
+plot(k, Auc)
+```
+5) F1 score의 경우
+```{r}
+plot(k, F1)
+```
+
+사실 어느 경우가 가장 값이 좋은지 이야기 하기가 어렵다
+
+Accuracy나 AUC의 경우 100~200대가 값이 높았으나
+
+F1 score나 recall의 경우 k가 클수록 값이 좋았고
+
+precision은 그 반대의 결과가 나타났다.
+
+우선 정확도랑 AUC가 높게 나온 200의 경우를 먼저 모델링을 돌려본다.
+```{r}
+final_model <- knn(train = train_k[,-9], test = test_k[,-9], cl = train_k$bad_air, k = 200)
+table(final_model, test$bad_air)
+```
+```{r}
+mean(final_model==test_k$bad_air)
+```
+
+처음의 180보다 더 값이 개선됨을 확인할수 있다.
+
+그 다음 recall과 F1 score가 높게 나온 300~400 언저리의 값을 가지고 와 본다
+```{r}
+final_model2 <- knn(train = train_k[,-9], test = test_k[,-9], cl = train_k$bad_air, k = 300)
+table(final_model2, test$bad_air)
+```
+
+```{r}
+mean(final_model2==test_k$bad_air)
+```
+
+```{r}
+final_model3 <- knn(train = train_k[,-9], test = test_k[,-9], cl = train_k$bad_air, k = 400)
+table(final_model3, test$bad_air)
+```
+
+```{r}
+mean(final_model3==test_k$bad_air)
+```
+
+정확도는 줄지만 recall을 증가하게 하는 FN의 비중은 줄어듦을 확인할 수 있다.
+
+Q11.
+
+400보다 큰 수에서는 k가 너무 커져 knn을 실행 못하는 에러가 발생했었다.
+
+100보다 작은 경우도 값이 더 좋아지는 경우는 없었다.
+
+사실, 앞서 decision tree의 결과처럼 
+
+미세먼지 농도를 예측하는 맥락의 경우 FP보다는 FN의 경우가 더 cost가 크게 된다. 고로 precision값을 낮추는 한이 
+
+있어도 FN을 줄여야 하는 경우가 발생할 수 있다. 
+
+하지만 이 경우 precision값은 지속적으로 1이므로 계속해서 FN을 낮추는 방향으로(recall을 증가하는 방향으로) 최대한 접근을 시도하면
+
+저 경우처럼 7번의 miss case를 내는 경우가 가장 적합한 방법을 채택하면 된다.
+
+방법론적인 부분을 언급하면 수업 때 배운 내용을 참고하면
+
+우선 model의 확률적인 method를 적용하여 (prob=T를 이용하여) 해당 True, False로 판단한 확률의 threshol값을 대략 파악해
+
+True로 판단하는 threshold를 낮추어 precision을 낮추고 recall을 증가하는 방향을 생각해볼 수 있다!!
+
+```{r}
+prob.model <- knn(train = train_k[,-9], test = test_k[,-9], cl = train_k$bad_air, k = 200, prob=T)
+head(prob.model)
+```
+```{r}
+head(attributes(prob.model)$prob)
+```
+
+이 경우 미세먼지 농도를 나쁨이라고 예측할 확률을 이용하여 확률값을 통일해준다
+```{r}
+testing <- ifelse(prob.model == TRUE, attributes(prob.model)$prob, 1-attributes(prob.model)$prob)
+head(testing, 100)
+```
+
+맞다고 예측하는 threshold가 기존 default인 0.5에서 더 낮추어 0.3까지 낮추어본다.
+
+```{r}
+threshold <- 0.3
+prob.test <- ifelse(testing > 0.3, TRUE, FALSE)
+final_tb <- table(prob.test, test$bad_air)
+final_tb
+```
+이를 기존의 table과 비교를 해보면
+```{r}
+table(final_model, test$bad_air)
+```
+전반적으로 FP의 비율은 늘었지만 그만큼 FN의 비중은 더 감소함을 확인할 수 있다.

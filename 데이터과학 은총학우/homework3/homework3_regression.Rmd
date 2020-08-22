@@ -1,0 +1,494 @@
+---
+title: "homework3"
+author: "eunchong"
+date: '2019 6 28 '
+output: html_document
+---
+
+
+## 1) atemp.range
+```{r}
+load("C:/Users/21500/Desktop/homework/homework3/Bikes.RData")
+bikesJuly
+summary(bikesJuly)
+
+bikesJuly$atemp.range <- ifelse(bikesJuly$atemp <= 0.6, "step1",
+                                ifelse(bikesJuly$atemp<=0.7, "step2",
+                                       ifelse(bikesJuly$atemp<=0.8, "step3",
+                                              ifelse(bikesJuly$atemp <= 0.9, "step4", "step5"))))
+
+
+
+
+
+
+
+sv_reg_atemp.range <- tapply(bikesJuly$cnt, bikesJuly$atemp.range, mean)
+sv_reg_atemp.range # regression model
+
+
+## train model
+
+bikesJuly$pred_atemp.range <- sv_reg_atemp.range[bikesJuly$atemp.range]
+
+
+
+# ereor = real - pred
+bikesJuly$error <- bikesJuly$atemp - bikesJuly$pred_atemp.range
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 79402.99
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 281.7854
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # -0.7336066
+
+
+```
+
+## 2) weathersit
+
+```{r}
+sv_reg_weathersit <- tapply(bikesJuly$cnt, bikesJuly$weathersit, mean)
+sv_reg_weathersit # regression model
+
+
+## train model
+
+bikesJuly$pred_weathersit <- sv_reg_weathersit[bikesJuly$weathersit] 
+
+
+
+
+# ereor = real - pred
+
+bikesJuly$error <- bikesJuly$cnt - bikesJuly$pred_weathersit 
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 45457.63
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 213.2079
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.007523048
+
+```
+
+## 3) hum
+```{r}
+bikesJuly$hum.range <- ifelse(bikesJuly$hum <= 0.6, "step1",
+                                ifelse(bikesJuly$hum<=0.65, "step2",
+                                       ifelse(bikesJuly$hum<=0.7, "step3",
+                                              ifelse(bikesJuly$hum <= 0.75, "step4", 
+                                                     ifelse(bikesJuly$hum <= 0.8,"step5",
+                                                           ifelse(bikesJuly$hum <= 0.85,"step6","step7"))))))
+
+
+
+sv_reg_hum.range <- tapply(bikesJuly$cnt, bikesJuly$hum.range, mean)
+sv_reg_hum.range # regression model
+
+
+## train model
+
+bikesJuly$pred_hum.range <- sv_reg_hum.range[bikesJuly$hum.range] 
+
+
+
+
+# ereor = real - pred
+
+bikesJuly$error <- bikesJuly$cnt - bikesJuly$pred_hum.range 
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 38025.8
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 195.002
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.1697823
+
+```
+
+
+
+## 4) hr
+```{r}
+bikesJuly$hr <- as.numeric(bikesJuly$hr)
+bikesJuly$hr.range <- ifelse(bikesJuly$hr ==1 , "dawn",
+                            ifelse(bikesJuly$hr <= 6, "dawn",
+                                ifelse(bikesJuly$hr <= 10, "ealy morning",
+                                       ifelse(bikesJuly$hr <= 11, "late in the morning",
+                                              ifelse(bikesJuly$hr <= 15, "ealry afternoon",
+                                                     ifelse(bikesJuly$hr <= 17, "afternoon", 
+                                                            ifelse(bikesJuly$hr <= 22, "night", "deep in the night" )))))))
+
+sv_reg_hr.range <- tapply(bikesJuly$cnt, bikesJuly$hr.range, mean)
+sv_reg_hr.range # regression model
+
+
+## train model
+
+bikesJuly$pred_hr.range <- sv_reg_hr.range[bikesJuly$hr.range] 
+
+
+
+
+# ereor = real - pred
+
+bikesJuly$error <- bikesJuly$cnt - bikesJuly$pred_hr.range 
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 20706.14
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 143.8963
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.5479225
+
+```
+
+
+## 5) holiday
+```{r}
+sv_reg_holiday <- tapply(bikesJuly$cnt, bikesJuly$holiday, mean)
+sv_reg_holiday # regression model
+
+
+## train model
+
+bikesJuly$pred_holiday <- ifelse(bikesJuly$holiday=="FALSE",272.5056, 308.4583 )
+
+
+
+
+# ereor = real - pred
+
+bikesJuly$error <- bikesJuly$cnt - bikesJuly$pred_holiday 
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 45761.85
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 213.9202
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.0008810011
+
+```
+
+
+## 5) windspeed
+```{r}
+bikesJuly$windspeed.range <- ifelse(bikesJuly$windspeed <= 0.1, "step1",
+                                ifelse(bikesJuly$windspeed<=0.2, "step2",
+                                       ifelse(bikesJuly$windspeed<=0.3, "step3",
+                                              ifelse(bikesJuly$windspeed <= 0.4, "step4",
+                                                     ifelse(bikesJuly$windspeed <= 0.5, "step5",
+                                                            ifelse(bikesJuly$windspeed <= 0.6, "step6", "step7"))))))
+sv_reg_windspeed.range <- tapply(bikesJuly$cnt, bikesJuly$windspeed.range, mean)
+sv_reg_windspeed.range # regression model
+
+
+## train model
+
+bikesJuly$pred_windspeed.range <- sv_reg_windspeed.range[bikesJuly$windspeed.range] 
+
+
+
+
+# ereor = real - pred
+
+bikesJuly$error <- bikesJuly$cnt - bikesJuly$pred_windspeed.range
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 43085.7
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 207.5709
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.05930945
+
+```
+
+
+## 6) temp
+```{r}
+bikesJuly$temp.range <- ifelse(bikesJuly$temp <= 0.6, "step1",
+                                ifelse(bikesJuly$temp<=0.65, "step2",
+                                       ifelse(bikesJuly$temp<=0.7, "step3",
+                                              ifelse(bikesJuly$temp <= 0.75, "step4", 
+                                                     ifelse(bikesJuly$temp <= 0.8,"step5",
+                                                           ifelse(bikesJuly$temp <= 0.85,"step6",
+                                                                  ifelse(bikesJuly$temp <= 0.9,"step7",
+                                                                         ifelse(bikesJuly$temp <= 1,"step8"))))))))
+sv_reg_temp.range <- tapply(bikesJuly$cnt, bikesJuly$temp.range, mean)
+sv_reg_temp.range # regression model
+
+
+## train model
+
+bikesJuly$pred_temp.range <- sv_reg_temp.range[bikesJuly$temp.range] 
+
+
+
+
+# ereor = real - pred
+
+bikesJuly$error <- bikesJuly$cnt - bikesJuly$pred_temp.range
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 36598.32
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 191.3069
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.2009483
+```
+
+
+## 7) workingday
+```{r}
+sv_reg_workingday <- tapply(bikesJuly$cnt, bikesJuly$workingday, mean)
+sv_reg_workingday # regression model
+
+
+## train model
+
+bikesJuly$pred_workingday <- ifelse(bikesJuly$workingday=="FALSE",252.4875 ,283.7500 )
+
+
+
+
+# ereor = real - pred
+
+bikesJuly$error <- bikesJuly$cnt - bikesJuly$pred_workingday 
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 45588.63
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 213.5149
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.00466291
+```
+
+#2 
+```{r}
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly$error**2)
+MSE_train # 20706.14
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 143.8963
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.5479225
+```
+
+
+#3
+```{r}
+
+bikesAugust$hr <- as.numeric(bikesAugust$hr)
+bikesAugust$hr.range <- ifelse(bikesAugust$hr ==1 , "dawn",
+                            ifelse(bikesAugust$hr <= 6, "dawn",
+                                ifelse(bikesAugust$hr <= 10, "ealy morning",
+                                       ifelse(bikesAugust$hr <= 11, "late in the morning",
+                                              ifelse(bikesAugust$hr <= 15, "ealry afternoon",
+                                                     ifelse(bikesAugust$hr <= 17, "afternoon", 
+                                                            ifelse(bikesJuly$hr <= 22, "night", "deep in the night" )))))))
+
+bikesAugust$pred_hr.range <- sv_reg_hr.range[bikesAugust$hr.range]
+
+#RMSE on test
+RMSE_test <- sqrt(mean((bikesAugust$cnt - bikesAugust$pred_hr.range) ** 2))
+RMSE_test # 150.6723
+
+
+sd(bikesAugust$cnt) #227.875
+
+bikesAugust$error <- bikesAugust$cnt - bikesAugust$pred_hr.range
+
+###########################################3
+
+RSS = sum(bikesAugust$error ** 2)
+SStot = sum((bikesAugust$cnt - mean(bikesAugust$cnt))**2)
+1 - (RSS/SStot) # 0.5622186
+```
+
+
+
+#4
+test data의 R^2 은 0.5622186이고, train data의 R^2은  0.5479225 이므로 test data에서 성능이 낮아지는 과적합이 아니라는 판단을 할 수 있다.
+
+
+
+#5
+```{r}
+sv_reg_hr <- tapply(bikesJuly2$cnt, bikesJuly2$hr, mean)
+
+sv_reg_hr # regression model
+bikesJuly2 <- bikesJuly[-13]
+bikesJuly2 <- bikesJuly2[-13]
+
+## train model
+str(bikesJuly)
+bikesJuly2$pred_hr<-  sv_reg_hr[bikesJuly2$hr]
+
+
+
+
+# ereor = real - pred
+
+bikesJuly2$error <- bikesJuly2$cnt - bikesJuly2$pred_hr 
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(bikesJuly2$error**2)
+MSE_train # 13244.28
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 115.0838
+
+
+sv_reg_hr <- tapply(bikesJuly2$cnt, bikesJuly$hr, mean)
+bikesJuly$pred_cnt <- sv_reg_hr[bikesJuly$hr]
+RMSE <- sqrt(mean((bikesJuly$cnt - bikesJuly$pred_cnt) ** 2))
+RMSE #115.0838
+
+
+###########################################3
+
+RSS = sum(bikesJuly$error ** 2)
+SStot = sum((bikesJuly$cnt - mean(bikesJuly$cnt))**2)
+1 - (RSS/SStot) # 0.7108375
+
+
+
+### test data ###
+
+
+bikesAugust$pred_hr <- sv_reg_hr[bikesAugust$hr]
+
+#RMSE on test
+RMSE_test <- sqrt(mean((bikesAugust$cnt - bikesAugust$pred_hr) ** 2))
+RMSE_test # 113.3978
+
+
+sd(bikesAugust$cnt) # 227.875
+
+bikesAugust$error <- bikesAugust$cnt - bikesAugust$pred_hr
+
+###########################################
+
+RSS = sum(bikesAugust$error ** 2)
+SStot = sum((bikesAugust$cnt - mean(bikesAugust$cnt))**2)
+1 - (RSS/SStot) # 0.7520293
+```
+
+내가 맨 처음 만든 모델은 시각을 시간대로 나눈 뒤 분석을 했다.
+원래 hr variable은 numeric이 아닌 factor로 각 시각 자체를 하나의 구간으로 본다.
+구간을 더 좁게 할수록 RMSE와 R square 도 높아진다. 
+
+
+#6
+학습 데이터와 테스트 데이터에서, 각각 y축에 목적변수, x축에 목적변수에 대한 모델의
+예측 값을 그린 산점도(scatter plot)을 그리시오. 그래프로부터 알 수 있는 것이 있다면
+설명해 보시오.
+
+```{r}
+bikesAugust$a <- sv_reg_hr[bikesAugust$hr]
+bikesAugust$hr
+
+plot(bikesJuly2$pred_hr ,bikesJuly2$cnt, main = "train data" )
+plot(bikesAugust$pred_hr, bikesAugust$cnt, main = "test data" )
+
+plot(bikesJuly2$pred_hr, bikesJuly2$error)
+
+```
+
+```{r}
+save(bikesAugust, bikesJuly, bikesJuly2, file = "July_August_homework3.Rdata")
+```
+

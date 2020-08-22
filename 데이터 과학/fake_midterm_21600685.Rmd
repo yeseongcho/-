@@ -1,0 +1,199 @@
+---
+title: "midtermtesting_21600685"
+output: html_document
+---
+
+# Data Preparation and Exploration
+Q1.
+csv 파일로 구성되어 있어서 read.csv() 함수를 이용해 데이터 프레임을 구축하였습니다.
+```{r}
+ins <- read.csv("C:/Users/sec/Downloads/insurance.csv")
+```
+
+```{r}
+library(tidyr)
+library(stringr)
+library(dplyr)
+library(lubridate)
+```
+
+Q2. 
+데이터셋은 행이 고객들의 observation
+열이 고객마다 갖는 여러 건강 데이터들로 구축되어 있음
+str(), glimpse()로 대략적으로 살펴보고
+view()를 통해 한눈으로 알아보았다.
+```{r}
+glimpse(ins)
+View(ins)
+```
+
+Q3.
+
+```{r}
+ins$bmi[which.max(ins$bmi)] # max범위 설정 위해
+ins$bmi_range <- cut(ins$bmi, breaks = c(0, 18.5, 24.9, 53.13), right=T, labels = c("light", "normal", "heavy"))
+tapply(ins$charges, ins$bmi_range, mean)
+```
+BMI가 가장 큰 경우가 가장 보험금이 많이 들었다.
+반면 가장 작은 경우가 가장 보험금이 적게 들었다.
+
+Q4.
+```{r}
+# 여성 남성 데이터 프레임 따로 구축!
+ins_male <- ins[which(ins$sex=='male'), ]
+ins_female <- ins[which(ins$sex=='female'), ]
+# 남성의  평균 bmi
+mean(ins_male$bmi)
+```
+```{r}
+# 여성의 평균 bmi
+mean(ins_female$bmi)
+```
+평균은 두 성별 대체로 비슷, 미세한 차이로 남성의 bmi가 살짝 높았음
+
+분산의 경우는 다음과 같음
+```{r}
+var(ins_male$bmi)
+```
+```{r}
+var(ins_female$bmi)
+```
+분산도도 어느정도 비슷
+
+분포 그래프를 그려보면
+```{r}
+plot(density(ins_male$bmi))
+```
+
+```{r}
+plot(density(ins_female$bmi))
+```
+대체로 비슷함을 확인할 수 있다.
+
+Q5.
+보험 수령액의 분포를 보면 다음과 같다
+```{r}
+plot(density(ins$charges))
+```
+보험 수령액이 적을 수록 그 빈도는 더 높게 나타났다. 반면 수랭의 규모가 큰 경우에 해당하는 고객의 빈도는 더 적었다.
+대체적으로 보험의 수령 정도가 적은 사건들이 빈번하게 발생을 하고, 대형 사고나 규모가 큰 손해를 보는 경우가 비교적 빈도가 적게 되어 저러한 그래프가 나타나는 것으로 판단된다.
+
+```{r}
+tapply(ins$charges, ins$smoker, mean)
+```
+실제로 보험료 수령액을 보면 평균적으로 흡연자의 경우가 비흡연자보다 약 3배 정도 더 보험금을 수령 받는 것을 알 수가 있다. 이는 보험사가 흡연자에게 더 보험료를 징수하는 것이 바람직함을 의미한다.
+
+Q7.
+자녀들의 수에 따른 보험 징수액은 다음과 같다.
+```{r}
+plot(tapply(ins$charges, ins$children, mean))
+```
+그래프만 보면 자녀의 수가 많을 수록 보험료 징수액이 커지는 것 같지만, 5명일 경운는 오히려 보험료가 더 적게 나오는 양상을 보임
+
+해당 점에 대한 관측치수(고객수)를 파악해보면
+
+자녀가 1~2명 정도 되는 고객의 수는
+```{r}
+nrow(ins[which(ins$children==1), ])
+```
+```{r}
+nrow(ins[which(ins$children==2), ])
+```
+3~4명 정도 되는 고객의 수
+```{r}
+nrow(ins[which(ins$children==3), ])
+```
+```{r}
+nrow(ins[which(ins$children==4), ])
+```
+5명 고객의 수 -- 이 경우 상대적 데이터의 수가 너무 적어 분석에 큰 영향을 줄 수는 없음
+```{r}
+nrow(ins[which(ins$children==5), ])
+```
+
+plot의 결과를 보게 되면 1~2명의 고객 데이터보다 3~4명일 때의 고객의 경우가 더 보험료 수령액이 많았다. 이 말은 3~4명의 아이들일 경우에 더 많은 사고, 수슬 등이 더 많이 발생하여 보험료 수령의 금액의 크기가  더 큼을 의미한다. 
+
+하지만, 그렇다고 이 데이터만 가지고 자녀가 많을 수록 의료비용이 더 많이 듦을 예단할 수는 없다. 가장 큰 이유 중 하나는 표본의 수가 너무 적다. 위에서 구한 것처럼 가장 큰 표본의 경우가 고작 300명이다. 거의 대부분의 국민들이 가입하도록 되어 있어 그 모집단이 굉장히 큰 보험 고객의 특징상 표본이 적은 데이터로는 함부로 판단을 하기에 어렵다. 하지만 해당 데이터만 보면 평균적으로 자녀가 많을 수록 더 많은 보험료를 징수하게 된다.
+
+Q8.
+```{r}
+## 이러한 등호를 분석해주는 것이 중요!!
+quantile(ins$age, c(0.1,0.9))
+ins_young <- ins[which(ins$age<= 19), ]
+ins_old <- ins[which(ins$age >= 59), ]
+Y <- mean(ins_young$charges)
+O <- mean(ins_old$charges)
+O - Y
+```
+나이가 가장 많은 10%의 경우 59세 이상의 고객들이고
+나이가 가장 어린 10%의 경우 19세 이하의 고객들이다.
+
+평균적으로 두 고객 층의 보험료 징수액의 차이는 12417.62만큼 차이가 났다.
+
+Q9.
+```{r}
+tapply(ins$charges, ins$sex, mean)
+13956.75 - 12569.58
+```
+남성의 경우가 여성의 경우보다
+1387.17 정도 더 보험료 수급액이 높았다.
+
+
+Q10.
+남성의 경우 흡연자의 비율
+```{r}
+nrow(ins_male[which(ins_male$smoker == "yes"), ])/nrow(ins_male)
+```
+
+여성의 경우 흠연자의 비율
+```{r}
+nrow(ins_male[which(ins_female$smoker == "yes"), ])/nrow(ins_female)
+```
+
+남성의 경우가 흡연자의 비율이 더 높음
+
+```{r}
+mean(ins_male$charges)
+```
+
+```{r}
+mean(ins_female$charges)
+```
+
+평균적인 보험료 수급액도 남성이 더 높았다.
+
+정확한 분석을 위해 보험료 금액에 대한 평균적인 변수의 영향력을 알아보기 위해 회귀분석을 실행한 결과
+```{r}
+summary(lm(ins$charges~ ins$age+ins$sex+ins$children+ins$smoker+ins$region))
+```
+나이와 아이의 수, 흡연 여부가 중요한 변수로 여겨졌고 둘 다 양의 상관관계를 가졌고 R2는 0.7정도 나와 상당히 유의미한 관계로 여겨졌다.
+흡연 여부가 굉장히 보험료 수급액에 큰 영향을 미침을 알 수 있다.
+
+
+이는 남성의 경우와 여성의 경우를 따로 회귀분석을 실시해도 마찬가지의 결과를 갖는다.
+```{r}
+summary(lm(ins_male$charges~ ins_male$age+ins_male$children+ins_male$smoker+ins_male$region))
+```
+
+```{r}
+summary(lm(ins_female$charges~ ins_female$age+ins_female$children+ins_female$smoker+ins_female$region))
+```
+
+흡연의 여부는 보험료 징수액에 굉장히 큰 영향을 미치게 되고 평균적으로 흡연율이 높은 남성의 경우가 더 보험 금액이 높게 나왔다.
+
+# Tidy data
+```{r}
+auto <- read.table("C:/Users/sec/Downloads/automobile.tsv", header = T)
+View(auto)
+```
+데이터 셋은 자동차의 observation의 위치에 같이 그 자동차의 변수가 되는 연비, 연식, 무게 등이 들어가 있다. 이 경우에는 열로 가야 tidy한 데이터가 되는데 이 경우는 전혀 tidy하지 않다. 고로 tidy 데이터의 형식으로 바꾸어 주어야 한다.
+
+```{r}
+auto <- spread(auto, specification, value)
+head(auto)
+```
+
+```{r}
+save(auto, file = "automobile.RData")
+```
+

@@ -1,0 +1,629 @@
+---
+title: "homework4"
+author: "eunchong"
+date: '2019 7 3 '
+output: html_document
+---
+
+#1 
+: decision tree를 사용해서 income 변수를 가장 잘 예측하는 예측 모델을 만드시오. 어떻게 그 모델을 찾게 되었는지 설명하시오.        confusion matrix, accuracy, precision, recall을 사용해 만든 모델의 성능을 설명하시오
+
+
+```{r}
+# get_arruracy 
+get_acuuracy <- function(pred, actual){
+  tble <- table(actual, pred)
+  return( (tble[1,1]+tble[2,2])/sum(tble))
+}
+
+
+
+# get_precision
+
+
+get_precision <- function(pred, actual){
+  tble <- table(actual, pred)
+  return( (tble[2,2])/ sum(tble[1,2],tble[2,2]))
+}
+
+
+
+#get_recall
+get_recall <- function(pred, actual){
+  tble <- table(actual, pred)
+  return( tble[2,2]/ sum(tble[2,1],tble[2,2]))
+}
+```
+
+
+## 모델1
+```{r setup, include=FALSE}
+load("C:/Users/21500/Desktop/homework/homework4/income_hw4.RData")
+str(train)
+
+############
+library(rpart)
+library(rpart.plot)
+
+new.train <- train
+
+
+train_model.train.full <- rpart(income~ . , data = new.train, method = "class",
+                    control = rpart.control(cp = 0))
+
+plotcp(train_model.train.full) #0.0014 = cp 
+
+##Prune the tree
+train_model_pruned <- prune(train_model.train.full, cp = 0.0014)
+
+
+# train set
+new.train$pred <- predict(train_model.train.full, new.train, type = "class")
+
+#table
+table(new.train$income , new.train$pred)
+
+mean(new.train$income == new.train$pred)        # 0.888
+get_precision(new.train$pred, new.train$income) # precision : 0.814
+get_recall(new.train$pred, new.train$income)    # recall : 0.713
+
+rpart.plot(train_model_pruned)
+
+```
+
+
+## 모델 2
+```{r cars}
+
+new.train2 <- train
+
+train_model.full <- rpart(income~ . , data = new.train2, method = "class",
+                    control = rpart.control(cp = 0)) 
+
+plotcp(train_model.full) #0.0091 = cp 
+
+##Prune the tree
+train_model_pruned2 <- prune(train_model.full, cp = 0.0091)
+train_model_pruned2
+
+
+# train set
+new.train2$pred <- predict(train_model_pruned2, new.train2, type = "class")
+
+#table
+table(new.train2$income , new.train2$pred)
+
+mean(new.train2$income == new.train2$pred) # accuracy : 0.840
+get_precision(new.train2$pred, new.train2$income) # precision : 0.771
+get_recall(new.train2$pred, new.train2$income)    # recall : 0.509
+
+
+new.test <- test
+new.test$pred <- predict(train_model_pruned2, new.test, type = "class")
+
+mean(new.test$income == new.test$pred) # accuracy : 0.833
+get_precision(new.test$pred, new.test$income) # precision : 0.678
+get_recall(new.test$pred, new.test$income)    # recall : 0.630
+
+```
+
+
+## 모델 3
+```{r pressure, echo=FALSE}
+new.train3 <- train
+
+
+train_model3 <- rpart(income~ . , data = new.train3, method = "class", control= rpart.control(cp = 0, minsplit = 300)) 
+
+
+# train set
+new.train3$pred <- predict(train_model3, new.train3, type = "class")
+
+#table
+table(new.train3$income , new.train3$pred)
+
+mean(new.train3$income == new.train3$pred) # accuracy : 0.855
+get_precision(new.train3$pred, new.train3$income) # precision : 0.778
+get_recall(new.train3$pred, new.train3$income)    # recall : 0.586
+
+
+```
+
+## 모델 4
+```{r}
+new.train4 <- train
+
+
+train_model4 <- rpart(income~ . , data = new.train4, method = "class", control= rpart.control(cp = 0, minsplit = 250)) 
+
+
+# train set
+new.train4$pred <- predict(train_model4, new.train4, type = "class")
+
+#table
+table(new.train4$income , new.train4$pred)
+
+mean(new.train4$income == new.train4$pred) # accuracy : 0.857
+get_precision(new.train4$pred, new.train4$income) # precision : 0.752
+get_recall(new.train4$pred, new.train4$income)    # recall : 0.638
+```
+
+
+## 모델 5
+```{r}
+new.train5 <- train
+
+
+train_model5 <- rpart(income~ . , data = new.train5, method = "class", control= rpart.control(cp = 0, minsplit = 200)) 
+
+
+
+# train set
+new.train5$pred <- predict(train_model5, new.train5, type = "class")
+
+mean(new.train5$income == new.train5$pred) # accuracy : 0.858
+get_precision(new.train5$pred, new.train5$income) # precision : 0.761
+get_recall(new.train5$pred, new.train5$income)    # recall : 0.629
+```
+## 모델 6
+```{r}
+new.train6 <- train
+
+
+train_model6 <- rpart(income~ . , data = new.train6, method = "class", control= rpart.control(cp = 0, minsplit = 100)) 
+
+# train set
+new.train6$pred <- predict(train_model6, new.train6, type = "class")
+
+#table
+table(new.train6$income , new.train6$pred)
+
+
+mean(new.train6$income == new.train6$pred) # accuracy :  0.862
+get_precision(new.train6$pred, new.train6$income) # precision : 0.775
+get_recall(new.train6$pred, new.train6$income)    # recall : 0.632
+
+
+```
+
+## 모델 7
+```{r}
+new.train7 <- train
+
+
+train_model7 <- rpart(income~ . , data = new.train7, method = "class", control= rpart.control(cp = 0, minsplit = 50)) 
+
+
+# train set
+new.train7$pred <- predict(train_model7, new.train7, type = "class")
+
+#table
+table(new.train7$income , new.train7$pred)
+
+mean(new.train7$income == new.train7$pred) # accuracy : 0.871
+get_precision(new.train7$pred, new.train7$income) # precision : 0.796
+get_recall(new.train7$pred, new.train7$income)    # recall : 0.649
+```
+## 모델 8
+```{r}
+new.train8 <- train
+
+
+train_model8 <- rpart(income~ . , data = new.train7, method = "class", control= rpart.control(cp = 0, minsplit = 30)) 
+
+
+
+# train set
+new.train8$pred <- predict(train_model8, new.train7, type = "class")
+
+mean(new.train8$income == new.train8$pred) # accuracy : 0.889
+get_precision(new.train8$pred, new.train8$income) # precision : 0.825
+get_recall(new.train8$pred, new.train8$income)    # recall : 0.706
+
+```
+
+## 모델 9
+```{r}
+new.train9 <- train
+new.train9$income <- as.factor(new.train9$income)
+
+
+train_model9 <- rpart(income~ . , data = new.train9, method = "class", control= rpart.control(cp = 0, minsplit = 10)) 
+
+
+
+# train set
+new.train9$pred <- predict(train_model9, new.train9, type = "class")
+
+
+#table
+table(new.train9$income , new.train9$pred)
+
+
+mean(new.train9$income == new.train9$pred) # accuracy : 0.911
+get_precision(new.train9$pred, new.train9$income) # precision : 0.856
+get_recall(new.train9$pred, new.train9$income)    # recall : 0.776
+
+rpart.plot(train_model9)
+
+str(train)
+
+
+ROC(test=new.train9$pred, new.train9$income, plot="ROC", AUC=T,main="Tree")#0.867
+
+# test 
+
+new.test9 <- test
+new.test9$income <- as.factor(new.test9$income)
+new.test9$pred <- predict(train_model9, new.test9 , type = "class")
+
+
+mean(new.test9$income == new.test9$pred) # accuracy : 0.842
+get_precision(new.test9$pred, new.test9$income) # precision : 0.768
+get_recall(new.test9$pred, new.test9$income)    # recall : 0.522
+
+
+
+ROC(test=new.test9$pred, new.test9$income, plot="ROC", AUC=T,main="Tree") #0.766
+
+```
+
+#2 plot
+```{r}
+new.train10 <- train
+
+train_model10  <- rpart(income~ . , data = new.train10 , method = "class", control= rpart.control(cp = 0, maxdepth = 3)) 
+
+
+
+# train set
+new.train10 $pred <- predict(train_model10 , new.train10, type = "class")
+
+#table
+table(new.train10 $income , new.train10$pred)
+
+mean(new.train10$income == new.train10$pred) # accuracy : 0.840
+get_precision(new.train10$pred, new.train10$income) # precision : 0.771
+get_recall(new.train10$pred, new.train10$income)    # recall : 0.509
+
+rpart.plot(train_model10)
+
+ROC(test=new.train10$pred, new.train10$income, plot="ROC", AUC=T,main="Tree")  # 0.730
+
+#################################################
+new.train11 <- train
+
+
+train_model11  <- rpart(income~ . , data = new.train11 , method = "class", control= rpart.control(cp = 0, maxdepth = 4)) 
+
+
+
+# train set
+new.train11 $pred <- predict(train_model11 , new.train11, type = "class")
+
+#table
+table(new.train11 $income , new.train11 $pred)
+
+mean(new.train11 $income == new.train11 $pred) # accuracy : 0.840
+get_precision(new.train11 $pred, new.train11 $income) # precision : 0.771
+get_recall(new.train11 $pred, new.train11 $income)    # recall : 0.509
+
+rpart.plot(train_model11 )
+
+ROC(test=new.train11$pred, new.train11$income, plot="ROC", AUC=T,main="Tree")  # 0.730
+
+#################################################
+new.train12 <- train
+
+
+train_model12  <- rpart(income~ . , data = new.train12 , method = "class", control= rpart.control(cp = 0, maxdepth = 5)) 
+
+
+
+# train set
+new.train12$pred <- predict(train_model12 , new.train12, type = "class")
+
+#table
+table(new.train12 $income , new.train12 $pred)
+
+mean(new.train12 $income == new.train12 $pred) # accuracy : 0.842
+get_precision(new.train12 $pred, new.train12 $income) # precision : 0.810
+get_recall(new.train12 $pred, new.train12 $income)    # recall : 0.481
+
+rpart.plot(train_model12 )
+
+```
+
+
+#3 overfitting
+
+##1 test set에서 확인하기 
+```{r}
+
+new.test10 <- test
+new.test10$pred <- predict(train_model10 , new.test10, type = "class")
+
+mean(new.test10$income == new.test10$pred) # accuracy : 0.842
+get_precision(new.test10$pred, new.test10$income) # precision : 0.768
+get_recall(new.test10$pred, new.test10$income)    # recall : 0.522
+
+```
+train set보다 오히려 test set에서 전반적으로 모두 더 높은 성능을 가진다. 
+
+
+##2 교차 
+
+```{r}
+set.seed(2019)
+n.income <- nrow(test)
+rgroup <- runif(n.income)
+
+# test1, test2
+test.df1 <- subset(test, rgroup <= 0.6) 
+test.df2  <- subset(test, rgroup >  0.6)
+
+# test1
+new.test.df1 <- test.df1
+
+new.test.df1$pred <- predict(train_model10 , new.test.df1, type = "class")
+
+mean(new.test.df1$income == new.test.df1$pred)        # accuracy : 0.838
+get_precision(new.test.df1$pred, new.test.df1$income) # precision : 0.756
+get_recall(new.test.df1$pred, new.test.df1$income)    # recall : 0.513
+
+
+
+# test2
+# test1
+new.test.df2 <- test.df2[-3]
+
+new.test.df2$pred <- predict(train_model9 , new.test.df2, type = "class")
+
+mean(new.test.df2$income == new.test.df2$pred) # accuracy : 83.2 / 83.7 / 84.0 / 83.3
+get_precision(new.test.df2$pred, new.test.df2$income) # precision : 66.2 / 66.5 / 67.1 /65.6
+get_recall(new.test.df2$pred, new.test.df2$income)    # recall : 66.5% / 69.7 / 69.4 / 70.2
+```
+test셋을 다시 test1, test2 로 나눠서 성능을 측정한 결과 train data의 성능과 유사하다. 따라서 과적합이 아니라는 판단이 든다.
+
+
+
+
+##################################################################
+
+
+
+#2 KNN
+
+## Question 4
+```{r}
+load("C:/Users/21500/Desktop/homework/homework4/income_hw4.RData")
+
+
+train.knn <- train
+test.knn <- test
+
+
+# one hot encoding
+library(dummies)
+
+train.knn <- dummy.data.frame(train.knn)
+test.knn <-dummy.data.frame(test.knn)
+
+str(train.knn)
+
+# min-max normalization
+minmax_norm <- function(x) {
+(x-min(x))/(max(x)-min(x))
+}
+
+train.knn$age <- minmax_norm(train.knn$age)
+train.knn$capital.gain <- minmax_norm(train.knn$capital.gain)
+train.knn$capital.loss <- minmax_norm(train.knn$capital.loss)
+train.knn$hours.per.week <- minmax_norm(train.knn$hours.per.week) 
+train.knn$education.num <- minmax_norm(train.knn$education.num)
+train.knn$income <- as.factor(train.knn$income)
+train.knn$income <- ifelse(train.knn$income =="1", "rich", "poor")
+
+test.knn$age <- minmax_norm(test.knn$age)
+test.knn$capital.gain <- minmax_norm(test.knn$capital.gain)
+test.knn$capital.loss <- minmax_norm(test.knn$capital.loss)
+test.knn$hours.per.week <- minmax_norm(test.knn$hours.per.week) 
+test.knn$education.num <- minmax_norm(test.knn$education.num) 
+test.knn$income <- as.factor(test.knn$income)
+test.knn$income <- ifelse(test.knn$income =="1", "rich", "poor")
+
+# split data into train and test set 
+dim(train.knn)
+
+train.knn_new <- train.knn[, -47]  
+test.knn_new <-  test.knn[, -47]
+
+train.knn_label <- train.knn[, 47]  
+test.knn_label <-  test.knn[, 47]
+
+
+
+# choosing proper k 
+sqrt(nrow(train.knn)) # 146.639
+
+library(class)
+
+train.knn_pred <-  knn(train = train.knn_new , test = test.knn_new , cl = train.knn_label, k = 147)
+
+#accuracy
+mean(test.knn_label == train.knn_pred) # 0.827
+
+ 
+#confusion matrix
+cmat <- table(test.knn_label, train.knn_pred)  # 실제, 예측
+cmat
+
+#precision
+cmat[2,2] / sum(cmat[,2]) # 0.687
+
+#recall
+cmat[2,2] / sum(cmat[2,]) # 0.56
+
+############################################
+
+test.knn_pred_P <- knn(train = train.knn_new , test = test.knn_new , cl = train.knn_label, k = 147, prob = TRUE)
+head(attributes(test.knn_pred_P)$prob,10)
+
+
+#음성이라면 그대로 확률을 쓸 것이고, 양성이라면 1-prob을 할 것이다 
+# converting all Prob to P(rich)
+
+test_pred_prob <- ifelse(test.knn_pred_P == 'rich', attributes(test.knn_pred_P)$prob, 1-attributes(test.knn_pred_P)$prob)
+
+
+##### set lower threshold #####
+threshold <- 0.3
+test_pred_new <- ifelse(test_pred_prob > threshold, 'rich', 'poor')
+
+# matrix
+cmat <- table(test.knn_label, test_pred_new) 
+cmat
+
+#accuracy
+mean(test.knn_label == test_pred_new) # 0.801
+
+#precision
+cmat[2,2] / sum(cmat[,2]) # 0.571
+
+#recall
+cmat[2,2] / sum(cmat[2,]) # 0.8
+
+
+
+```
+
+
+## Question 5 : 다양한 k를 시도해보고 가장 성능이 좋은 k를 찾아보시오. 
+k를 변화하면서 accuracy, precision, recall, AUC가 변화하는 것을 보기 위해 그래프를 그리시오. 
+```{r}
+
+k_value <- c(10, 30, 50, 70, 90, 110, 130, 147, 170, 200)
+
+knn_accuracy <- function(k_value){
+  test.knn_pred_P <- knn(train = train.knn_new , test = test.knn_new , cl = train.knn_label, k = k_value, prob = TRUE)
+  test_pred_prob <- ifelse(test.knn_pred_P == 'rich', attributes(test.knn_pred_P)$prob, 1-attributes(test.knn_pred_P)$prob)
+  test_pred_new <- ifelse(test_pred_prob > 0.3 , 'rich', 'poor')
+  a <- mean(test.knn_label == test_pred_new) 
+  return(a)
+}
+
+
+knn_precision <- function(k_value){
+  test.knn_pred_P <- knn(train = train.knn_new , test = test.knn_new , cl = train.knn_label, k = k_value, prob = TRUE)
+  test_pred_prob <- ifelse(test.knn_pred_P == 'rich', attributes(test.knn_pred_P)$prob, 1-attributes(test.knn_pred_P)$prob)
+  test_pred_new <- ifelse(test_pred_prob > 0.3 , 'rich', 'poor')
+  cmat <- table(test.knn_label, test_pred_new)
+  a <- cmat[2,2] / sum(cmat[,2])
+  return(a)
+}
+
+knn_recall <- function(k_value){
+  test.knn_pred_P <- knn(train = train.knn_new , test = test.knn_new , cl = train.knn_label, k = k_value, prob = TRUE)
+  test_pred_prob <- ifelse(test.knn_pred_P == 'rich', attributes(test.knn_pred_P)$prob, 1-attributes(test.knn_pred_P)$prob)
+  test_pred_new <- ifelse(test_pred_prob > 0.3 , 'rich', 'poor')
+  cmat <- table(test.knn_label, test_pred_new)
+  a <- cmat[2,2] / sum(cmat[2,])
+  return(a)
+}
+
+calAUC <- function(predCol, targetCol){
+perf <- performance(prediction(predCol, targetCol), 'auc') 
+as.numeric(perf@y.values)
+}
+
+
+knn_AUC <- function(k_value){
+  test.knn_pred_P <- knn(train = train.knn_new , test = test.knn_new , cl = train.knn_label, k = k_value, prob = TRUE)
+  test_pred_prob <- ifelse(test.knn_pred_P == 'rich', 
+  attributes(test.knn_pred_P)$prob,
+  1-attributes(test.knn_pred_P)$prob)
+  a <- calAUC(test_pred_prob,test.knn_label== 'rich')
+}
+
+accuracy <- c(0.832, 0.835, 0.833 ,0.829, 0.827 ,0.828, 0.829, 0.827, 0.829, 0.829)
+precision <- sapply(k_value, knn_precision)
+recall <- sapply(k_value, knn_recall)
+AUC <- sapply(k_value, knn_AUC)
+
+mean(AUC)
+
+par(mfrow=c(2,2))
+plot(k_value, accuracy, xlim=c(10, 200),type="l", main = "accuracy",lwd=2)
+plot(k_value, precision, xlim=c(10, 200), type="l",main = "precision",lwd=2)
+plot(k_value, recall , xlim=c(10, 200),type="l", main = "recall",lwd=2)
+plot(k_value, AUC, xlim=c(10, 200), type="l",main = "AUC",lwd=2)
+
+
+```
+
+# Question 6.
+ best K를 사용한 kNN에 대해서 ROC 커브를 그리고 AUC를 계산해보시오.
+ 
+```{r}
+# AUC for our kNN
+library(ROCR)
+library(Epi)
+train.knn_pred_bestk <-  knn(train = train.knn_new , test = test.knn_new , cl = train.knn_label, k = 30)
+test_pred_prob_bestk <- ifelse(test.knn_pred_P == 'rich', attributes(test.knn_pred_P)$prob, 1-attributes(test.knn_pred_P)$prob)
+
+
+ROC(test_pred_prob_bestk, test.knn_label== 'rich') # 0.883
+
+```
+ 
+
+# Question 7.
+데이터에 kNN을 적용하기 위해서 데이터를 어떻게 변형하였나요? 이유와 방법을 설명하시오.
+
+1) knn은 입력변수가 numeric 변수어야 하므로 dummies library를 사용하여 faoctor 변수를 one-hot encodig을 했다. 
+
+train.knn <- dummy.data.frame(train.knn)
+test.knn <-dummy.data.frame(test.knn)
+
+
+2) 거리계산에서 거리의 차이에 대한 스케일을 맞추기 위해 정규화를 진행했다.  
+
+# min-max normalization
+minmax_norm <- function(x) {
+(x-min(x))/(max(x)-min(x))
+}
+
+
+train.knn$age <- minmax_norm(train.knn$age)
+train.knn$capital.gain <- minmax_norm(train.knn$capital.gain)
+train.knn$capital.loss <- minmax_norm(train.knn$capital.loss)
+train.knn$hours.per.week <- minmax_norm(train.knn$hours.per.week) 
+train.knn$education.num <- minmax_norm(train.knn$education.num)
+
+
+
+test.knn$age <- minmax_norm(test.knn$age)
+test.knn$capital.gain <- minmax_norm(test.knn$capital.gain)
+test.knn$capital.loss <- minmax_norm(test.knn$capital.loss)
+test.knn$hours.per.week <- minmax_norm(test.knn$hours.per.week) 
+test.knn$education.num <- minmax_norm(test.knn$education.num) 
+
+
+3) 오류를 방지하기 위해 income 변수를 numeric에서 factor로 변환하고 0이면 poor, 1이면 rich로 바꾸었다. 
+train.knn$income <- as.factor(train.knn$income)
+test.knn$income <- as.factor(test.knn$income)
+
+train.knn$income <- ifelse(train.knn$income =="1", "rich", "poor")
+test.knn$income <- ifelse(test.knn$income =="1", "rich", "poor")
+
+
+# Question 8
+해당 데이터 셋에서 decision tree, kNN 두가지 모델을 비교했을 때 어떤 것이 성능이 더 좋은가요? 그 이유는 무엇이라고 생각하나요?
+
+
+
+# Question 9
+여러분이 만든 모델의 성능을 여러분의 Group Member들과 비교해보세요. 차이점을 파악하고 여러분의 모델에서 개선해야할 점이 있다면 개선해봅시다.
+
+
+

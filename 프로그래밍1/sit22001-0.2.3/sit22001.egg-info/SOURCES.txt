@@ -1,0 +1,13 @@
+cs1graphics.py
+cs1media.py
+cs1robots.py
+cs1robots_images.py
+easygui.py
+setup.cfg
+setup.py
+sit22001.egg-info/PKG-INFO
+sit22001.egg-info/SOURCES.txt
+sit22001.egg-info/dependency_links.txt
+sit22001.egg-info/entry_points.txt
+sit22001.egg-info/requires.txt
+sit22001.egg-info/top_level.txt

@@ -1,0 +1,30 @@
+stackloss
+y <- stackloss$stack.loss
+x1 <- stackloss$Air.Flow
+x2 <- stackloss$Water.Temp
+x3 <- stackloss$Acid.Conc
+x4 <- c("a", "a", "a", "a", "c", "c", "c", "a", "c", "a", "c", "a", "c", "a", "c", "a", "c", "a", "a", "a", "c")
+X <- cbind(x1, x2, x3, x4)
+X
+Y <- cbind(x1, x2, x3)
+Y
+pairs(Y)
+stackfit <- lm(y~x1+x2+x3+x4)
+summary(stackfit)
+fit <- lm(y~x4)
+summary(fit)
+x4 <- c("a", "a", "a", "c", "c", "b", "b", "c", "a", "d", "d", "a", "e", "d", "e", "a", "b", "c", "f", "g", "f")
+Z <- cbind(x1, x2, x3, x4)
+Z
+stackfits <- lm(y~x1+x2+x3+x4)
+stackfits
+fit <- lm(y~x4)
+summray(fit)
+summary(fit)
+summary(stackfits)
+t <- log(y)
+fit <- lm(t~x1+x2+x3+x4)
+summary(fit)
+x_1 <- x1^2
+fit <- lm(y~x_1+x2+x3+x4)
+summary(fit)

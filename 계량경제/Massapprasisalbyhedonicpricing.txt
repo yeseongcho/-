@@ -1,0 +1,40 @@
+
+ tab dong, gen(dong)
+ gen brand_flag=0
+ replace brand_flag=1 if brand>0
+ split time, p(Q)
+ destring time1, replace
+ tab time1, gen(dummy_time)
+ tab heat, gen(heat)
+ gen ln_p=ln(p)
+ gen ln_size=ln(size)
+ gen old=time1-cy
+ 
+ 
+drop if yong==0
+drop if gun==0
+
+ 
+set seed 1000
+gen sortorder = runiform()
+sort sortorder
+
+gen outsample=_n<=561
+ 
+reg ln_p dong1 dong2 dong3 dong4 dong5 dong6 dong7 dong8 dong9 dong10 dummy_time1 dummy_time2 dummy_time3 dummy_time4 dummy_time5 dummy_time6 dummy_time7 dummy_time8 dummy_time9 dummy_time10 dummy_time11 ln_size old f heat1 heat2 brand_flag n_h highest park yong gun d_p d_hs d_r d_u d_hp d_m d_s if outsample==0
+ 
+
+xi : reg p size i.dong i.time old f i.heat brand_flag n_h highest park yong gun d_p d_hs d_r d_u d_hp d_m d_s
+
+predict ln_p_hat if outsample==1
+
+drop if outsample==0
+
+gen p_hat=exp(ln_p_hat)
+
+
+
+
+gen mm=abs( (p_hat-p)/p)
+
+su mm, de

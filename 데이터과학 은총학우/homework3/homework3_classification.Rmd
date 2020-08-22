@@ -1,0 +1,619 @@
+---
+title: "homework3_classification"
+author: "eunchong"
+date: '2019 7 2 '
+output: html_document
+---
+
+
+#1 Finding the best model
+
+```{r}
+# get_arruracy 
+get_acuuracy <- function(pred, actual){
+  tble <- table(actual, pred)
+  return( (tble[1,1]+tble[2,2])/sum(tble))
+}
+
+table(actual = train$income, pred = train$prediction_workclass)
+table( pred = train$prediction_workclass , actual =train$income)
+
+# get_precision
+table(actual = train$income, pred = train$prediction_workclass)
+
+get_precision <- function(pred, actual){
+  tble <- table(actual, pred)
+  return( (tble[2,2])/ sum(tble[1,2],tble[2,2]))
+}
+
+
+
+#get_recall
+get_recall <- function(pred, actual){
+  tble <- table(actual, pred)
+  return( tble[2,2]/ sum(tble[2,1],tble[2,2]))
+}
+
+
+```
+
+
+
+## (1) variable = workclass
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+setwd("C:/Users/21500/Desktop/homework/homework3")
+load("C:/Users/21500/Desktop/homework/homework3/income.RData")
+
+
+
+# Building a Single Vatiable Model_workclass
+
+tble_workclass <- table(train$workclass, train$income)
+tble_workclass
+prop.table(tble_workclass , margin = 1) 
+
+sv_model_workclass <- prop.table(tble_workclass, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_workclass <- sv_model_workclass[train$workclass]
+head(train,10)
+
+threshold <- 0.5 # 0.5보다 확률이 크면 T
+train$prediction_workclass <- train$est_prob_workclass > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_workclass <- table(actual = train$income, pred = train$prediction_workclass)
+
+print(paste("Accuracy on train set",
+            get_acuuracy(train$prediction_workclass, train$income))) # 75.59%
+
+# making Plot 
+library(ROCR)
+
+ROC(train$est_prob_workclass, train$income) # 0.57
+
+```
+
+
+## (2) variable = capital gain
+```{r cars}
+summary(test$capital.gain)
+quantile(test$capital.gain)
+
+median(test$capital.gain)
+
+mean(test$capital.gain)
+
+# groupping gain 
+train$capital.gain_range <- ifelse(train$capital.gain== 0, "none", 
+                                   ifelse(train$capital.gain <= mean(train$capital.gain), "low", # mean of test 
+                                          ifelse(train$capital.gain <= (max(train$capital.gain)-mean(train$capital.gain))/2, "middle", "high" )))
+
+
+
+test$capital.gain_range <- ifelse(test$capital.gain== 0, "none", 
+                                   ifelse(test$capital.gain <= mean(test$capital.gain), "low", # mean of train
+                                          ifelse(test$capital.gain <= (max(test$capital.gain)-mean(test$capital.gain))/2, "middle", "high" )))
+
+
+# Building a Single Vatiable Model_workclass
+
+tble_gain <- table(train$capital.gain_range, train$income)
+tble_gain
+prop.table(tble_gain , margin = 1) 
+
+sv_model_gain <- prop.table(tble_gain, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_gain <- sv_model_gain[train$capital.gain_range]
+head(train,10)
+
+threshold <- 0.5 # 0.5보다 확률이 크면 T
+train$prediction_gain <- train$est_prob_gain > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_gain <- table(actual = train$income,pred = train$prediction_gain)
+
+print(paste("acuuracy on train set",
+            get_acuuracy(train$prediction_gain, train$income))) # 77.3
+
+
+# making Plot 
+library(ROCR)
+
+ROC(train$est_prob_workclass, train$income) # 0.570
+```
+
+
+## (3) variable =  race 
+```{r pressure, echo=FALSE}
+# Building a Single Variable Model_workclass
+
+tble_race <- table(train$race, train$income)
+tble_race
+prop.table(tble_race , margin = 1) 
+
+sv_model_race <- prop.table(tble_race, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_race <- sv_model_race[train$race]
+head(train,10)
+
+threshold <- 0.2 # 0.2보다 확률이 크면 T
+train$prediction_race <- train$est_prob_race > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_race <- table( actual = train$income,pred = train$prediction_race)
+
+print(paste("acuuracy on train set",
+            get_acuuracy(train$prediction_race, train$income))) # 33.4%
+
+
+
+# making Plot 
+library(ROCR)
+
+ROC(train$est_prob_race, train$income) # 0.539
+
+```
+
+## (4) variable =  relationship : 1등 ##
+```{r}
+# Building a Single Vatiable Model_workclass
+tble_relationship <- table(train$relationship, train$income)
+table(train$relationship)
+tble_relationship
+prop.table(tble_relationship , margin = 1) 
+
+sv_model_relationship <- prop.table(tble_relationship, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_relationship <- sv_model_relationship[train$relationship]
+head(train,10)
+
+threshold <- 0.45
+train$prediction_relationship <- train$est_prob_relationship > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_relationship <- table( actual = train$income,pred = train$prediction_relationship)
+(conf.train.table_relationship[1,1]+conf.train.table_relationship[2,2]) / sum(conf.train.table_relationship) # 71.36%
+
+
+
+# making Plot 
+library(ROCR) 
+library(Epi)
+ROC(train$est_prob_relationship, train$income) # 0.777
+
+```
+
+
+## (5) variable =  marital.status
+```{r}
+# Building a Single Vatiable Model_workclass
+
+tble_marital <- table(train$marital.status, train$income)
+tble_marital
+prop.table(tble_marital , margin = 1) 
+
+sv_model_marital <- prop.table(tble_marital, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_marital <- sv_model_marital[train$marital.status]
+head(train,10)
+
+threshold <- 0.5 # 0.5보다 확률이 크면 T
+train$prediction_marital <- train$est_prob_marital > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_marital <- table(actual = train$income, pred = train$prediction_marital)
+
+print(paste("acuuracy on train set",
+            get_acuuracy(train$prediction_marital , train$income))) # 75.1
+
+
+# making Plot 
+ROC(train$est_prob_marital, train$income) # 0.766
+```
+
+## (6) variable =  hours.per.week
+
+```{r}
+summary(train$hours.per.week)
+(99-40)/2
+29.5+40
+
+train$hours_range <- cut(train$hours.per.week, 
+                          breaks = c(1, 40, 69.5, 99),
+                          labels = c("short", "middle","long"))
+
+summary(test$hours.per.week)
+(99-41.18)/2
+28.91+41.18
+
+test$hours_range <- cut(test$hours.per.week, 
+                          breaks = c(1, 41.18, 70.09, 99),
+                          labels = c("short", "middle","long"))
+
+
+
+# Building a Single Vatiable Model_workclass
+
+tble_hours_range <- table(train$hours_range, train$income)
+tble_hours_range
+prop.table(tble_hours_range , margin = 1) 
+
+sv_model_hours_range <- prop.table(tble_hours_range, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_hours_range <- sv_model_hours_range[train$hours_range]
+head(train,10)
+
+threshold <- 0.4 # 0.4보다 확률이 크면 T
+train$prediction_hours_range <- train$est_prob_hours_range > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_hours_range <- table(actual = train$hours_range, pred = train$prediction_hours_range)
+
+print(paste("acuuracy on train set",
+            get_acuuracy(train$prediction_hours_range, train$income))) # 70.2%
+
+# making Plot 
+library(ROCR)
+
+plot(performance(prediction(train$est_prob_hours_range, train$income), "tpr", "fpr"))
+
+pred <- prediction(train$est_prob_hours_range, train$income)
+
+# cutoff 값에 따른 Accuracy의 변화
+plot(performance(pred, "acc", "cutoff"))
+
+# AUC 
+performance(pred, "auc") # 63.0
+
+```
+
+## (7) variable =  occupation 
+
+```{r}
+# Building a Single Vatiable Model_workclass
+
+tble_occupation <- table(train$occupation, train$income)
+tble_occupation
+prop.table(tble_occupation , margin = 1) 
+
+sv_model_occupation <- prop.table(tble_occupation, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_occupation <- sv_model_occupation[train$occupation]
+head(train,10)
+
+threshold <- 0.4 # 0.4보다 확률이 크면 T
+train$prediction_occupation <- train$est_prob_occupation > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_occupation <- table(actual = train$income, pred = train$prediction_occupation)
+conf.train.table_occupation
+
+print(paste("acuuracy on train set",
+            get_acuuracy(train$prediction_occupation, train$income))) #  73.3%
+
+# making Plot 
+library(ROCR)
+ROC(train$est_prob_occupation, train$income) # 0.725
+
+```
+
+
+## (8) variable = log10(capital.gain)
+```{r}
+
+train$gain_log <- log10(train$capital.gain)
+test$gain_log <- log10(test$capital.gain)
+
+
+b <- train[(!train$gain_log == -Inf),]
+mean(b$gain_log)
+max(b$gain_log)
+quantile(b$gain_log)
+
+
+a  <- test[(!test$gain_log == -Inf),]
+mean(a$gain_log)
+max(a$gain_log)
+quantile(a$gain_log)
+
+# groupping gain 
+train$capital.gain_rangelog <- ifelse(train$capital.gain== -Inf, "none", 
+                                   ifelse(train$capital.gain <= 3.539578, "low", # mean of test 3
+                                          ifelse(train$capital.gain <= 4.148726, "middle", "high" )))
+
+
+
+test$capital.gain_rangelog <- ifelse(test$capital.gain== -Inf, "none", 
+                                   ifelse(test$capital.gain <= 3.539578, "low", # mean of train
+                                          ifelse(test$capital.gain <= 4.148726, "middle", "high" )))
+
+
+# Building a Single Vatiable Model_workclass
+
+tble_gain_rangelog <- table(train$capital.gain_rangelog, train$income)
+tble_gain_rangelog
+prop.table(tble_gain , margin = 1) 
+
+sv_model_gain_rangelog <- prop.table(tble_gain_rangelog, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_gain_rangelog <- sv_model_gain_rangelog[train$capital.gain_rangelog]
+head(train,10)
+
+threshold <- 0.5 # 0.5보다 확률이 크면 T
+train$prediction_gain_rangelog <- train$est_prob_gain_rangelog > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_gain_rangelog <- table(actual = train$income,pred = train$prediction_gain_rangelog)
+
+print(paste("acuuracy on train set",
+            get_acuuracy(train$prediction_gain_rangelog, train$income))) # 77.1%
+
+# making Plot 
+library(Epi)
+library(ROCR)
+ROC(train$est_prob_gain_rangelog, train$income) # 0.583
+
+```
+
+
+## (9) variable = log10(capital.gain), yes or no
+```{r}
+train$gain_log <- log10(train$capital.gain)
+test$gain_log <- log10(test$capital.gain)
+
+# groupping gain 
+train$capital.gain_rangelog.yesno <- ifelse(train$gain_log == -Inf, "No gain", "have gain")
+table(train$capital.gain_rangelog.yesno)
+
+test$capital.gain_rangelog.yesno <- ifelse(test$gain_log == -Inf, "No gain", "have gain")
+
+
+# Building a Single Vatiable Model_workclass
+
+tble_gain_rangelog.yesno <- table(train$capital.gain_rangelog.yesno, train$income)
+tble_gain_rangelog.yesno
+prop.table(tble_gain , margin = 1) 
+
+sv_model_gain_rangelog.yesno <- prop.table(tble_gain_rangelog.yesno, margin = 1)[,2] # 소득이 많을 확률
+
+# Prediction on Training Dataset
+train$est_prob_gain_rangelog.yesno <- sv_model_gain_rangelog.yesno[train$capital.gain_rangelog.yesno]
+head(train,10)
+
+threshold <- 0.5 # 0.5보다 확률이 크면 T
+train$prediction_gain_rangelog.yesno <- train$est_prob_gain_rangelog.yesno > threshold
+
+# Accuracy : 맞춘 갯수 / total observation 
+conf.train.table_gain_rangelog.yesno <- table(actual = train$income, pred = train$prediction_gain_rangelog.yesno)
+
+print(paste("acuuracy on train set",
+            get_acuuracy(train$prediction_gain_rangelog.yesno, train$income))) # 77.1%
+
+# making Plot 
+library(ROCR)
+library(Epi)
+ROC(train$est_prob_gain_rangelog.yesno, train$income) # 0.583
+
+```
+
+
+## 2번
+
+```{r}
+
+# Prediction on Test Data : overfitting(일반적인 상황에서도 잘 맞아야 한다)
+test$est_prob_relationship <- sv_model_relationship[test$relationship]
+
+test$prediction_relationship <- test$est_prob_relationship  > 0.45
+
+conf.test.table_relationship <- table(actual = test$income,pred = test$prediction_relationship)
+
+
+# get_arruracy 
+print(paste("arruracy on test set",
+            get_acuuracy(test$prediction_relationship, test$income))) # 71.30%
+
+# get_precision
+print(paste("precision on test set",
+            get_precision(test$prediction_relationship, test$income))) # 45.8% 
+
+## get_recall
+print(paste("recall on test set",
+            get_recall(test$prediction_relationship, test$income))) # 85.8% 
+
+# making Plot 
+library(ROCR)
+library(Epi)
+ROC(test$est_prob_relationship, test$income)
+
+pred <- prediction(test$est_prob_relationship, test$income)
+
+# cutoff 값에 따른 Accuracy의 변화
+plot(performance(pred, "acc", "cutoff"))
+
+# AUC 
+performance(pred, "auc") # 0.777
+```
+test dataset에서 AUC는 0.777이다. 
+
+
+
+## 3번문제
+
+찾은 모델은 과적합이 아니다. 과적합은 test 모델에서 성능이 급격히 낮아지는 경우인데, train dataset 에서는 AUC가 0.769이고, train dataset에서의 AUC는 0.777이므로 더 train dataset에서의 성능이 더 좋다고 할 수 있다. 
+
+
+## 4번문제
+
+```{r}
+
+threshold <- seq(0.05,0.48,0.001)
+
+# train dataset
+graph_precision_train <- function(threshold){
+  train$prediction <-train$est_prob_relationship >threshold
+  a <-get_precision(train$prediction,train$income)
+  return(a)
+}
+
+
+graph_recall_train <- function(threshold){
+  train$prediction <-train$est_prob_relationship >threshold
+  a <-get_recall(train$prediction,train$income)
+  return(a)
+}
+
+
+
+
+
+plot(threshold, sapply(threshold, graph_recall_train) , type = "l", col="red", xlim=c(0,0.5), ylim=c(0,1),lwd="2")
+lines(threshold, sapply(threshold,graph_precision_train), type = "l", col="blue", xlim=c(0,0.5), ylim=c(0,1),lwd="2")
+legend("bottom", c("train recall", "train precision"), col=c("red", "blue"), pch = c(1,1))
+
+
+
+
+train_th <- sapply(threshold,graph_recall_train)
+train_precision <- sapply(threshold,graph_precision_train)
+add <- train_th + train_precision
+
+which.max(add)
+which.min(add)
+
+0.001*63 + 0.05
+0.001*408 + 0.05 
+
+plot(threshold, add, type="l", col = "dark green",lwd="2")
+
+
+# test dataset
+graph_precision <- function(threshold){
+  test$prediction <-test$est_prob_rel >threshold
+  a <-get_precision(test$prediction,test$income)
+  return(a)
+}
+
+graph_recall <- function(threshold){
+  test$prediction <-test$est_prob_rel >threshold
+  a <-get_recall(test$prediction,test$income)
+  return(a)
+}
+
+
+plot(threshold, sapply(threshold, graph_recall) , type = "l", col="red", xlim=c(0,0.5), ylim=c(0,1),lwd="2")
+lines(threshold, sapply(threshold,graph_precision), type = "l", col="blue", xlim=c(0,0.5), ylim=c(0,1),lwd="2")
+legend("bottom", c("test recall", "test precision"), col=c("red", "blue"), pch = c(1,1))
+
+```
+
+threshold가 0.49부터는 train data가 모두 소득이 50k 이하라고 판단하기 때문에 그래프를 0.48까지 그릴 수 있었다. 
+
+만약 소득이 50K 이상인 사람에게 불우 이웃 돕기 메일을 발송해서 후원률을 높이는 데에 이 분석이 목적이 있다면 "실제로 고소득자인데 저소득자로 판단 한 사건" 과 "실제는 저소득인데 고소득으로 판단 한 사건" 의 기회비용을 따지면 "실제로 고소득자인데 저소득자로 판단하여 메일을 보내지 않는다" 의 결과가 더 손실이 클 것이다. 따라서 recall값이 중요하다. 그러므로 threshold가 약 0.46 이상인 곳 부터는 recall 값이 급격히 감소하므로 가정한 상황에서는 0.41~0.45 정도의 threshold 값을 가지는게 적절하다는 판단이 든다. 
+
+
+
+
+## 5번문제
+
+```{r}
+
+#train
+graph_f1_train <- function(threshold){
+  a <-graph_recall_train(threshold)
+  b <- graph_precision_train(threshold)
+  c <- 2*(b*a)/(b+a)
+  return(c)
+}
+
+
+
+
+# test
+graph_f1_test <- function(threshold){
+  a <-graph_recall(threshold)
+  b <- graph_precision(threshold)
+  c <- 2*(b*a)/(b+a)
+  return(c)
+}
+
+
+
+
+plot(threshold,sapply(threshold,graph_f1_train ),type="l", col="red",lwd = 2)
+lines(threshold,sapply(threshold,graph_f1_test),type="l", col="blue", lwd = 2)
+legend("bottomleft", c("f1 on train", "f1 on test"), col=c("red", "blue"), pch = c(1,1))
+
+which.min(sapply(threshold,graph_f1_test))
+which.max(sapply(threshold,graph_f1_test))
+
+```
+f1 값은 train과 test data 모두 threshold가 0.15 부근 전 까지는 서서히 증가하다가 0.15부근부터 0.45 근방까지 최대치를 기록하고 그 이후에는 급속도로 값이 하락하는 경향을 띈다. 
+
+
+
+## 6번문제
+```{r}
+library(Epi)
+ROC(train$est_prob_relationship, train$income)
+ROC(test$est_prob_relationship, test$income)
+```
+두 데이터 셋에서 AUC가 비슷하기 떄문에 과적합이 아닌 것을 알 수 있다.
+
+
+## 7번문제
+```{r}
+
+threshold <- seq(0.05,0.48,0.001)
+
+graph_accuracy_train <- function(threshold){
+  train$prediction <-train$est_prob_relationship > threshold
+  a <-get_acuuracy(train$prediction,train$income)
+  return(a)
+}
+
+set.seed(1234)
+accuracy_train <- sapply(threshold, graph_accuracy_train)
+plot(threshold,accuracy_train, type = "l", xlim=c(0,0.5), ylim=c(0,1),col="red", lwd =2)
+
+
+
+graph_accuracy_test <- function(threshold){
+  test$prediction <- test$est_prob_relationship > threshold
+  a <-get_acuuracy(test$prediction,test$income)
+  return(a)
+}
+
+
+set.seed(1234)
+accuracy_test <- sapply(threshold, graph_accuracy_test)
+
+
+plot(threshold,accuracy_train, type = "l", xlim=c(0,0.5), ylim=c(0,1),col="red", lwd = 2)
+lines(threshold,accuracy_test, type = "l", xlim=c(0,0.5), ylim=c(0,1),col="blue", lwd = 2)
+legend("bottomleft", c("accuracy on train", "accuracy on test"), col=c("red", "blue"), pch = c(1,1))
+
+```
+train data와 test data 모두 threshold가 약 0.46 이상일때부터 0.48까지 accuracy가 최고치를 기록한다. 
+
+
+## 8번문제
+
+나의 동료도 relationship으로 변수를 선택했으며, threshold값도 0.44 로 설정한 뒤 모델을 만들었기 때문에 성능이 거의 비슷했다.   
+
+
+```{r}
+save(train, test, file = "train_test_homework3.Rdata")
+```
+

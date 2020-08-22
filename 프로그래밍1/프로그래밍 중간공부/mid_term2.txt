@@ -1,0 +1,5 @@
+Henry Aaron, 90, 85
+Goerge Hahn, 80, 70
+David Lee, 70, 70
+James Aaron, 85, 85
+Joseph Shin, 75, 90

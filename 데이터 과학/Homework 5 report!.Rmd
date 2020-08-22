@@ -1,0 +1,368 @@
+---
+title: "Homework 5"
+output: html_document
+---
+
+데이터 분석에 필요한 여러 패키지들과 데이터 프레임이 들어있는 파일을 로드 받는다.
+```{r}
+load("C:/Users/sec/Desktop/교과목들/데이터 과학/hw5_student.RData")
+```
+
+```{r}
+library(earth)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(reshape2)
+library(caret)
+library(ROCR)
+library(rpart)
+library(class)
+library(leaps)
+library(kknn)
+library(MASS)
+```
+
+
+## Question1
+
+우선 전반적으로 학습 데이터와 훈련 데이터의 구성을 확인한다.
+
+```{r}
+str(student.train)
+```
+
+```{r}
+str(student.test.nolabel)
+```
+
+우선 데이터의 큰 구조는 몇 가지 레벨로 구성되어 있는 factor형 변수들과 level(수준)의 의미를 담은 변수는 int형으로 구성되어 있었고 타겟 변수는 학생들의 점수인 int형 변수 G3이다.
+
+우선 저렇게 구성된 여러가지 변수들 중 가장 유의미한 변수들을 추려내고자 여러 과정들을 밟았다.
+
+우선 첫번째로 최량부분집합회귀분석의 결과를 살펴보면 다음과 같다.
+
+```{r}
+sub.fit <- regsubsets(G3~., data=student.train)
+plot(sub.fit, scale = 'Cp')
+```
+
+멜로의 Cp통계량 기준 유의미한 변수로는 famsize, Medu, failures, studytume, schoolsup, higher, class등이 있었다.
+
+다른 통계량으로 해도 결과는 엇비슷했다.
+
+```{r}
+plot(sub.fit, scale = 'bic')
+```
+
+이 경우에는 Medu의 영향력이 조금 감소했지만 여전히 강력한 변수들의 영향력은 유사하다.
+
+stepAIC과정을 통해 피처도 뽑아보면
+```{r}
+feature <- lm(G3~., data=student.train)
+#stepAIC(feature, direction="both")
+```
+
+맨 하단의 G3 ~ school + famsize + Medu + Mjob + Fjob + studytime + 
+    failures + schoolsup + famsup + higher + internet + romantic + 
+    goout + health + class 다음과 같은 formula가 유의미한 변수로 채택됨을 알 수 있다.
+  
+최량부분집합 회귀분석보다 직접 교차검증을 통해 성능을 추려내는 결과이므로 이 결과값을 기존 format으로 사용하기로 한다.
+
+다변량 적응 회귀 스플라인(Multivariate Adaptive Regression Splines)를 적용시킨 경우의 유의미한 피처는 어떠할 지 테스트를 해보면 다음과 같았다.
+
+5겹으로 3회 반복하여 교차검증을 실행한 경우
+```{r}
+MARS <- earth(G3~.,data=student.train,nfold=5,ncross=3)
+evimp(MARS)
+```
+
+가지치기한 결과를 살펴보면 위의 경우 gcv와 rss의 값을 기준 위의 경우가 유의미한 변수들인데
+대개 앞의 경우가 유사한 flow를 보인다.
+대체로 failures, class, Medu, absences, studytime, goout, higher등이 유의미한 변수였다.
+
+
+다른 변수들은 상수로 통제하고 해당 변수의 영향만 보고 싶어 plotmo()를 실행하면
+```{r}
+plotmo(MARS)
+```
+대체로 school, class, famsize, romantic, internet, higher 등의 명확한 차이를 보이는 변수가 유의미할 것으로 판단되고
+
+studytime, goout은 양, 음의 명확한 관계를 보이는 것으로 판단된다.
+
+다만 이것들로 온전한 평가를 내기는 어렵다. 수치의 표준화 부분도 있고 아직 어떠한 전처리도 이루어지지 않았기 때문이다.
+
+
+# 모델링 과정
+
+Q1. 
+
+사실 여기서부터는 솎아낸 변수를 기준으로 이런 저런 전처리 과정을 담았었다. 모든 과정을 다 담기에는 양도 많고 통계적으로 유의미하지 않는 과정이 많았어서 경험적인 flow를 보고서에 담기로 하겠다.
+
+
+
+
+우선, 
+1) level이 num형태로 표시되어 있었던 변수들을 전부 factor로 바꾼 다음 결과를 시도했을 때는 그냥 numeric형태로 넣었을 때보다는 결과가 좋았다. 
+
+2) 저렇게 뽑아낸 결과만 regression 돌린 것 보단 그냥 모든 피처를 때려 박은 것이 서버상의 테스트 셋에 더 결과가 좋았다.
+
+3) 모든 변수를 전부 factorize하는 것보다 부분 부분 점수화를 매겨(numeric으로 전환하여 변수를 처리) 테스트 셋에 적용시킨 것이 더 결과가 좋았다.
+
+4) age, absences와 같이 integer의 폭이 큰 것은 RMSE를 크게하는 소요가 있으므로 이러한 변수들은 전부 group화 하였다.
+
+5) 변수들 간의 유사한 성향을 띄거나 유의미한 영향력을 가질 것 같은 변수들은 하나씩 상호작용 처리를 한 과정을 거쳤다.
+
+물론 더 가용한 시간이 있으면 보다 뛰어난 모델을 만들기 위한 EDA과정을 거칠 수 있으나 시간관계상 최종적으로 만들어진 모델은 다음과 같았다.
+
+```{r}
+# G3~school+address+famsize+Medu+Fedu+Fjob+Mjob+reason*address+I(Medu^2)+
+#              guardian*Medu+guardian+studytime+failures+
+#              schoolsup+romantic*goout+
+#              higher+romantic+sex*activities+sex*goout+class*sex+
+#              goout+Dalc+Walc+health+school*studytime+higher*Medu+school*sex+romantic*freetime+
+#              health*absence_group+reason*school+nursery*sex+health*goout+absence_group*failures+
+#              class+age_group+absence_group+age+age_group*schoolsup+absences+absences*failures+class*sex+
+#              higher*studytime+sex*age_group+sex*higher+sex*school+school*studytime+studytime*school+Mjob*paid
+#            +romantic*Mjob+romantic*famsize+reason*sex+sex*age_group+failures*sex*failures*schoolsup+failures*class+
+#              failures*health+failures*freetime+failures*romantic+schoolsup*activities+higher*school+higher*studytime+
+#              health*sex+health*failures+Pstatus*romantic+
+#              famsize*Pstatus
+```
+
+
+일련의 전반적인 과정이 Q2~Q6의 과정이다.
+
+
+우선 최종적으로 만든 데이터 프레임의 형태는 다음과 같다.
+```{r}
+student.trains <- student.train
+student.tests <- student.test.nolabel
+# factor화
+student.trains$studytime <- as.factor(student.trains$studytime)
+student.tests$studytime <- as.factor(student.tests$studytime)
+student.trains$famrel <- as.factor(student.trains$famrel)
+student.tests$famrel <- as.factor(student.tests$famrel)
+student.trains$freetime <- as.factor(student.trains$freetime)
+student.tests$freetime <- as.factor(student.tests$freetime)
+student.trains$freetime <- as.factor(student.trains$freetime)
+student.tests$freetime <- as.factor(student.tests$freetime)
+student.trains$goout <- as.factor(student.trains$goout)
+student.tests$goout <- as.factor(student.tests$goout)
+student.trains$Dalc <- as.factor(student.trains$Dalc)
+student.tests$Dalc <- as.factor(student.tests$Dalc)
+student.trains$Walc <- as.factor(student.trains$Walc)
+student.tests$Walc <- as.factor(student.tests$Walc)
+student.trains$health <- as.factor(student.trains$health)
+student.tests$health <- as.factor(student.tests$health)
+student.trains$absence_group <- cut(student.trains$absences, breaks=c(0,5,10,15,20,25,30,35), labels=c("1","2","3","4","5","6","7"), right=F)
+student.tests$absence_group <- cut(student.tests$absences, breaks=c(0,5,10,15,20,25,30,35), labels=c("1","2","3","4","5","6","7"), right=F)
+student.trains$age_group <- cut(student.trains$age, breaks = c(15,16,17,18,19,20,21,Inf), labels = c("1","2","3","4","5","6","7'"), right = F)
+student.tests$age_group <- cut(student.tests$age, breaks = c(15,16,17,18,19,20,21,Inf), labels = c("1","2","3","4","5","6","7'"), right = F)
+str(student.trains)
+```
+
+부분부분 Medu, Fedu, traveltime, failures 등은 전부 integer값이고 absence_group, age_group이라는 변수가 추가되었다.
+
+모델은 다음과 같다.
+```{r}
+FinalModel <- lm(G3~school+address+famsize+Medu+Fedu+Fjob+Mjob+reason*address+I(Medu^2)+
+              guardian*Medu+guardian+studytime+failures+
+              schoolsup+romantic*goout+
+              higher+romantic+sex*activities+sex*goout+class*sex+
+              goout+Dalc+Walc+health+school*studytime+higher*Medu+school*sex+romantic*freetime+
+              health*absence_group+reason*school+nursery*sex+health*goout+absence_group*failures+
+              class+age_group+absence_group+age+age_group*schoolsup+absences+absences*failures+class*sex+
+              higher*studytime+sex*age_group+sex*higher+sex*school+school*studytime+studytime*school+Mjob*paid
+            +romantic*Mjob+romantic*famsize+reason*sex+sex*age_group+failures*sex*failures*schoolsup+failures*class+
+              failures*health+failures*freetime+failures*romantic+schoolsup*activities+higher*school+higher*studytime+
+              health*sex+health*failures+Pstatus*romantic+
+              famsize*Pstatus, data=student.trains)
+```
+
+다소 피처가 많고 복잡하여 모든 일련의 과정을 설명하긴 어려우나 경험의 과정을 일부 언급하면
+
+우선 무조건 많은 피처를 담는다고 성능이 좋지는 못하였다. 가령, traveltime, famsup같은 변수들은 오히려 RMSE를 높이는 노이즈 값이었다. famsup같은 경우는 직관적으로 보면 G3에 양의 영향을 강하게 미칠 것 같았지만 모델의 결과에서는 그러하지 못하였다.
+
+이 결과는 가족의 교육에 대한 지원이 높다고 무조건 학생의 공부 성적에 큰 영향을 미치지 않을 수도 있음을 시사한다. 또한 traveltime또한 크게 학생들의 성적과 밀접한 관계를 갖지는 않았다. 여행을 많이 간다고 성적이 낮아지고 또는 높아지고와의 어떤 관계성을 띄지 않는 것이다.
+
+또한, Dalc, Walc와 health같은 경우는 공부에 악영향을 미칠 요인이 있을 수 있겠다고 판단하여 상호작용항으로 해 적용을 시켰지만 이 경우는 G3와 어떠한 유의미한 연관성을 보이지 않았다. 앞에서 stepAIC에서 뽑은 베스트 모델에서 저렇게 하나씩 피처를 수정해가며 모델을 돌린 결과가 다음과 같이 나옴을 확인할 수 있었다.
+
+우선 유의미했던 변수들의 영향력 외에도 romantic이나, goout등은 성적에 큰 영향을 미치는 함수였다. 또한 freetime과 goout은 연쇄적으로 변수에 영향을 미쳤으며 higher와 Medu, health와 absences_group도 성적에 큰 영향을 미치는 변수들이었다. 직관적으로도 자유시간이 많아 많이 놀러 나갈수록 성적에 안좋은 영향을 미치며 어머니의 교육 수준이 높아 엄마의 치맛바람이 학생들로 하여금 더 고차원의 커리큘럼을 이수하고자 하게 하는 영향이 있을 것이다. 또한 몸이 안 좋은 학생들의 경우 당연히 결석을 많이 할 것이다. 이러한 여러 직관에 맞는 변수들은 영향력이 다소 크게 작용했음을 경험적으로 확인할 수 있었다.
+
+
+RMSE를 먼저 체크하기 위한 함수를 정의하고
+```{r}
+calcRMSE <- function(label, estimation){
+  return(sqrt(mean((label-estimation)**2)))
+}
+
+```
+
+해당 모델을 summary해보면 다음과 같았다.
+```{r}
+summary(FinalModel)
+```
+
+상당히 많은 피처들이 사용되어 다소 값이 복잡할 수 있음은 양해를 구한다.
+
+이 경우 R2는 0.484정도 나왔고 
+
+RMSE의 경우
+```{r, eval=F}
+finalmodel.train <-  predict(FinalModel, newdata=student.trains)
+calcRMSE(student.trains$G3, FinalModel$fitted.values)
+```
+
+
+4.26정도가 나왔다.
+
+최종적인 테스트 모델의 결과는 RMSE가 2.90이었고 R2는 0.41정도 되었다.
+
+학습 데이터에서의 0.484와 큰 차이는 없어 overfitting이 없음을 확인할 수 있다.
+
+최종적인 모델은 FinalModel을 적용시켜 서버에 제출하였다.
+
+## Question 2
+
+우선 학습 데이터와 테스트 데이터의 셋을 살펴보면 다음과 같다.
+
+```{r}
+str(credit_train)
+```
+
+```{r}
+str(credit_test)
+```
+
+
+수치형 변수가 적합하지 않는 변수들도 수치형 변수로 되어있음을 확인할 수 있다.
+
+1) 우선 첫번째로 SEX, EDUCATION, MARRIAGE, PAY_1~6같은 자명한 factor형 변수는 전부 factorize하는 과정을 거쳤다.
+
+PAY_1~6도 level의 의미이기에 factor로 넣는 것이 더 좋다는 판단을 하였다.
+
+2) AGE의 경우 group으로 나누면 좋겠다는 생각이 들어 범위에 따라 group으로 나누어주었다. 실제로 테스트 적용 결과 그냥 AGE를 넣을 때보다 group화하여 적용시켜준 것이 더 결과가 좋았다. 
+
+첫 번째 시도로 LIMIT_BAL과 다른 BILL_AMT 변수들에 대한 크기가 제각각이라 이들을 전부 scaling하여 처리하는 과정을 밟았었다. 
+
+우선 factor와 변수 제작 과정은 다음과 같다.
+
+```{r}
+credit_trains <- credit_train
+credit_tests <- credit_test
+credit_trains$SEX <- as.factor(credit_trains$SEX)
+credit_trains$EDUCATION <- as.factor(credit_trains$EDUCATION)
+credit_trains$MARRIAGE <- as.factor(credit_trains$MARRIAGE)
+credit_tests$SEX <- as.factor(credit_tests$SEX)
+credit_tests$EDUCATION <- as.factor(credit_tests$EDUCATION)
+credit_tests$MARRIAGE <- as.factor(credit_tests$MARRIAGE)
+
+credit_trains$PAY_1 <- as.factor(credit_trains$PAY_1)
+credit_trains$PAY_2 <- as.factor(credit_trains$PAY_2)
+credit_trains$PAY_3 <- as.factor(credit_trains$PAY_3)
+credit_trains$PAY_4 <- as.factor(credit_trains$PAY_4)
+credit_trains$PAY_5 <- as.factor(credit_trains$PAY_5)
+credit_trains$PAY_6 <- as.factor(credit_trains$PAY_6)
+
+credit_tests$PAY_1 <- as.factor(credit_tests$PAY_1)
+credit_tests$PAY_2 <- as.factor(credit_tests$PAY_2)
+credit_tests$PAY_3 <- as.factor(credit_tests$PAY_3)
+credit_tests$PAY_4 <- as.factor(credit_tests$PAY_4)
+credit_tests$PAY_5 <- as.factor(credit_tests$PAY_5)
+credit_tests$PAY_6 <- as.factor(credit_tests$PAY_6)
+```
+
+```{r}
+credit_trains$age_group <- cut(credit_trains$AGE, breaks = c(20, 30, 40, 50, 60,70,80), labels = c("1","2","3","4","5","6"), right=F)
+credit_tests$age_group <- cut(credit_tests$AGE, breaks = c(20, 30, 40, 50, 60,70,80), labels = c("1","2","3","4","5","6"), right=F)
+credit_trains$LIMIT_BAL_GROUP <- cut(credit_trains$LIMIT_BAL, breaks=c(10000,50000,140000,167746,240000,1000000), labels = c("1","2","3","4","5"), right=F)
+credit_tests$LIMIT_BAL_GROUP <- cut(credit_tests$LIMIT_BAL, breaks =c(10000,50000,140000,167746,240000,1000000), labels = c("1","2","3","4","5"), right=F )
+```
+
+scale한 과정은 다음과 같다.
+
+```{r}
+credit_scale <- data.frame(scale(credit_trains[,c(1,12,13,14,15,16,17,18,19,20,21,22,23)]))
+credit_scale$PAY_1 <- credit_trains$PAY_1
+credit_scale$PAY_2 <- credit_trains$PAY_2
+credit_scale$PAY_3 <- credit_trains$PAY_3
+credit_scale$PAY_4 <- credit_trains$PAY_4
+credit_scale$PAY_5 <- credit_trains$PAY_5
+credit_scale$PAY_6 <- credit_trains$PAY_6
+
+credit_scale_test <- data.frame(scale(credit_tests[,c(1,12,13,14,15,16,17,18,19,20,21,22,23)]))
+credit_scale_test$PAY_1 <- credit_tests$PAY_1
+credit_scale_test$PAY_2 <- credit_tests$PAY_2
+credit_scale_test$PAY_3 <- credit_tests$PAY_3
+credit_scale_test$PAY_4 <- credit_tests$PAY_4
+credit_scale_test$PAY_5 <- credit_tests$PAY_5
+credit_scale_test$PAY_6 <- credit_tests$PAY_6
+
+credit_scale$age_group <- credit_trains$age_group
+credit_scale_test$age_group <- credit_tests$age_group
+
+credit_scale$SEX <- credit_trains$SEX
+credit_scale_test$SEX <- credit_tests$SEX
+
+credit_scale$EDUCATION <- credit_trains$EDUCATION
+credit_scale_test$EDUCATION <- credit_tests$EDUCATION
+
+credit_scale$MARRIAGE <- credit_trains$MARRIAGE
+credit_scale_test$MARRIAGE <- credit_tests$MARRIAGE
+
+credit_scale$default.payment.next.month <- credit_trains$default.payment.next.month
+```
+
+scale한 결과는 다음과 같다.
+```{r}
+str(credit_scale)
+```
+
+해당 scale을 돌린 logistic모델을 구축하면 일반적으로 그냥 변수들을 다 넣은 logistic모형보다 테스트에서의 성능이 더 좋지 못하였다.
+
+그 다음 직관에 의존하여 처리한 전처리는 
+
+PAY_1~6과 PAY_AMT1~6 사이의 관계에 대한 추론이었다. 실제로 상환 금액과 상환 이행 여부와 굉장히 밀접한 관련이 있을 것 같다는 생각을 했고, 또한 LIMIT_BALL의 값이 매우 크기에 이를 group화하는 과정을 거쳤다. 이에 대한 최종적인 dataframe과 모델은 다음과 같다.
+
+```{r}
+str(credit_trains)
+```
+
+여기서 pred랑 pred_logic은 모델링의 결과를 담아내기 위한 변수이므로 모델 자체에 새롭게 만든 변수는 아니다.
+
+```{r}
+Final_logic <- glm(default.payment.next.month~PAY_1*PAY_AMT1+PAY_2*PAY_AMT2+PAY_3*PAY_AMT3+PAY_4*PAY_AMT4+PAY_5*PAY_AMT5+PAY_6*PAY_AMT6+LIMIT_BAL_GROUP+SEX+EDUCATION+MARRIAGE+BILL_AMT1+BILL_AMT2+BILL_AMT3+BILL_AMT4+BILL_AMT5+BILL_AMT6+age_group+SEX*MARRIAGE,data=credit_trains, family=binomial)
+
+```
+
+적용시킨 모델에 대한 타겟변수 대비 평균 확률 치는 다음과 같았다.
+
+```{r}
+credit_trains$pred <- predict(Final_logic, newdata=credit_trains,type='response')
+aggregate(pred~default.payment.next.month,data=credit_trains,mean)
+```
+
+
+개략 저 사이에서 precision과 recall을 조정하여 적합한 값을 찾기로 했고 궁극적으로 AUC level을 높게하는 모델을 찾고자 했다. 
+
+threshold를 0.2정도로 설정하여 나온 테이블은 다음과 같다.
+
+```{r}
+threshold5 <- 0.2
+credit_trains$pred_logic <- ifelse(credit_trains$pred > threshold5, 1, 0)
+tb3 <- table(pred=credit_trains$pred_logic, actual=credit_trains$default.payment.next.month)
+tb3
+```
+
+recall을 늘리기 위해 역치를 더 낮추어도 되지만 우선 0.2를 마지노선으로 하고 구한 테이블의 결과이다. precision의 값이 다소 낮게 되지만 recall을 줄인 의미에서 어느정도 유의미한 가치가 있다고 판단된다.
+
+그렇게 해서 구한 최종 모델의 학습 데이터에서의 AUC는 다음과 같다.
+
+```{r}
+p <- prediction(credit_trains$pred, credit_trains$default.payment.next.month)
+auc3 <- performance(p, 'auc')
+auc3@y.values[[1]]
+```
+
+실제로 테스트 셋에서의 AUC는 0.763이 나와 큰 차이가 없음을 확인했다. 이렇게 최종 모델을 구축하게 되었다.

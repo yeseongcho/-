@@ -1,0 +1,2514 @@
+﻿이름,ID,SIS ID,섹션,섹션 ID,섹션 SIS ID,제출됨,시도,2938: Handong Honor Code: I will never commit any kind of dishonesty.,0,2965: (40 pt) 1. Indicate whether the following statements are true or false.,0,2966: (4 pt) 1-A A finite sequence of instructions is imperative knowledge.,4,2967: (4 pt) 1-B An algorithm is a realization of a program on a computer.,4,2969: (4 pt) 1-C Divide and conquer follows the bottom-up design principle.,4,"2968: (4 pt) 1-D If a sematic error occurs, your program will suddenly terminate with an error message.",4,"2970: (4 pt) 1-E An expression is a combination of operators with operands including objects, variables and function calls.",4,2971: (4 pt) 1-F A function is not referred to as an object in Python.,4,"2972: (4 pt) 1-G Python is a high-level, general-purpose, and compiled programming language.",4,2973: (4 pt) 1-H The same object cannot have more than one name.,4,2974: (4 pt) 1-I A variable is a name that refers to an object.,4,2975: (4 pt) 1-J The type of an object determines what the object can do.,4,2976: (40 pt) 2. Answer the following questions.,0,2978: (12 pt) 2-A Explain the unpacking briefly and give a simple example.,12,"2979: (14 pt) 2-B Explain the selection, slicing, and concatenation for lists, tuples, or strings with simple examples.",14,2980: (14 pt) 2-C Briefly discuss how named parameters are used in function definition and function calls with a simple example.,14,2982: (40 pt) 3. Read the following code and answer the questions.,0,"2983: 
+
+
+Source code
+
+
+
+01 while True:
+02     try:
+03         n = int(input(""Input n: ""))
+04         if n  0:
+05             break
+06         print(""Please input a positive integer."")
+07     except:
+08         print(""Invalid input. Please retry."")
+ 
+09 for i in range(n):
+10     space = ' '*(n-i-1)
+11     pattern = '* '*(i+1)
+12     print(space + pattern)
+
+
+Execution result
+
+
+
+
+
+",0,2985: (20 pt) 3-A Rewrite the given source code from statement 9 to the last using a single while-loop statement so that your program generates the same execution result for any positive integer n as shown above.,20,"3407: (20 pt) 3-B Complete the following program that gives the execution result for any positive integer n as shown below:
+
+
+
+Source code
+
+
+
+01 while True:
+02     try:
+03         n = int(input(""Input n: ""))
+04         if n  0:
+05             break
+06         print(""Please input a positive integer."")
+07     except:
+08         print(""Invalid input. Please retry."")
+ 
+09 # Add your code from here.
+
+
+
+Execution result
+
+
+
+
+
+",20,3408: (40 pt) 4. Read the following code carefully and answer the questions below:,0,"3409: 
+
+
+Source code
+
+
+
+01 import random
+ 
+02 def func1(n):
+03     L = []
+04     for i in range(n):
+05         L.append([i, False])
+06     random.shuffle(L)
+07     return L
+ 
+08 def func2(L):
+09     while True:
+10         try:
+11             n = int(input(""Input a number: ""))
+12             if 0=nlen(L) and L[n][1]==False:
+13                 return n
+14             print(""Invalid input. Retry."")
+15         except:
+16             print(""Invalid input. Retry."")
+ 
+17 L1 = func1(3)
+18 L2 = func1(3)
+19 n = 0
+20 m = 0
+21 while n  len(L1):
+22     a = func2(L1)
+23     b = func2(L2)
+24     print(L1[a][0], L2[b][0])
+25     if L1[a][0] == L2[b][0]:
+26         L1[a][1] = True
+27         L2[b][1] = True
+28         n += 1
+29     m += 1
+ 
+30 print(m)
+
+
+Execution result
+
+
+
+Input a number: 1
+Input a number: 2
+2 2
+Input a number: 0
+Input a number: 1
+1 0
+Input a number: 0
+Input a number: 2
+Invalid input. Retry.
+Input a number: 0
+1 1
+Input a number: 2
+Input a number: 1
+0 0
+4
+
+
+",0,3410: (10 pt) 4-A Briefly explain what func1() does.,10,3411: (10 pt) 4-B Briefly explain what func2() does.,10,3412: (10 pt) 4-C Briefly explain what the whole program does.,10,"3413: (10 pt) 4-D According to the execution result above, what will be respectively stored in L1 and L2 after executing statement 30?",10,3414: (30 pt) 5. Read the following code carefully and answer the questions below:,0,"3415: 
+
+
+
+01 fruits_dict = {""Apple"": 800, ""Grape"":1000, ""Persimmon"":300,  
+          ""Pear"": 1500, ""Chestnut"":50}
+02 new_tuple = tuple()
+03 new_dict = dict()
+04 new_list = list()
+05 for item in fruits_dict:
+06     new_tuple = new_tuple + ((fruits_dict[item], item),)
+07     new_list.append([item, fruits_dict[item]])
+08     new_dict[fruits_dict[item]] = item
+09 print (new_tuple)
+10 print (new_list)
+11 print (new_dict)
+
+
+
+",0,3416: (10 pt) 5-A What will be printed after executing statement 9?,10,3417: (10 pt) 5-B What will be printed after executing statement 10?,10,3418: (10 pt) 5-C What will be printed after executing statement 11?,10,3419: (40 pt) 6. Read the following code carefully and answer the questions below:,0,"3423: 
+
+
+
+01 def tuple_to_dict(trans_tup):
+02     score_dict = dict()
+03     for item in trans_tup:
+04         if item[1] not in score_dict:
+05            score_dict[item[1]] = [item[0]]
+06         else:
+07            score_dict[item[1]].append(item[0])
+08    return score_dict
+ 
+09 def show_dict(score_dic):
+10    for score in score_dic:
+11        print (score, end = "" "")
+12        for i in range(len(score_dic[score])):
+13            print(score_dic[score][i], end = "" "")
+14        print("" "")  # change the line
+       
+15 def main():
+16     trans_tuple = ([""Korean"", 90], [""English"", 85],
+              [""Math."", 90], [""Science"", 85],
+                  [""History"", 90], [""Economics"", 95])    
+17     score_dic = tuple_to_dict(trans_tuple)
+18     show_dict(score_dic)
+19     print (90, score_dic[90])
+20     subjects = score_dic.pop(85)
+21     print(subjects)
+22     MaxSoFar = -1
+23    for score in score_dic:
+24        MaxSoFar = max(MaxSoFar, score)
+25    print(score_dic[MaxSoFar])
+ 
+26 main()
+
+
+
+",0,"3420: (16 pt) 6-A What will statement 18 display on the screen?
+           (The order of items could be ignored in your answer.)",16,3421: (8 pt) 6-B What will statement 19 display on the screen?,8,3422: (8 pt) 6-C What will statement 21 display on the screen?,8,3424: (8 pt) 6-D What will statement 25 display on the screen?,8,"3425: (30 pt) 7. Suppose that ""mid_term1.txt"" is a text file that contains the following data:",0,"3426: 
+
+
+
+Science,90\n
+History,95\n
+Economics,90\n
+Math.,75\n
+English,75\n
+Korean,75\n
+
+
+
+
+where ""\n"" is a line separator. Read the following code and answer the questions below:
+
+
+
+
+01 def build_a_dict():
+02    file = open(""mid_term1.txt"", ""r"")
+03    dict_subjects = dict()
+04    for line in file:
+05        line = line.strip().split("","")
+06        line[1] = int(line[1])
+07        dict_subjects[line[0]] = line[1]
+08    file.close()
+09    print(dict_subjects)
+10    return dict_subjects
+ 
+11 def read_a_subject(sub_dict):
+12     while True:
+13         query = input(""Enter a course: "")
+14         if query == ""quit"":
+15             return ""quit""
+16         if query in sub_dict:
+17             return query
+18         print(query, ""?  Not in the dictionary!"")
+                                     
+19 def show_subjects(subject_dict, query):
+20     if query in subject_dict:
+21         print (query, subject_dict[query])
+22     else:
+23         print (query, ""not in the dictionary"")
+ 
+24 def main():
+25     dict_of_subjects = build_a_dict()
+26     while True:
+27         subject = read_a_subject(dict_of_subjects)
+28         if subject == ""quit"":
+29             break
+30        else:
+31            show_subjects(dict_of_subjects, subject)
+           
+32 main()
+
+
+
+",0,"3427: (4 pt) 7-A Suppose that the user types in ""Math."" as the response to statement 13.
+What will the function, main() display on the screen?",4,"3428: (4 pt) 7-B What will the function, main() display when the user types in ""english"" in statement 13?
+ ",4,3429: (7 pt) 7-C Explain how to terminate this code.,7,3430: (15 pt) 7-D Briefly explain what this code does.,15,"3431: (40 pt) 8. Suppose that ""mid_term2.txt"" is a text file that contains the following data:",0,"3432: 
+
+
+
+Henry Aaron, 90, 85\n
+George Hahn, 80, 70\n
+David Lee, 70, 70\n
+James Aaron, 85, 85\n
+Joseph Shin, 75, 90\n
+
+
+
+
+Each line contains the name of a student followed by his/her scores in Mathematics and Science. The name and the two scores are separated by commas("","").
+ 
+Read the following code carefully and answer the questions below:
+
+
+
+
+01 def show_list(list_of_items):
+02    for item in list_of_items:
+03        student, math, science = item
+04        print (""%-15s %3d %3d"" % (student, math, science))
+ 
+05 def append_and_sort(items_list):
+06     items_list.append((""Carrol Johnson"", 80, 98))
+07     items_list.sort(key = lambda record: (record[2],record[1]),
+                         reverse = True)
+08    return items_list
+ 
+09 def build_a_list():
+10     list_of_items = []
+11     file = open(""mid_term2.txt"", ""r"")
+12     for item in file:
+13         item = item.rstrip()
+14         item = item.split("","")
+15         item[1] = int(item[1])
+16         item[2] = int(item[2])
+17         item = tuple(item)
+18         list_of_items.append(item)
+19    file.close()
+20    return list_of_items
+   
+21 def main():
+22     list_a = build_a_list()
+23     list_b = append_and_sort(list_a)
+24     show_list(list_b)
+ 
+25 main()
+
+
+
+",0,"3433: (16 pt) 8-1 What will the function, main() display on the screen?",16,"3434: (8 pt) 8-2 Briefly explain what the function, build-a-list() does.
+Be precise in describing the input and output of this function.",8,"3435: (8 pt) 8-3 Briefly explain what the function, append_and_sort(items_list) does.
+Be precise in describing the input and output of this function.",8,3436: (8 pt) 8-4 Briefly explain what this program does.,8,정답 수,오답 수,점수
+이강호,7045,21801045,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:48 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,"unpacking이란 list 나 tuple등에 묶여있었던 내용들을 풀어내는 것을 말한다. 예를들어
+
+   ",0,"strings
+
+st1= ""i'm""
+
+st2=""hurgry""
+
+selection: 선택한 내용의 값을 알게한다.st1[0] =i
+
+slicing:범위를지정하여 범위 안의 값을 알게한다.
+
+st2[1:] =u,r,g,r,y
+
+concatenation:두개 이상의 string을 합친다. st1 + st2 = ""i'mhungry""
+
+list
+
+lst1=[a,b,c]
+
+lst2=[1,2,3]
+
+selection: 선택한 내용의 값을 알게한다. lst1[1]=b
+
+slicing: 선택한 범위의 값을 알게한다.lst2[:]=1,2,3
+
+concatenation: 리스트끼리의 값을 더한다.lst1+lst2=[a,b,c,1,2,3]
+
+tuple
+
+tp1=(a,b,c)
+
+tp2=(1,2,3)
+
+selection:선택한 내용의 값을 알게한다. tp1[2]=c
+
+slicing:선택한 범위의 값을 알게한다. tp2[:2]=1,2
+
+concatenation:두개의 튜플을 합한다. tp1+tp2=(a,b,c,1,2,3)",0,,14,,0,,0,,15,,10,,0,,0,,10,,5,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,12,,0,,0,,0,44,5,208
+최은혁,1889,21800743,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:31 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"unpaking briefly란 collection 속에 요소들을 여러개의 변수로 대입하는 것을 말하며 그 예시로는 a, b, c, d, e = unpacking으로 해당 요소들은 여러개의 변수 속으로 대입된다.",10,"selection의 경우 list에서는 choice()를, tuple에서는 a라는 tuple일 경우 a[n] (n은 index)로 가능하며 slicing의 경우 a라는 것에서 slicing해서 출력하고 싶을 때 a[n:m]
+
+(n, m은 특정 index)로 가져올 수 있으며 concatenation의 경우 list는 whole_list = list1+list2로 할 수 있고, tuple 역시 whole_tuples = tuple1+tulpe2로 할 수 있으며, string의 경우 f""strings1, {strings2}""로 할 수 있다. ",14,"parameter 즉 매개변수는 주로 function의 정의 부분에 사용되며 예를 들어
+
+def add(a, b):
+
+result = a+b
+
+return result에서 parameter는 add(a,b)처럼 함수가 정의되는 부분에서 사용된다. 
+
+ ",0,,0,,0,"while True:
+
+     try:
+
+         n = int(input(""Input n: ""))
+
+         if n > 0:
+
+             break
+
+         print(""Please input a positive integer."")
+
+     except:
+
+         print(""Invalid input. Please retry."")
+
+while i < n:
+
+      i+=1
+
+     print(("" "" * ((n+1) - i)) + (""*""(i*2-1)))",5,"for hor i in range(1, n):
+
+      for ver in range(1, n+3):
+
+            if hor == n-1 or hor+ver == n or ver-hor == n-2:
+
+                  print(""*"", end="""")
+
+             else:
+
+                  print(end="" "")
+
+      print()
+
+ ",0,,0,,0,L 값은 random하게 섞은뒤 기존에 있던 L값으로 return 시킨다. ,1,입력한 n의 값이 L의 index로서 존재하고 index에 위치한 값이 존재할 경우 n 값으로 다음으로 보내고 나머지의 경우 에러 메시지를 출력한다. ,5,"프로그램으로부터 L1값과 L2값을 받아 해당 값이 valid한지 확인한 후 valid일 경우 출력, 이 후 L1, L2값이 True한지에 따라 n, m값을 1씩 더하면서 loop를 계속 돌릴것인지 확인한다. 이 후 loop를 나온 후 m값을 출력한다. ",3,L1과 L2에는 프로그램이 random으로 shuffle했던 값들이 loop에서 돌았을 때까지의 값이 저장될 것,0,,0,,0,"[""Apple"", ""Grape"", Persimmon"", ""Pear"", ""Chestnut""]
+
+{""Apple"": 800, ""Chestnut"": 50, ""Grape"": 1000, ""Pear"": 1500, ""Persimmon"": 300}",5,"(""Apple"", ""Grape"", ""Persimmon"", ""Pear"", Chestnut"")
+
+{""Apple"": 800, ""Chestnut"": 50, ""Grape"": 1000, ""Pear"": 1500, ""Persimmon"": 300}",5,"(""Apple"", ""Grape"", ""Persimmon"", ""Pear"", Chestnut"")
+
+[""Apple"", ""Grape"", Persimmon"", ""Pear"", ""Chestnut""]",5,,0,,0,"{[""Economics"", 95], [""English"", 85], [""History"", 90], [""Korean"", 90], [""Math."", 90], [""Science"", 85]}",4,"(""History"", ""Korean"", ""Math."")",4,"(""Korean"", ""English"", ""Math."", ""Science"", ""History"", ""Economics"")",4,"(95, 90, 90, 90, 85, 85)",2,,0,,0,먼저 txt에 입력되어있는 요소들을 dictionary순서로 배열하고 Math가 기존 txt 파일에 포함된 요소인지 read_a_subject에서 확인한 뒤 Math. 와 그 점수인 75를 출력한다. ,4,English가 기존 txt 파일에 포함된 요소인지 read_a_subject에서 확인한 뒤 English와 그 점수인 75를 출력한다. ,0,subjet를 입력하는 칸에 quit를 입력했을 경우 종료된다. ,7,먼저 txt에 입력되어있는 요소들을 dictionary순서로 배열하고 Math가 기존 txt 파일에 포함된 요소인지 read_a_subject에서 확인한 뒤 기록되지 않은 subject일 경우 에러 메시지를 출력하며 txt에 기록되어있는 subject일 경우 해당 과목과 점수를 출력한다.,15,,0,,0,,0,,0,,0,,0,44,5,113
+조선주,3738,21700684,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:58:03 UTC,1,TRUE,0,,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"unpacking is returning a values of objects into each variables. For instance when you have informations in a tuple you can give each values in the tuples a variable.
+
+ex)
+
+tup1 = (3, 5, 7.3)
+
+a, b, c = tup1
+
+(a will be 3, b will be 5, c will be 7.3)",12,"Selection is selecting a place you want information for, slicing is seeing informations of places you want and concatenation is adding
+
+selection ex)
+
+list = [1, 2, 3]
+
+list[0] will be 1
+
+slicing ex)
+
+list [1, 2, 3, 4, 5]
+
+list[1:3} will 2 and 3
+
+concantenation
+
+list1 = [1, 2]
+
+list2 = [3, 4]
+
+list1 + list2 will be [1,2,3,4]",14,"named parameters are given so that it is set as default but can be changed when the programmer gives another value for the parameter.
+
+ex)
+
+def make_sun(radius = 30, color = ""yellow)
+
+   ""code of making sun with given radius and color""
+
+make_sun()
+
+make_sun(10, ""red"")",14,,0,,0,"i = 0
+
+while (i < n):
+
+  space = ' ' * (n-i-1)
+
+  pattern = '* ' * i + 1
+
+  print (space + pattern)
+
+  i += 1",20,"i = 0
+
+while (i < n):
+
+  if (i == n-1):
+
+    print (""*""*(2n-1)
+
+  else
+
+    print ("" ""* (n-i-1) + ""*"")
+
+    if (i != 0):
+
+      print("" "" * (2i-1) + ""*"")
+
+  i+=1",10,,0,,0,make a list and add numbers starting from 0 to n-1. for each integer put it together with Boolean False and shuffle it randomly and return the list.,10,"make the user input a number. If the number inputted is within the range of the list and it is paired with Boolean False return the value inputted. The program will print message ""Invalid input, try again"" if the value is not an integer, not within the integer range of the list and is not matched with boolean False(this is to not let the user select the number they have already guessed right).",10,"the program will mix numbers 0, 1 and 2 in two random lists. the user is to find the matching pair of numbers by inputting numerical positions. every try count will go up. If the user finds all matching pairs the program will show how many tries it took.",8,"L1 will have : [(1, True), (2, True), (0,True)]
+
+L2 will have : [(1,True), (0,True), (2,True)]",10,,0,,0,"((800, Apple), (1000, Grape), (300, Persimmon), (1500, Pear), (50, Chestnut))",10,"[(Apple, 800), (Grape,1000), (Persimmon, 300), (Pear, 1500), (Chestnut, 50)]",8,"{'800': Apple, '1000': Grape, '300': Persimmon, '1500':Pear, '50': Chestnut}",10,,0,,0,"90 Korean Math. History
+
+85 English Science
+
+95 Economics",16,90 Math. Korean History,6,"{'85': English, Science}",4,95,4,,0,,0,Math. 75,4,english? not in dictionary,4,"The while statement will break if query == ""quit"" so if the user inputs 'quit' the code will terminate",7,"This program saves the course names as key and the score as value. The user can input the course name they want the score for and the program will show the course name and score. Anything else the user inputs the code will ask for a course name and will terminate once user puts ""quit""",15,,0,,0,"Carrol Johnson   80  98
+
+Henry Aaron      90  85
+
+James Aaron      85  85
+
+Joseph Shin       75  90
+
+George Hahn     80  70
+
+David Lee          70  70",16,"build a list will read from the text file and get rid of all the white spaces and commas in each line. it will turn the Math and Science scores into integers and put each line as tuples(name, score, score). the it will add each tuple and append it to a list and return the list to the main function.",8,it will retrieve the list_a made from the text file and it will append Carrol's name and scores into the list. then it will read the sum of the two scores and will sort the list from greater to smaller. then it will return the sorted list.,8,This program reads the text file containing the names and scores of the students. it will make it into a list and while doing so change the scores from string to integers. then it will had an information of another student and sort the list by the sum of the score from highest to lowest. then it will unpack the tuples in the list and print the name score and score. name will be given 15 spaces and left align. the scores will be given 3 spaces and be left aligned. in between items there will be 1 space,8,45,4,260
+정수현,1858,21800663,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:56:34 UTC,1,TRUE,0,,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,"unpacking is inserting each element of an object(ex.tuple) to other elements in order.
+
+For example:
+
+tuple = (1, 2, 3)
+
+a, b, c = tuple
+
+a = 1
+
+b = 2
+
+c = 3",12,"1. Selection is retrieving an element in a tuple by its index
+
+tp = (1 2, 3, 4, 5)
+
+tp[1] -> 1
+
+2. Slicing is retrieving more than one elements in a tuple by its index range
+
+tp[1:3]
+
+-> 2, 3
+
+3. Concatenation is adding two tuples into one tuple
+
+tp2 = (6, 7)
+
+tuple = tp + tp2
+
+tuple -> (1, 2, 3, 4, 5, 6, 7)",14,"When named parameters are used in a function call, the order of arguments matter, which is called positional correspondence.
+
+def equation(a, b, c):
+
+         a * b + c = d
+
+        return d
+
+equation(3, 4, 7)
+
+-> 19 (a = 3, b = 4, c = 7)",0,,0,,0,"n = 0
+
+count = 13
+
+while n < 7:
+
+      n = n - n
+
+      n += 1
+
+      space = “ “ * (count/2)
+
+      pattern”* “ * (n)
+
+      print(space + pattern)",0,"n = 0
+
+count = 13
+
+while n < 7:
+
+      n = n - n
+
+      n += 1
+
+      space = “ “ * (count/2)
+
+      pattern”* “ * (n)
+
+      print(space + pattern)",0,,0,,0,"the function appends(i, False) in the range of given n into list L. Then it shuffles the list L randomly and returns it",10,"The function gets a number from a user and checks whether the number is less than the length of the list L and the number index in list equals to false. Then, the function returns the number. It prints “invalid input. Retry” when the number does not fit the if statement.",10,"The program first get makes to lists L1 and L2 with the function 1 which randomly shuffles the range of n by giving index and False to the list. Then, the function gets a number from a user and see whether the number is between 0 and the length of the list L. Also sees whether the item int the list equals false. After, getting numbers from the user, the value n and m gets +1 for each time. The number then returns m which is added 1 from the user’s input.",5,"0, 0",0,,0,,0,"(‘Apple’, 800, 0, ’Grape’, 1000, 1, ‘Persimmon’, 300, 2, ‘Pear’, 300, 3, ‘Chestnut’, 50, 4)",5,"[(0, ‘Apple’, 800), (1, ’Grape’, 1000), (2, ‘Persimmon’, 300), (3, ‘Pear’, 300), (4, ‘Chestnut’, 50)]",5,"{‘Apple’: 0, ’Grape’: 1, ‘Persimmon’: 2, ‘Pear’: 3, ‘Chestnut’: 4}",5,,0,,0,"90: 'Korean""
+
+90: 'Math.'
+
+90: 'History'
+
+85: 'English'
+
+85: 'Science'
+
+95: 'Economics'",7,"90 'Korean', 'Math.', 'History",6,"'English', 'Science'",6,'Economics',6,,0,,0,Math. 75,4,English 75,0,"the code will be terminated when the user types ""quit""",7,"The code first opens “mid_term1.txt” file and read line by line and make a dictionary for each subject and its score. Then, the code prints the score of subject typed by the user. When the subject typed is not in the dictionary, the code prints “not in the dictionary”. The code will be terminated when the user types “quit”.",15,,0,,0,"Carol Johnson      98  80
+
+Joseph Shin          90  75
+
+Henry Aaron         85  90
+
+James Aaron         85  85
+
+George Hahn        70  80
+
+David Lee             70  70",5,"The function opens the file “mid_term2.txt” and makes a tuple with the items in the file. Then, makes a list by appending the tuples into list_of_items. In final, it returns the list of tuples of items from the file.
+
+Input: “mid_term2.txt” file
+
+Output: list of tuples of items from the file",8,"The function appends tuple (“Carrol Johnson”, 80, 98) into the list. Then sorts the list in the order of the score of Science and the score of Mathematics. The order is reversed (the highest score in the beginning) and returns the list.",8,"This code first opens the file”mid_term2.txt” and make a list with the tuples of items from the file. Then, new tuple (“Carrol Johnson”, 80, 98) is appended into the list. The list will be sorted in the order of the score of Science and Mathematics in reverse. Finally, the list will be printed with student name, math score, and science score.",8,44,5,166
+전대일,289,21300655,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:41:28 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,"unpacking은 tuple 안에 있는 element를 하나의 변수의 값으로 할당하는 것을 의미한다.
+
+ex) a= (3,4,5)
+
+x,y,z = a 
+
+print(x) --> 3 
+
+print(y) --> 4
+
+print(z) -->5 ",12,"a = (3,4,5) 
+
+selection --> a[0] = 3  이렇게 하나의 값을 지정해주는 것을 의미한다
+
+list1 = [1,2,3,4,5] 
+
+slicing --> a[:2] --> 1,2 이렇게 일정 구간의 값을 불러오는 것을 의미한다
+
+ 
+
+concatenation ? 
+
+ ",10,"def multiply(x,y): 
+
+     z = x*y
+
+     return z 
+
+이 경우x,y는 named parameter로 사용된다. 
+
+이 함수를 사용하면
+
+multiply(3,4) 
+
+이렇게 function call을 할 수 있고 12라는 값을 return해준다. 
+
+ ",0,,0,,0,"x = 0
+
+while n >= x:
+
+       space = ' ' * (n-x-1)
+
+       pattern = '*' * (x+1)
+
+       print(space + pattern)
+
+       x += 1 ",18,"for i in range(n):
+
+       if i == 0:
+
+           pattern = ' ' * (6-i) + '*'  
+
+      if i == 6: 
+
+           pattern = '*' * 2*i + 1
+
+      else: 
+
+            pattern = ' ' * (6-i) + '*' + ' ' * i + '*' 
+
+      print(pattern)",5,,0,,0,"[0, False], [1, False]......[n-1, False] 이 값들을 하나의 element로 갖는 list를 만들고 그 list 안의 배열을 무작위로 섞는 함수다. ",8,"n이라는 int가 L이라는 list안에 있는 element라면 그 n을 보여주는 함수이다. 즉, n이 L 안에 있는지 확인시켜준다. ",5,"L1과 L2에 담긴 숫자가 랜덤으로 저장되어 있는데, 이 둘 안에 같은 숫자가 들어가있는지를 맞히는 프로그램이다. 한번 맞힐때마다 숫자가 1씩 올라가게 되고, 맞히면 False가 True로 바뀌게 된다. ",5,"L1 = [[1,True], [2,True], [0,True]]
+
+L2 = [[1,True], [0, True], [2,True]] ",10,,0,,0,"((800, ""Apple""), (1000, ""Grape""), (300, ""Persimmon""), (1500, ""Pear""), (50, ""Chestnut""))
+
+ ",10,"[[""Apple"", 800], [""Grape"", 1000], [""Persimmon"", 300], [""Pear"", 1500], [""Chestnut"", 50]]",10,"{""800"" : ""Apple"", ""1000"": ""Grape"", ""300"": ""Persimmon"", ""1500"" : ""Pear"", ""50"" : ""Chestnut""}",10,,0,,0," 
+
+85 English Science
+
+90 Korean Math History 
+
+95 Economics",8,90 Korean Math History ,6,"(English, Science) ",6,Economics,6,,0,,0,75,2,75,0,quit 을 input창에 입력,7,"mid_term1에 입력되어있는 과목과 점수를 dictionary로 만들고, input창에서 해당 과목명을 입력하면 그 과목의 점수가 나오고 과목명이 없을 경우 사전에 없음!을 나타내고 다시 input을 받는다. quit을 input에 입력하면 프로그램이 종료된다. 즉, 과목에 대한 점수를 보여주는 프로그램이다. ",15,,0,,0,"Carrol Johnson   80   98
+
+Joseph Shin       75   90
+
+Henry Aaron      90   85
+
+James Aaron      85   85
+
+George Hahn     80   70
+
+David Lee         70   70",16,"input은 mid_term2의 내용(학생, 수학점수, 과학점수)이고 
+
+output은 (학생이름, int(수학점수), int(과학점수))가 하나의 element인 list이다. 
+
+즉 build_a_list()함수는 mid_term2.txt파일의 내용을 하나의 리스트로 만들어주고 리스트의 내용은 학생이름, 수학점수, 과학점수가 들어있는 하나의 튜플을 각각 갖는다. ",8,"(Carol Johnson, 80, 98) 이 값을 list 뒤에 추가시키고 list를 과학점수, 수학점수가 높은 순으로 sort한다. ",8,"mid_term2에 있는 학생이름, 수학점수, 과학점수를 하나의 리스트로 만들고, carol johnson의 점수를 추가한 뒤 가지고 있는 모든 
+
+학생이름 수학점수 과학점수 를 보여주는데 이 때 과학점수, 수학점수가 높은 순으로 출력한다. ",8,45,4,217
+전규리,5639,21900634,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:15 UTC,1,TRUE,0,,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"unpacking이란 packing된 element(요소)들을 각각의 변수(variable)에 할당해 주는 것 입니다. 예를 들면 아래와 같습니다.
+
+tup1=(25, korea)
+
+medals, nation= tup1",12,"selection이란 여러 element들 중에서 원하는 요소를 선택하여 값을 가져오는 것을 말합니다. tuple로 예를 들면 아래와 같습니다.
+
+tup1=(1,2,3,4)
+
+>>>tup1[0]
+
+1
+
+slicing은 범위를 정해놓고, 그 범위에 포함되는 element들을 가져오는 것을 말합니다. tuple로 예를 들면 아래와 같습니다.
+
+tup1=(1,2,3,4)
+
+>>>tup1[1:3]
+
+(2,3)
+
+concatenation이란 두 개의 tuple이나 list나 string을 하나로 합치는 것을 의미합니다. tuple로 예를 들면 아래와 같습니다.
+
+tup1=(1,2)
+
+tup2=(3,4)
+
+>>>tup1+tup2
+
+(1,2,3,4) ",14,"named parameter는 이미 function의 parameter의 이름이 나와있다. 그렇기 때문에 function call을 할때 argument의 순서는 중요하지 않다. 예를 들면 아래와 같다.
+
+def create_circle(radius=30, color=""yellow""): 이러한 방식으로 parameter의 이름이 전해진 채로 function definition하게 되면, 아래에 function call은
+
+create_circle(color=""red"", radius=28) 과 같은 방식으로 나타낼 수 있다. ",14,,0,,0,,0,,0,,0,,0,"L이라는 빈 리스트를 만들고,  첫번째 element를 0부터 n-1까지의 수로 하고, 두번째 element로 False 값을 갖는 리스트들을 차례대로 L이라는 리스트에 붙입니다. 그리고 리스트 L을 랜덤을 섞어줍니다.",10,"만약 사용자가 입력한 값인 n이 0보다 크거나 같고, 리스트L 속의 아이템의 수보다 작은 것을 만족하고, 사용자가 입력한 숫자인 n이 리스트L에서 index n번째 아이템의 index 1번째 element의 값이 False일 경우, 사용자가 입력한 n을 리턴합니다. 사용자가 만약 숫자 값을 입력하지 않거나, 입력한 값이 if 뒤의 조건을 만족하지 않는다면, Invalid input. Retry를 프린트 합니다.",8,"0부터 2까지의 수와 False라는 값으로 구성되어 있는 리스트를 아이템으로 하는 L이라는 리스트를 랜덤으로 섞어서 동일하게 2개를 만들어 두고, 사용자가 입력한 두 개의 0부터 2까지의 수에 해당하는 아이템을 리스트 속에서 꺼내와서 두 아이템의 첫번째 element가 같은 수로 되어 있다면, 두 아이템 모두 두번째 element를 True로 바꾸고 n을 하나 증가 시킨다. 만약 두 아이템의 첫번째 element가 같은 수가 아닐 시에는 m을 하나 증가 시킨다. 마지막에는 틀린 개수만큼 증가된 m을 프린트한다.",9,"둘다 [[0,True],[1,True],[2,True]] 이 저장되어 있습니다.",5,,0,,0,"((800, 'Apple'), (1000, 'Grape'), (300, 'Persimmon'), (1500, 'Pear'), (50, 'Chestnut'))",10,"[['Apple', 800], ['Grape', 1000], ['Persimmon', 300], ['Pear', 1500], ['Chestnut', 50]]",10,"{800: ['Apple'], 1000: ['Grape'], 300: ['Persimmon'], 1500: ['Pear'], 50: ['Chestnut']}",8,,0,,0,"{90: ['Korean', 'Math', 'History'], 85: ['English', 'Science'], 95: ['Economics']}",8,"90, ['Korean', 'Math', 'History']",8,"['English', 'Science']",8,,0,,0,,0,"Math., 75",4,english? Not in the dictionary!,4,사용자가 input 함수에 quit을 입력합니다.,7,"이 코드는 과목의 이름을 key로, 점수를 value로 하는 dictionary를 만들고, 사용자가 입력한 과목이 dictionary에 있는지 없는지 확인하고 있다면 과목의 이름과 점수를 알려주는 프로그램입니다.",15,,0,,0,,0,"파일에 있는 이름, 수학점수, 과학점수를 튜플로 만들어서 리스트에 붙여넣어 줍니다.",3,"리스트 속 아이템들을 과학점수, 수학점수 순으로 높은것에서 낮은 것으로 내림차순 방식으로 정렬합니다.",4,"이 코드는 과학점수, 수학 점수 순으로 점수가 높은 학생의 이름, 수학점수 순으로 string format을 사용하여 정렬시키는 코드입니다.",4,42,7,177
+임현호,4840,21900620,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 12:01:27 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"unpacking 은 튜플 안에 있는 value들을 튜플에서 해방시키는 것이다. 
+
+tupl1 = (255,244,243)
+
+x,y,z = tup1",12,"selection은 index로 value를 불러오는 것이다.  strings 에서는 글자의 순서를 불러온다. 
+
+ Ex)
+
+ tuple = (""apple"", ""pear"", ""orange"")
+
+ tuple[0] 은 ""apple"" 을 불러오게 된다.  
+
+slicing은 lists, tuples, strings의 index를 이용하여 특정 범위의 index의 value를 불러오는 것을 말한다.  
+
+Ex)
+
+ tuple1 = (1,5,6,7,2,3)
+
+ tuple1[1:3] 은 5,6 을 불러온다.
+
+ tuple1[ :3]은 1,5,6을 불러온다. 
+
+ String1 = ""ccupping""
+
+ String1[1:4] 은 ""cup"" 을 불러온다. 
+
+concatenation 은 같은 같은 형태의 variable들을 합치는 것을 말한다.
+
+Ex)
+
+ tuples1 = (1,2,3)
+
+ tuples2 = (4,5,6)
+
+ tuples3 = tuples1 + tuples1 에서 tuples3는 (1,2,3,4,5,6)",14,"함수 안의 값들을 변경할 수 있다는 점에서 장점을 가진다. 
+
+def func1(x,y):
+
+ z = x+y
+
+ return z
+
+func1(1,2)
+
+func2(2,3)",0,,0,,0,"count = 0
+
+while True:
+
+ if count < n
+
+  space = "" "" * (n-count-1)
+
+  pattern = "" * "" * (count+1)
+
+  print(space + pattern)
+
+  count+=1
+
+ else:
+
+  break  ",20,"count =0
+
+while True:
+
+ if count < n:
+
+  space = "" "" * (n-count-1)
+
+  middle_space = range(n-3)
+
+  pattern = "" * "" + middle_space + ""*""
+
+  print(space
+
+ 
+
+ 
+
+  
+
+ ",5,,0,,0,"숫자를 받아, 0에서 부터 숫자까지의 이름을 가지고 False 로직값을 가진 새로운 리스트를 생성한다. ",5,"새로운 숫자 n을 받아서, 그 n이 func1() 에서 받았던 숫자 보다 작은지 확인하고(위에서 생성된 리스트에 있는 숫자인지) 그리고 n이 위에서 생성된 리스트의 값에서 False 값을 가졌는지 확인해준다. 둘다 성립하면 n을 돌려보내고 둘 중 하나라도 아니라면 다시 입력하라고 반복한다.  ",8,"숫자 짝 맞추기 게임이다. 맨처음에 숫자 n 을 입력하여, 0~n-1까지의 각 숫자들을 저장하고 False 값을 같이 저장한다. 이걸 a,b 두번 시행한다. 그리고 숫자를 새로 2번 입력하여서 a의 값과 b의 값이 같으면 True로 저장함.",5,각각 True값이 저장된다. ,5,,0,,0,"((800, ""Apple""), (1000, ""Grape""), (300, ""Persimmon""), (1500, ""Pear""), (50, ""Chestnut"")
+
+ ",10,"[(""Apple"", 800), (""Grape"", 1000), (""Persimmon"", 300), (""Pear"", 1500), (""Chestnut"", 50)",8,"{""800"":Apple, ""1000"":Grape, ""300:Persimmon, ""1500"":Pear, ""50"":Chestnut}",10,,0,,0,"{95: ""Economics"", 90: ""Math"", ""History"", ""Korean"", 85:""Science"", ""English""}",8,"90, Math, History, Korean",6,"Science, English",6,Economics,6,,0,,0,"Math, 75",4,"""english"", ? Not in the dictionary!",4,"불러오는 값에서 quit 을 입력하면, quit, ""?  Not in the dictionary!"" 라 처리되지 않고 quit 이 입력된다. main 함수에서 quit이 입력되었을시 break 되어서 main 함수는 종료된다. ",7,"이 코드는 중간고사 시험 파일에서 과목별 점수를 받아온 다음, 플레이어가 원하는 과목을 타이핑 할시 그 과목의 점수를 알려주는 프로그램이다. 종료하기 위해서는 quit 을 입력하면 된다. ",13,,0,,0,"David Lee 70 70
+
+George Hahn 80 70
+
+James Aaron 85 85
+
+Henry Aaron 90 85
+
+Joseph Shin 75 90
+
+Carrol Johnson 80 98
+
+ 
+
+ 
+
+ ",4,"파일에서 학생들과 점수들을 꺼내와 (이름, 수학점수, 과학점수) 튜플의 형태인 값을 list에 저장한다. clean 하지 않은 파일을 정제한다. 그렇게 하여 만들어진 list_of_items를 리턴한다. 
+
+list_of_items =  
+
+[(""Henry Aaron"", 90, 85), (""George Hahn"", 80, 70), (""David Lee"", 70, 70), (""James Aaron"", 85, 85), (""Joseph Shin"", 75, 90)] ",6,"새로운 친구를 list에 추가하고 과학점수가 낮은 순서대로, 수학순서가 낮은 순서대로 재정렬한다. 
+
+list_a = 
+
+[(""David Lee"", 70, 70), (""George Hahn"", 80, 70), (""James Aaron"", 85, 85), (""Henry Aaron"" ,90 ,85), (""Joseph Shin"", 75, 90), (""Carrol Johnson"" ,80, 98)
+
+ 
+
+ 
+
+ 
+
+ ",8,"학생들의 수학, 과학 중간고사 점수를 불러온다. 그 값을 수학을 기준으로 오름차순 정리하고, 수학 점수가 같을 때는 과학 오름차순으로 비교하여 정리한다. 그리고 정렬하여 보여준다. ",8,44,5,202
+임태하,6712,21600600,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:39 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,"Unpacking is breaking a bigger objects into smaller objects. For example, if a tuple has several values such as (1, 2, 3), we can unpack it by assigning that tuple's elements into three different objects : a, b, c. ",12,"Lists, tuples, strings are all ordered sequence of data elements(str is sequence of characters). So they can be selected through nominating index of lists, tuples, or strings, for instance, selecting 0 index of a list would be list1[0]. And sliced through only nominating certain length such as list1[1:3]. Concatenation is like tuple1 + tuple2, the result would combine all elements of tuples into one single tuple. a = (1,2) b= (3,4) a + b will make (1,2,3,4).",14,"def print_list(lst):
+
+for word in lst:
+
+print(word)
+
+print_list(book_list)
+
+Like this, we can use function calls and function definition to describe how named parameter is used. Named parameter can be more than just one.",0,,0,,0,"while True
+
+i = 0
+
+space = ("" ""*(n-i-1))
+
+pattern = (""*""*(i+1))
+
+if n < 8 :
+
+print(space + pattern)
+
+i += 1
+
+if i == 7:
+
+break",10,"while True
+
+i = 0
+
+space = ("" ""*(n-i-1))
+
+pattern = (""*""+"" ""*(2i-1)+""*"")
+
+if n < 8 :
+
+print(space + pattern)
+
+i += 1
+
+if i == 6:
+
+print(""*""*13)
+
+break",5,,0,,0,"If func1() gets a number, it appends list of [index, False] for the range it is given. So it would look like [[0, False], [1, False], ... ]. Then use random.suffle func to mix the elements randomly then returns that list.",10,"Get an number from input, change the value to integer, then assign to n variable. If n is in a range of 0 <= n < len(L) and L[n][1] is False, return n. But if any other input apart from number or if n is out of range then repeat the function.",10,"두 값을 입력받은 후, 기존에 있는 리스트의 길이보다 큰 지, 0보다 큰지, False값이 리스트 element 안에 있는지 계산한 뒤, False값을 True로 바꾸고 n값이 리스트의 길이랑 같아 지기 전까지 m값을 1씩 올린뒤 입력받은 각 값의 m값을 print한다. m값은 얼마나 많은 True값이 입력되었는지를 나타낸다.",5,모든 리스트 안의 element 안의 두번째 값 False가 True로 변경될 것이다. (입력 받는 값에 한에서),5,,0,,0,"((800, ""Apple""), (1000, ""Grape""), (300, ""Persimmon""), (1500, ""Pear""), (50, ""Chestnut""))
+
+ 
+
+ 
+
+ ",10,"[[800, ""Apple""], [1000, ""Grape""], [300, ""Persimmon""], [1500, ""Pear""], [50, ""Chestnut""]]",10,"{800:""Apple"", 1000:""Grape"", 300:""Persimmon"", 1500:""Pear"", 50: ""Chestnut""}",10,,0,,0,"90 Korean Math. History
+
+95 Economics
+
+85 English Science",16,"90 [""Korean"", ""Math"", ""History""]",8,"[""English"", ""Science""]",8,"""Economics""",6,,0,,0,Math. 75,4,english?  Not in the dictionary!,4,"If the input is put ""quit"" instead of other inputs or values, the main function will read if statement which will ""break"" the function. Then, the code terminates. If ""quit"" is not the input, then it keeps running the code again and again.",7,"We are to type names of subjects to get the scores already written in the file mid_term1.txt. if we do not type correctly it will continue to ask us to put input unless we type ""quit"". If we put correct subjects then it will give out score of that certain subject.",13,,0,,0,"Carrol Johnson  80 98
+
+Joseph Shin      75 90
+
+Henry Aaron     90 85
+
+James Aaron     85 85
+
+George Hahn    80 70
+
+David Lee         70 70
+
+ ",16,"This function opens a file to make a list of tuples with information of students and grades. Also, it takes out unnecessary parts strips and split into each elements to easily put into tuples. When all the sourcing is done by each lines, close the file and return organized list of the information.",8,"It adds another information of student's grades which is additional info. Then sort the list with a descending order but with a rule based on item[2],item[1] as the measure. This is done by lambda function. Input would be list_a and output would be also a list but output list has more information and sorted.",8,"This makes a list of information from a file that has information about student name, math grade, science grade. As it goes through the process, it get rid of some parts that are not necessary in making list then add additional information of new student then sort it out in order. ",8,45,4,231
+임도전,4569,21300617,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:58:28 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,언패킹이란 요소들을 하나하나 분리하는 것을 말합니다. ,10,"selection 
+
+>>>tp1=(1,2,3,4,5)
+
+>>>tp1
+
+(1,2,3,4,5)
+
+>>>tp1[0]
+
+1
+
+>>>tp1[2]
+
+3
+
+>>>tp[-1]
+
+5
+
+>>>tp1[-2]
+
+4
+
+slicing
+
+>>>tp1[1:3]
+
+(2,3)
+
+>>>tp1[:3]
+
+(1,2,3)
+
+>>>tp1[1:]
+
+(2,3,4,5)
+
+>>>tp1[:]
+
+(1,2,3,4,5)
+
+>>>tp1
+
+(1,2,3,4,5)
+
+concatenation
+
+tp1=(1,2)
+
+tp2=(3,4)
+
+tp1 + tp2
+
+=(1,2,3,4)",12,"파라미터는 f=y(x)에서 x에 해당하는 값이다. 이 이름들이 기존에 파이썬 안에 내장된 모듈이나 함수 이름과 겹치지 않도록 조심해서 네이밍을 해야 한다. 함수의 모양을 들어서 예를 들자면 
+
+import math
+
+def degress_to_radian(deg) 이 부분이 파라미터이다. 
+
+   rad = (math.pi/180.0) * deg
+# 파라미터는 local variable 이다. 이 뜻은 오직 함수안에서만 인식된다는 것이다. 
+
+   return rad 
+
+ang = 90
+
+radian = degress_to_radians(ang)
+
+print(radian) ",0,,0,,0,"-pseudo code
+
+1개의  while loop로 주어진 for i in range (n) 식을 변형시킨다. 
+
+n을 입력했을 때 n줄 출력되게 한다. 
+
+n번째 줄은 ""*""n개 
+
+n-1번째 줄은 "" "" * 1 + ""*""*n - (1) 개
+
+n-2번째 줄은 "" ""* (1+1)+""*""*n- (1+1)개
+
+n-3번째 줄은 "" ""*(1+1+1)+""**""n-(1+1+1)개
+
+ 
+
+즉 식으로 하면  "" ""*i+""*""*-(i) 이 된다.  
+
+        ********
+
+i = 0
+
+while(0<i):
+
+    if (i>0):
+
+    i +=1 
+
+    space = "" ""*i
+
+    pattern = ""*""*-(i)
+
+  print(space + pattern)",0,"*pseudo code
+
+먼저 n=7을 입력받으면 n=7번 반복하게 한다.  
+
+첫번째 줄은 가운데 즉, (n/2)+1번째에 '*' 이 출력되게 한다. 
+
+마지막번째 줄은 (n*2) -1번 '*' 이 출력되게 한다.
+
+나머지 줄은 가운데를 기점으로 *이 두번 출력되게 해야 하니까 
+
+(n*2)-1+1, (n*2)-1-1 번째에 *이 찍히도록 한다.
+
+첫번째출력, 마지막출력, 나머지출력 이렇게 세부분으로 나누어야 하니까 if, else, elif로 경우의수를 나눈다. 
+
+---------------------------
+
+while i > 0
+
+if i = n
+
+print("" ""*n/2+1 + ""*"")
+
+elif:
+
+ 
+
+else
+
+ ",3,,0,,0,"L이라는 리스트를 만들고 []
+
+append와 for를 이용해서 반복한 다음 랜덤하게 섞은 다음에 섞은값을 반환해준다. ",2,"사용자에게 input값을 받고 
+
+만약 0보다 n<len(L) 이 작거나 같고 L[n][1]False 가 될때는 n의 값을 반환해준다. 
+
+그리고 다시 사용자에게 입력값을 받는다. 
+
+이 두가지 경우에 해당하지 않는 값을 사용자가 입력했을 때도 다시 값을 받는다.",10,"사용자에게 값을 입력받아서 L1[a][0], L2[b][0](리스트의 길이)를 랜덤하게 섞은 다음 출력해주는 프로그램이다. ",0,4,0,,0,,0,"""Apple"": 800, ""Grape"":1000, ""Persimmon"":300,  ""Pear"": 1500, ""Chestnut"":5 ""Apple"": 800, ""Grape"":1000, ""Persimmon"":300,  ""Pear"": 1500, ""Chestnut"":5
+
+ 
+
+(두번 나오게) ",5,"""Apple"": 800, ""Grape"":1000, ""Persimmon"":300,  ""Pear"": 1500, ""Chestnut"":50",5,"""Apple"": 800, ""Grape"":1000, ""Persimmon"":300, ""Pear"": 1500, ""Chestnut"":50",5,,0,,0,"-show_dict(score_dic)
+
+ 
+
+ -def show_dict(score_dic):
+
+10    for score in score_dic:
+
+11        print (score, end = "" "")
+
+12        for i in range(길이(score_dic[score])):
+
+13            print(score_dic[score][i], end = "" "")
+
+14        print("" "")  # change the line",0,"90,Korean",4,"English
+
+science ",6,90,4,,0,,0,75,2,75,0,"14         if query == ""quit"":
+
+15             return ""quit""
+
+ 
+
+이 부분이 프로그램을 종료시키는 함수입니다. 
+
+return 값에 숫자대신 문자를 입력시키면 됩니다.
+
+return이후로는 실행이 되지 않습니다. ",7,"파일을 열어서 mid_term.txt를 불러옵니다. 스플릿 함수는 문자열을 공백 또는 어떠한 기준으로 나누어 사용하는 함수입니다. 이 코드의 경우 ','을 기준으로 나누어진 값을 리스트에 요소로 적용합니다. 그 이후에 라인별로 리스트 안에 저장해주고, 사용자에게 인덱스 값을 받아와 그에 해당하는 리스트 안의 요소를 불러와 표시합니다. ",13,,0,,0,"풀이과정
+
+build_a_list에 list_a를 치환하고, append_and_short 에 list_a가 들어가있습니다. reverse =True는 내림차순(역방향) 으로 정렬하라는 의입니다. 이 내림차순 값을 short_a_list 에 대입해서 나온 값이 답이 됩니다. 
+
+ 
+
+ ",0,"txt 파일에서 내용을 불러옵니다. 그리고 split 함수를 이용해서 ','을 기준으로 나누어줍니다. 이 함수는 나누어진 값을 다시 리스트와 튜플에 저장시킵니다. ",4,"lambda 함수와 split함수가 적용되었습니다. 
+
+lambda 함수는 간단한 익명의 함수를 만들 때 사용합니다. split은 문자열을 쪼갤 때 사용합니다.이 코드에 사용된 lambda 함수의 경우 record는 변수, (record[2],record[1]),는 변환값,reverse = True는 역방향(내림차순)을 의미합니다. 받은 Carol의 이름과 점수를 쪼갠 다음 내림차순을 적용해서 재배열하는 역할을 합니다. ",6,"수학점수와 과학점수, 이름을 문자열에서','을 기준으로 쪼갠 다음 차순(역방향) 으로 다시 재정리 해서 보여주는 함수이다. ",8,45,4,130
+이하림,5278,21900588,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:35 UTC,1,TRUE,0,,0,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,"unpacking은 한 변수에 한꺼번에 묶여있던 것을 각각 풀어줄 때 쓴다.
+
+ex) ~~~
+
+top_five=totals[0:5]
+
+for p in top_five:
+
+    medals, nation=p   <-- unpacking
+
+~~~",12,"selection: 한개 element만 부르는 것, slicing: 여러개 element 동시에 표시하는 것, concatenation: 붙여주는 것.
+
+selection, slicing, concatenation 은 tuples, lists, strings에서 모두 형식은 다르지만 방식만 다르다.
+
+ex) tuples의 경우  tp1=(1,2,3,4,5)
+
+selection: tp1[0] --> 1  , tp1[-1]  --> 5 / slicing: tp[1:3] index 1인 2부터 index 3전인 4까지 표시 / concatenation: tp1=(1,2) tp2=(3,4) 일 때, tp1 + tp2  --> (1,2,3,4)
+
+lists 의 경우 a1=(1,2,3)
+
+selection: a1[0] --> 1  /  slicing: a1[0:2]  --> 0,1   /  concatenation: a1=(1,2) a2=(3,4) --> a1+a2  >>> (1,2,3,4)",14,"named parameters(default parameters)는 parameter 이름이랑 value 를 줌.
+
+In general, there is a positional correspondence between parameters and arguments: Arguments are mapped to parameters one by on and left to right.
+
+ex) def create_circle(radius, color):  <--function definition에 parameter 값 있음
+
+           circle=Circle(radius)
+
+           circle.set FillColor(color)
+
+           ~~~~ return circle
+
+sun=create_circle(30, ""red)  <-- function calls",0,,0,,0,"i=0
+
+while 0<=i<=n:
+
+        space=""  "" * (n-i-1)
+
+        pattern=""*"" * (i+1)
+
+        print(space+pattern)
+
+        i+=1",18,"i=0
+
+while 0<=i<=n:
+
+       if 0<=i<1:
+
+             space=""  "" * (n-i-1)
+
+             print(space + ""*"")
+
+             i+=1
+
+     elif 2<=i<n:
+
+          space1=""  "" * (n-i-1)
+
+          space2=""  "" * (2i-1)
+
+          print( space1 + ""*"" + space2 + ""*"")
+
+          i+=1
+
+      else:
+
+           print(""*"" * (2n-1))
+
+           break",10,,0,,0,"L 이라는 리스트를 만드로 받은 n값만큼 L의 마지막에 [i, False]를 넣어준 다음 L 리스트를 섞는다. 그 후 L 값을 리턴해준다.",10,"n 값을 입력받고, 그 n 값을 대입하여 if 절의 조건이 만족되면 n 값을 리턴해주고 만족되지 못한다면 다시 입력받도록 한다.",5,입력자에게 숫자를 입력받고 조건에 맞으면 랜덤하게 숫자를 내보낸다. 그리고 m을 통해 촟 몇번을 시도하였는지 알려준다.,3,Invalid input. Retry,0,,0,,0,"((800, ""Apple""), (1000, ""Grape""), (300, ""Persimmon""), (1500, ""Pear""), (50, ""Chestnut""),)",10,"[(""Apple"", 800) (""Grape"", 1000)(""Persimmon"", 300) (""Pear"", 1500) (""Chestnut"", 50)]",8,"{""Grape"": 1000, ""Apple"":800, ""Chestnut"": 50, ""Pear"": 1500, ""Persimmon"":300}",10,,0,,0,"""Korean"" 90
+
+""English"" 85
+
+""Math"" 90
+
+""Science"" 85
+
+""History"" 90
+
+""Economics"" 95",8,"[""Korean"", ""Math"", ""History""]",6,85 science,4,95 Economics,4,,0,,0,Math. 75,4,english? Not in the dictionary!,4,input에다가 quit 라고 적으면 된다.,7,input에다가 입력한 값이 mid_term1.txt에서 불러와서 거기에 있는지 없는지 확인하고 없으면 영어로 거기에 없다고 알려주고 있으면 입력한 값과 그 값의 value도 같이 출력해준다. ex) Korean 이라고 입력하면 그 값이 mid_term1.txt 에 존재하기에 Korean 90 이라고 출력.,0,,0,,0,"Carrol Johnson  80 98
+
+Joseph Shin      75 90
+
+Henry Aaron     90 85
+
+James Aaron     85 85
+
+George Hahn    80 70
+
+David Lee        75 70",16,"list_of_items 라는 빈 리스트를 만들어 준 다음에 mid_term2.txt 에 있는 파일을 받아서 읽어서 strip을 없애고, split 하고 숫자를int를 통해 정수로 바꿔주고 list를 tuple로 형식을 바꿔준다. 그리고 이를 아까 만들었던 list of items에 추가해줘서 리스트를 완성해준다. 그 후 열은 파일을 닫고 list_of_items 값을 리턴해준다.
+
+한마디로 mid_term 파일을 열어서 본 다음 원하는 대로 정리해서 저장한거다.",8,"items_list값을 parameter로 받아서 여기에다가 (""Carrol Johnson"", 80, 98) 값을 맨 뒤에 추가해준다. 이후 sort를 통해 우선순위를 index[2]의 값을 먼저 확인 [1] 순으로 정해주고 reverse=True를 통해 내림차순으로 정한다. 이렇게 다시 정리한 값을 return을 통해 items_list값을 보내준다.",8,mid_term1.txt 에 있는 값을 불러와서 읽고 거기다가 추가하고 싶은 data를 추가해서 원하는 정렬방식대로 나열해준 다음 print해 준다. ,8,44,5,197
+강진,6794,21600014,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:17 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,TRUE,4,,0,"unpacking은 말 그대로 변수를 풀어주는 것이다. 
+
+예를 들어 top_five = totals[0:5]
+
+for medals, nation in top_five:
+
+  print(medals, nation)으로 표현한 것을
+
+for p in top_five:
+
+medals, nation = p
+
+print(medals, nation)으로 표현 할 수 있다",12,"예를 들어, 리스트 선택은 list1 = [""US"", ""China"", ""Korea""]일 때 list1[1] = ""China""임을 알 수 있고, list2 = list1[0:1], list2 = [""US"", ""China""]임을 알 수 있고, list3 = [""Japan"", ""Israel""]일 때 list2 + list3 = [""US"", ""China"", ""Korea"", ""Japan"", ""Israel""]임을 알 수 있다.
+
+튜플 선택은 tp1 = (1, 2, 3, 4, 5)일 때
+
+tp1[-1] = 5로 할 수 있고, tp1을 갖고, tp2 = tp1[0:2]; tp2 = (1, 2), tp3 = tp1[2:4]; tp3 = (3, 4)로 뽑을 수 있고, tp2 + tp3 = (1, 2, 3, 4)라 할 수 있다.   
+
+스트링의 경우, s1 = ""abcedfg""라 할 때 s2 = s1[0]; s2 = 'a', 이렇게 선택할 수 있고, s3 = s1[1:3]; s3 = 'bc', 이렇게 자를 수 있고, s2 + s3 = 'abc', 이렇게 연결할 수 있다.  ",14,"정의한 함수를 쓰려면, 함수 콜을 해야 한다. 함수를 콜하는 방법은 함수 이름을 적고, 퍼라미터(x)를 나열하면 된다. 퍼라미터와 아규먼트의 수와 배열 순서는 같아야 한다. 융통성 있게 쓸 때 개수는 같아야 하고, 이름은 달라도 좋다. 단, 같은 위치에 있는 아규먼트 값이 같은 위치에 있는 퍼라미터 값으로 전달돼야 한다. 예를 들면, def print_twice(text):
+
+                    print(text)
+
+                    print(text)
+
+print(text)
+
+ ",0,,0,,0,,0,,0,,0,,0,"엘이라는 리스트 안에 변수 i, False 리스트를 n번 담고, 섞은 것을 반환한다. ",10,"숫자를 대입하면, int를 통해 정수로 만들고, n에다 할당한다. 만약 n이 0이상이고,  l이라는 리스트 길이보다 작으면, l[n][1]이 False이면, n을 반환하고, ""Invalid input. Retry""라는 말이 뜬다. try를 했는데 잘 안되면, ""Invalid input. Retry""라는 말이 뜬다.",8,,0,,0,,0,,0,"(('Apple', 800), ('Grape', 1000), ('Persimmon', 300), ('Pear', 1500), ('Chestnut', 50))",5,"리스트가 만들어지는데 이 리스트는 [['Apple', 800, 'Apple', 800], ['Grape', 1000, 'Grape', 1000], ['Persimmon', 300, 'Persimmon', 300], ['Pear', 1500, 'Pear', 1500], ['Chestnut', 50, 'Chestnut', 50]]",5,"{'Apple' : 800, 'Grape' : 1000, 'Persimmon'; 300, 'Pear': 1500, 'Chestnut': 50}",5,,0,,0,"{90: 'Korean', 85: 'English', 90: 'Math', 85: 'Science', 90: 'History', 95: 'Economics'}",2,"90, {'Korean', 'Math', 'History'}",6,"{85: 'English', 85: 'Science'}",2,{95},4,,0,,0,"query, ""not in the dictionary""",2,"query, ""not in the dictionary""",2,"13번 input(""Enter a course: "")에다 ""quit""를 입력하면 된다. ",7,main 코드에서 나가게 한다.,0,,0,,0,"Henry Aaron, George Hahn, David Lee, James Aaron, Joseph Shin의 수학, 과학 점수를 리스트 형식으로 보여줄 것이다.",0,"뒤에 있는 스페이스를 제거하고, 이름과 점수가 콤마로 나뉘어져 있던 튜플이 들어가서 :으로 나뉘는 사전 형식으로 바꿔준다. ",2,,0,"이들의 수학, 과학 점수를 리스트 형식으로 보여준다.",2,44,5,108
+이은환,7758,21801057,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:58:54 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,TRUE,4,TRUE,4,TRUE,4,TRUE,4,,0,"unpacking은  tuple에서 해당값을 다른 값에 할당해주는 것이다.
+
+ex) value = (4, 5, 6)
+
+x,y,z = value
+
+=> x = 4, y = 5, z = 6",12,"selection은 해당 값의 위치이고 slicing은 범위, concatenation은 두 값의 합이다.
+
+ex) tuple의 경우
+
+selection- tp1 = (1,2,3) => tp1[0] = 1
+
+slicing- tp1[1:2] = (2)
+
+concatenation- tp2 = (4,5) => tp1 + tp2 = (1,2,3,4,5)
+
+ ",14,"named parameters는 local variable이기 때문에 function definition 과 functions call 안에서 사용될 수 있다. 
+
+ex) def compute_radian(deg):
+
+            rad = (math.pi /180) * deg
+
+에서 deg 가 named parameter이다.",0,,0,,0,"while n ==  0:
+
+         print(n)
+
+else: 
+
+       for i in range(n):
+
+              space=' '*(n-i-1)
+
+              pattern = '*'*(i+1)
+
+             print(space + pattern)
+
+ ",5,for i in range(n),0,,0,,0,L 이라는 list안에서 마지막에 i의 값과 False를 붙여주고 랜덤으로 셔플합니다.,2,입력한 값이 의도된 값이 아닐 경우에 에러 메세지가 뜨는 코드입니다.,2,랜덤한 값을 입력하여 정답을 맞추는 프로그램입니다.,0,"[0,1,2]",0,,0,,0,"((800, 'Apple'), (1000, 'Grape'), ( 300, 'Persimmon'), (1500, 'Pear'),(50,'Chestnut'))",10,"((800, 'Apple'), (1000, 'Grape'), (300, 'Persimmon'), (1500, 'Pear'), (50, 'Chestnut'))
+
+[['Apple':800], ['Grape':1000], ['Persimmon':300], ['Pear':1500], ['Chestnut':50] ",8,"((800, 'Apple'), (1000, 'Grape'), (300, 'Persimmon'), (1500, 'Pear'), (50, 'Chestnut'))
+
+[['Apple':800], ['Grape':1000], ['Persimmon':300],['Pear':1500], ['Chestnut':50]]
+
+{'Apple':800, 'Grape':1000, 'Persimmon':300, 'Pear':1500, 'Chestnut':50}",8,,0,,0,"90 Korean Math. History
+
+85 English Science
+
+95 Economics",16,"90 Korean Math. History
+
+85 English Science
+
+95 Economics
+
+90 ['Korean', 'Math.', 'History']",6,"90 Korean Math. History
+
+85 English Science
+
+95 Economics
+
+90 ['Korean', 'Math.', 'History']
+
+['English', 'Science']",6,['Economics'],8,,0,,0,Math. 75,4,대문자와 소문자를 구분하기 때문에 English가 아닌 english는 ? Not in the Dictionary! 라고 출력이 됩니다.,4,quit을 입력하면 됩니다,7,점수를 무작위로 입력해서 dictionary에 있으면 그 값이 어떤 과목인지 알려주는 코드입니다.,13,,0,,0,"Carrol Johnson  80, 98
+
+Joseph Shin       75, 90
+
+Henry Aaron       90, 85
+
+James Aaron      85, 85
+
+George Hahn      80, 70
+
+David Lee            70, 70",16,mid_term2에 있는 아이템들을 불러와 오른쪽 공백을 제거한뒤 단어를 쪼개서 list로 만들어 줍니다.,4,Carrol Johnson의 데이터를 새롭게 추가하고 2번째 기록을 높은 순서대로 나열하는 함수입니다.,4,Carrol Johnson 을 새롭게 포함하여 2번째 점수가 높은 순서대로 내림차순으로 나열하는 프로그램입니다. 동점일 경우 첫번째 점수를 비교하여 나열하였습니다.,8,47,2,189
+윤지훈,4969,21701029,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:58:11 UTC,1,TRUE,0,,0,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,TRUE,4,TRUE,4,,0,"예를 들어 TUPLE에 tup = (3,5,6) 이라는 값이 있다고 해보자. 여기서 X,Y,Z = tup 이라고 하면 x에 3, y에 5, z에 6이 할당 되는데. 이런 과정을 unpacking이라 한다. ",12,"selection을 말 그대로 데이터를 선택하는 것이다. 예를 들어 list1 =[1,2,3]이 있다고 할 때, 
+list1[1] = 2 이런식으로 index스로 data의 value를 찾는 것이다.
+
+slice는 list1[:2]이런 형식으로 list1의 데이터를 첫번째꺼부터 2번째꺼까지 만 선택하겠다는 뜻이다.
+
+lists, tuples, strings 연속적인 sequence를 갖는다. 여를 들어, 리스트 안에는 여려 형태의 데이타 object를 갖고 있다거나, tuple에서 같은 형태의 데이터를 갖고 깄고 string에서 같은 형태의 데이터를 갖고 있다는 개념이다. list1 = [a,b,c,] / tupe1=(1,2,3,4), string = ""1234"" 참고로 리스트는 mutable하지만 tuple과 string은 그러하지 않다.",10,"기본적으로 하나의 argument에는 하나의 parameter만 왼쪽에서 오른쪽으로 할당된다.(positional correspondence) 예를 들어 들어 def make_circle( radius, color)라고 한다면 function call ""make_circle(5, color) 이런 식으로 순서를 지켜서 입력해야 한다. 하지만 ""make_circle( color =""red"", radius = 3) 이런식으로 이름을 지정해서 입력하게 되면 순서에 영향받지 않는다.",14,,0,,0,"x = 0
+
+while < n:
+
+    space = "" "" * (n- x -1)
+
+    pattern = '*' * (i+1)
+
+    x = x +1
+
+    print( space + pattern)",20,"for i in range(1,n+1):
+
+    space = ' '*(n-i-1)
+
+    pattern = '* '*(i+1)
+
+    print(space + pattern)
+
+    ",5,,0,,0,n에 정수 값을 받아서 n개만큼의 리스트 안에 리스트를 L에 할당하는 함수이다. 리스트 안에 있는 리스트 2번 째 값에 False를 입력해준다. 그리고 그 리스트 안에 리스트를 random하게 섞는다.,5,"사용자로부터 정수갑을 입력 받아 그값이 리스 L의 길이보다 작고 리스트 안의 리스트가 False이면 n값을 리턴하고 ""Invalid input. Retry."" 를 출력하고 그렇지 않으면 그냥 ""Invalid input. Retry."" 를 출력한다.",8,이 프로그램은 같은 숫자가 상용자로부터 숫자를 입력받아 사용자가 list 1에 있는 모든 숫자를 맞추는 게임이다. 이 원리는 같은 그림 찾기에 적용할 수 있다.,0,"L1 = [ (0, True), (1, True), (3, True)]
+
+L2 = [ (0, True), (1, True), (3, True)]",5,,0,,0,"((""Apple"", 800), (""Grape"",1000), (""Persimmon"",300),  
+
+          (""Pear"", 1500), (""Chestnut"",50))",5,"[[""Apple"", 800][ [""Grape"",1000], [""Persimmon"",300],  
+
+          [""Pear"", 1500], [""Chestnut"",50]]",5,"{800 :""Apple"", 1000: ""Grape"", 300 : ""Persimmon"",  
+
+          1500 : ""Pear"", 50:""Chestnut""}",5,,0,,0,"95 Economy
+
+90 Korean Math history
+
+85 English Science",10,90 Korean Math History,6,"""English"" ""Science""",6,Economics,6,,0,,0,Math 75,4,"englsih not in the dictionary. 
+
+description Engish는 있지만 english는 없다.",4,문자를 입력하면 된다.,0,"이 코드는 중간고사 시험점수 파일을 불러와서 key = 과목, value = 점수인 dictionary를 만든다. 그리고 사용자로 부터 과목을 입력받아 해당 과목이 몇점인지 알려주는 프로그램이다.",15,,0,,0,"Carrol Johnson  80 98
+
+Joseph Shin      75 90
+
+Henry Aaron     90 85
+
+James Aaron     85 85
+
+George Hahn    80 70
+
+David Lee         70 70
+
+ 
+
+ 
+
+ ",16," build-a-list() 는 mid_term2.txt데이터를 입력받아 white space를 제거하고 "" ""를 기준으로 단어를 잘라낸다. 그리고 엄수에 해당하는 값들을 정수값으로 변경해준다. 이렇게 이름과 점수를 하나의 튜플로 형성하고 이렇게 형성된 튜플들을 모아둔 리스트를 만들어준다.",8,"""Carrol Johnson"", 80, 98 의 data를 추가하고 리스트에 있는 모든 데이터의 순서를 2번째 과목값을 기준으로 정렬한다. 이후 혹시라도 두 번째 값이 동점이면 첫 번째 값으로 우선순위를 정한다.",8,"이 프로그램은 ""mid_term2.txt"" 을 불러와서 학생이름 수학 과학 성적을 출력한다. 점수를 출력할 때는 과학 점수를 기준으로 출력한다. 하지만 과목에 점수가 발생할 때는 수학점수가 높은 사람을 기준으로 정리한여 결과를 보여준다. 이 시행 과정중 ""Carrol Johnson"", 80, 98의 데이터를 추가한다.",8,45,4,209
+염태호,275,21300444,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:41:11 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"이뮤터블 한 튜플이기에 컬렉션의 요소들을 여러 변수에 나누어 담는 방식이다. 
+
+taeho_tuple=1,2,3
+
+num1, num2, num3 = taeho_tuple
+
+num1은 1, num2는2, num3은 3이 된다",12,"1)설렉션을 통해 value들에 access할 수 있다
+
+x=(1,2,3,4)라는 튜플이 있다면 x의 순서를 지정해 프린트할 수 있다
+
+print(x[0]) 는 1, print(x[-1])는 4, print(x[3])은 4
+
+ 
+
+2)슬라이싱은 ~부터 ~전까지의 value를 access할 수 있다
+
+x=(3,7,4,2)에서 
+
+print(x[0:2])는 (3,7)이되고, print(x[:3])은 (3,7,4)가되고, print(x[-4:-1])는 (3,7,4)가 된다
+
+ 
+
+3) concatenation은 여러 string을 연산하여 출력해 낼 수 있다
+
+name1='yeom'
+
+name2='tae'
+
+name3='ho'
+
+name4=name1+name2+name3
+
+print(name4)를 하게되면 yeomtaeho가 된다.",14,"함수가 정의되면 function 파라메터에 부여된 name들을 사용할 수 있다.
+
+define func1(para1,para2)와같이 정의하면 func1(para1,para2)로 사용할 수 있다.",0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,"((1500, 'Pear'), (1000, 'Grape'), (800, 'Apple'), (300, 'Persimmon'), (50, 'Chestnut'))",10,"[['Pear', 1500], ['Grape', 1000], ['Apple', 800], ['Persimmon', 300], ['Chestnut', 50]]",10,"{1000: 'Grape', 800: 'Apple', 50: 'Chestnut', 1500: 'Pear', 300: 'Persimmon'}",10,,0,,0,90KoreanMathHistory85EnglishScience95Economics,4,"90 ['Korean', 'Math', 'History']",8,"['English', 'Science']",8,['Economics'],8,,0,,0,Math.[75],3,English[75],0,quit이라고 입력하면 된다,7,"텍스트 파일에 있는 데이터를 가지고 과목명을 입력하면 점수를 말해주고 과목명이 틀리게 입력되면 not in the dictionary를 보여주고, while loop이기 때문에 종료하려면 quit을 입력해야 한다",13,,0,,0,,0,"파일에 있는 아이템들을 리스트로 하여 아이템마다 콤마로 나누고, 2번째 3번째 아이템을 튜플로 표현하는 함수이다",4,"파일에 있는 리스트로 되어있는 정보들에서 carrol johnson이라는 사람의 정보를 추가하고, 재정렬하는 함수이다",6,"텍스트형식의 데이터 파일을 이용하여 함수를 이용하여 데이터를 추가하고, 원하는 데이터를 정렬하고 골라서 튜플의 형태로 만들고 다시 리스트의 형식으로도 표현할 수 있는 함수이다",6,45,4,147
+양정숙,4925,21900432,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:53:14 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,,0,"리스트의 element인 경우, 튜플의 element를 하나씩 사용할 수 있도록 하는 것이다.
+
+예를 들어서
+
+list1=[(1,'korea'),(2,'china'),(3,'japan')]
+
+for num, con in list1:
+
+이렇게 하면 튜플의 elements를 하나씩 사용할 수 있다.",12,"셀렉션 안에 있는 요소들을 선택하는 것이고, slicing은 자르는 것이고 concatenation 두개의 같은 type으로 정의된 것을 합칠 수 있다. 예를 들어서selectiond은 하나만 불러올 수 있는 것이다 list1[1]의 값 하나만 가져올 수 있는 것이다. list1=[1,2,3,4,5,6]에서 선택하여 list[1:4]는 슬라이싱이고, list의 경우에는 append를 사용해도 되고, list1+list2해서 합칠 수 있다.",14,"named 파라미터는 fuction call의 argument의 순서와 상관 없이 실행이 되는 것이다. 함수 안에서 정의된 변수를 사용한다.
+
+def function(a=1,b=2):
+
+     return a+b
+
+function(4,5)
+
+결과는 4+5가 아닌 1+2인 3이 출력이 된다.",10,,0,,0,"x=0
+
+while x<n:
+
+ space = ' '*(n-i-1)
+
+pattern = '* '*(i+1)
+
+ print(space + pattern)
+
+x+=1",20,"for i in range(n):
+
+space=' '*(n-1-i)
+
+space2=' '(i*2-1)
+
+pattern = '*'
+
+if i==0:
+
+print(space*pattern)
+
+else:
+
+print(space*ptternn*space1*ptternn)
+
+ ",5,,0,,0,"L이라는 리스트를 만들어서 n까지의 [숫자, False]을 하나의 요소로 하는 리스트를 만들어서 return해준다. 그 숫자번호의 리스트의 요소가 같으면 True로 바꿔주고 n을 더해주고 len(L1)과 같거나 커지면 while문은 종료를 한다.",2,입력받은 값이 0에서부터 리스트길이의 사이의 값이고 [n][1]의 값이 False이면 입력받은 값을 return한다.,8,리스트 이차원 배열이 요소이고 [x][1]=False을 같는 list 2개를 만들고 각각의 리스트의 요소들을 랜덤하게 섞어준다.. 그 다음에 input을 이용하여 입력받고 type을 int로 바꾼다음에 [n][1]의 값이 False이면 입력받은 값들을 가지고 그 순서의 요소들의 값이 같으면 True로 바꿔주고 n을 +1더해준다. 즉 같은 요소를 선택한 번수가 len(L1)과 같거나 커지면 멈추고 총 몇번이 같았는지 출력해준다.,5,4,0,,0,,0,"((800,'Apple), (1000,'Grape'), (300,'Persimmon'),(1500,'Pear'), (50,'Chestnut'))",10,"[[800,'Apple], [1000,'Grape'], [300,'Persimmon',[1500,'Pear'], [50,'Chestnut']]",10," {""Apple"": 800, ""Grape"":1000, ""Persimmon"":300, ""Pear"": 1500, ""Chestnut"":50}",10,,0,,0,"90 Korean Math
+
+85 English Science History
+
+95 Economics",13,"'Korean', 'Math'",4,"'English', 'Science', 'History'",4,,0,,0,,0,75,2,75,0,read_a_subject(sub_dict):에서 quit을 입력하면 29번째 줄에서 break된다.,7,파일에 있는 정보를 keys는 과목으로 values값은 점수로 만든 다음에 알고 싶은 과목의 이름을 입력하면 점수를 출력하고 그만 알고 싶으면 quit을 입력하면 된다.,15,,0,,0,"Carrol Johnson  80 98
+
+Joseph Shin      75 90
+
+Henry Aaron     90 85
+
+James Aaron     85 85
+
+George Hahn    80 70
+
+David Lee        70 70
+
+ ",16,"파일의 한줄씩 읽어가면서 ,를 기준으로 나누어준다. 그리도 숫자는 string으로 된 것을 int로 바꾸어준다음에 튜플로 만들어준다.
+
+[('Henry Aaron', 90, 85),('George Hahn', 80, 70),('David Lee', 70, 70),('James Aaron', 85, 85),('Joseph Shin', 75, 90)] ",8,"('Carrol Johnson', 80, 98)를 리스트에 추가한 다음에 item[2]->item[1]을 기준으로 내림차순으로 정렬한다.
+
+[('Carrol Johnson', 80, 98),('Joseph Shin', 75, 90),('Henry Aaron', 90, 85),('James Aaron', 85, 85),('George Hahn', 80, 70),('David Lee', 70, 70)] ",8,"파일에서 5명의 아이들의 이름, 수학, 과학 성적을 가져오고 한명의 이름, 수학, 과학성적을 튜플로 만들고 리스트에 저장한다.과학 성적을 기준으로 내림차순으로 정렬하고 이름은 좌측정렬하고, 성적과 과목을 출력해준다.",8,44,5,211
+안동수,6752,21700411,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 10:39:27 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"이미 이름이 있는 tuple, list에 이름을 다시 선언해주는 것이다.
+lists=[1,2,3,4,5]
+
+for a,b,c,d,e in lists:   <- unpacking
+
+    명령문 ",10,"selection
+
+list=[1,2,3,4,5]
+
+list[1:3]
+
+>>1,2,3",5," 
+
+ 
+
+parameter 와 arguement 이름이 같을 필요는 없다.
+
+corresponding position 이기 때문
+
+ 
+
+funcall 
+
+def func(x):
+
+    print(x+1)
+
+func(2)",0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,"list_of_items 라는 빈 리스트를 만든다.
+
+""mid_term2.txt"", ""r"" 이라는 파일을 연다.",2,,0,"이 함수는 리스트에 ""Carrol Johnson"", 80, 98을 추가하고 
+
+record[2]와 record[1]을 기준으로 정렬을 한다. 그 정렬은 내림차순 정렬이다. 그리고 새로 추가되고 정렬된 값을 return 해준다.",8,학생들의 수학 과학 점수를 높은순서 대로 정렬하는 프로그램이다.,5,44,5,50
+신하영,449,21800411,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:41 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"unpacking은 하나로 packing 되어있던 data structure의 element들을 꺼내는 것이다. 예를 들어, 다음과 같은 totals라는 리스트가 주어졌을 때,
+
+totals=[(104,'United States), (84,'China'), (76,'Korea')]
+
+리스트 속의 element들을 하나씩 꺼내려면 다음과 같이 for문으로 unpacking하면 된다.
+
+for medals, country in totals:
+
+      print(medals, country)
+
+이 코딩의 결과는 다음과 같이 나올 것이다.
+
+104 United States
+
+84 China
+
+76 Korea
+
+ 
+
+ 
+
+ ",12,"tup1=(1,2,3,4)
+
+lst1=[1,2,3,4]
+
+stg1=""abcd'
+
+stg2=""efg""
+
+selection은 tuple, list, 또는 string에서 element하나를 가져오는 것인데, 예를 들어 tup1[2]는 tup1에서 index가 2인 element를 가져오라는 것이므로, tup1[2]=3이 된다.
+
+slicing은 tuple, list, 또는 string 특정 index 범위에 해당되는 element들을 가져오라는 것이다. 예를 들어, lst1[:3]는 index가 0에서 2인 element들의 리스트를 가져오라는 것이므로, lst[:3]=[1,2,3]이 된다.
+
+Concatenation은 tuple, list, 또는 string의 요소를  각각 합치는 것이다. 예를 들어, stg3=stg1+stg2 를 하면, stg3=""abcdefg""가 된다.",14,"def create_circle(radius, color):
+
+      #function body
+
+다음과 같은 함수가 있다고 했을때, function call에서 named parameter를 쓴다면, 다음과 같이 쓸 수 있다.
+
+create_circle(radius=10, color=""light blue"")
+
+이렇게 named parameter를 쓴다면 일반 parameter를 쓸때와 달리, argument의 순서가 상관 없어진다.
+
+ 
+
+     ",14,,0,,0,,0,,0,,0,,0,"It makes a list that consists of lists of  [i, False]. Then it shuffles the list and return the list.",10,"사용자로부터 숫자를 받아 n에 할당하는데 만약 n이 0초과, 리스트의 길이 이하에 속하고, 리스트 속 리스트의 두번째 element가 False라면, n을 return해주고, 그렇지 않으면 ""invalid input""이라는 메세지를 띄운다.",8,"리스트 L1과 L2가 있는데, 사용자의 input값으로 a와 b의 값을 알아내고, print된 결과를 보고 L1[a][0]과 L2[b][0]의 값을 예측한다. 만약 이 둘의 값이 같다면 L1[a][1]과 L2[b][1]을 True로 바꾸고 n을 1 증가시키고, 같지 않다면 m을 1 증가 시킨다. 이 과정을 n이 리스트 L1의 길이보다 작을 동안 반복하여 최종적으로 얻는 m의 값을 출력시키는 프로그램이다.",10,,0,,0,,0,,10,,10,,10,,0,,0,,16,,8,,8,,6,,0,,0,,4,,4,,7,,15,,0,,0,,16,,6,,5,,8,44,5,221
+송한별,5885,21500364,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 12:00:54 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,"Unpacking is the action of seperating list of element into a variable.
+
+ex: tuple1 = (1,2,3)
+
+    a,b,c = tuple1",12,"selection is the selection of an element from tuple, list or string.
+ex: tuple1 = (1,2,3)
+    tpuple1[0] >>> 1
+
+Slicing is another way to select an element, but by dividing the data.
+ex: string1 = ""abcde""
+     string1[1:] >>> ""bcde""
+
+Concatenation is the addition of a data structure to another data structure.
+ex: tuple1 = (1,2,3)
+     tuple2 = (4,5,6)
+     tuple1 + tuple2 >>> (1,2,3,4,5,6)",14,"Named parameter can be used in function definition when they are defining what they represent.
+
+ ",0,,0,,0,"a = 1
+
+while n !=0:
+
+   print(""  "" * (n-1))
+
+   print(""*  "" * a)
+
+   a += 1
+
+   n - = 1
+
+ ",2,"for i in range (n):
+
+   for j in range(n-i-1):
+
+      print(' ')
+
+   print('*')
+
+   space = ' '*(n-i-1)
+
+   pattern = '* '*(i+1)
+
+   space2 = ' '*(i+1)
+
+   print(space + pattern)",5,,0,,0,func1() inserts numbers into a list and shuffles it to be random.,5,"func2() gets an input from the user, and the input number has to be less than the length of L1 or L2. Then it returns the input value when all criteria is met.",5,This program counts in how many tries the user is able to make 0 0.,3,"L1 >>> [[ , True],[ , True], [ , True]]
+
+L2 >>> [[ , True],[ , True], [ , True]]",5,,0,,0,"((800, 'Apple'), (1000, 'Grape'), ('Persimmon', 300), (1500, 'Pear'), (50, 'Chestnut))",10,"[['Apple', 800], ['Grape', 1000], ['Persimmon', 300], ['Pear', 1500], ['Chestnut', 50]]",10,"{800: 'Apple', 1000: 'Grape', 300: 'Persimmon', 1500: 'Pear', 50: 'Chestnut}",10,,0,,0,"90 Korean Math. History
+
+85 English Science
+
+95 Economics",16,"90 ['Korean', 'Math.', 'History']",8,"['English', 'Science']",8,['Economics'],8,,0,,0,"Math. 75
+
+Enter a course:",4,"english ? Not in the dictionary!
+
+Enter a course:",4,"You have to type ""quit"" in order to terminate this code.",7,"When the user types the name of the course, the program gives back the score of that course, and it continues until the user types quit. The names and the scores are saved in a txt file.",13,,0,,0,,0,"build-a-list() read the mid_term2.txt file and strips the word, erases ','and puts the words into a tuple before returning it.",8,append_and sort(items_list) sorts the already made list from the build-a-list() in a order.,4,,0,44,5,181
+박정은,5591,21900302,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:28 UTC,1,TRUE,0,,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,"lst = ['park','90','80']
+
+name, math_score, music_score = lst
+
+lst의 요소들이 순서대로 name, math_score, music_score에 들어간다.",10,"lst = ['kim', 'lee', 'choi']
+
+lst_ex = ['park']
+
+lst[0]이 'kim'을 도출하는 것이 리스트의 selection이고 lst[1:]이 'lee','choi'를 도출하는 것이 slicing, lst + lst_ex가 'kim', 'lee', 'choi', 'park;를 도출하는 것이 concatenation이다. 
+
+ 
+
+tup = (1,2,3)
+
+tup_x = (4,5)
+
+tup[1]을 입력하면, 2값이 도출되는 것이 selection이고, tup[1:]을 입력하면 2,3이 도출되는 것이 slicing이고, tup + tup_ex 를 입력하면 (1,2,3,4,5)가 도출되는 것이 concatenation이다. ",14,"def haha(a,b,c):
+
+    c = a+b
+
+    return c
+
+haha(1,2,3)
+
+ 
+
+위의 예에서 function call을 할때 입력된 1,2,3은 각각 a,b,c로 전달이되고 function definition에서 a,b,c로 쓰인 부분에 a=1, b=2, c=3으로 치환되어 계산합니다. ",0,,0,,0,"i=0
+
+while i<n:
+
+  space = ' '*(n-i-1)
+
+  pattern = '* '*(i+1)
+
+  print(space + pattern)
+
+  i += 1",20,"for i in range(n):
+
+  if i == 0:
+
+   print("" ""*(n-1-i) + ""*""+"" ""*(i+1))
+
+  elif i == n-1:
+
+   print(""*"" * (n*2-1))
+
+  else:
+
+   print("" ""*(n-1-i) + ""*""+"" ""*(i+1))",10,,0,,0,"빈 리스트인 L에 [0,False],[1,False],[2,False]를 저장하고 랜덤으로 나온 하나를 리턴한다",5,"사용자에게서 입력받아 n에 넣고  0<=n<len(L) and L[n][1]==False 라는 조건을 만족하면 n의 값을 리턴하고 넘어가지만, 충족시키지 못하면 반복한다. ",10,사용자에게서 숫자를 입력받고 결과값이 같을 때까지 반복한다. ,3,,0,,0,,0,"((""Apple"": 800), (""Grape"":1000), (""Persimmon"":300),  (""Pear"": 1500), (""Chestnut"":50))",5,"[[""Apple"": 800], [""Grape"":1000], [""Persimmon"":300],  [""Pear"": 1500], [""Chestnut"":50]]",5,"{800: ""Apple"", 1000: ""Grape"", 300: ""Persimmon"",  1500: ""Pear"", 50: ""Chestnut""}",5,,0,,0,"95 Economics
+
+90 Korean Math. History
+
+85 English Science",10,"90 [""Korean"", ""Math."", ""History""]",8,"['English', 'Science']",8,['Economics'],8,,0,,0,"Science:90,History:95,Economics:90,Math.:75,English:75,Korean:75
+
+Math. 75",2,"Science:90,History:95,Economics:90,Math.:75,English:75,Korean:75
+
+english?  Not in the dictionary!",2,quit를 입력한다,7,각 과목과 그 점수를 출력해주고 과목을 입력해서 입력받은 값이 dictionary에 존재하면 과목 이름과 점수를 출력해준다.,13,,0,,0,"Joseph Shin     90 75
+
+Henry Aaron    85 90
+
+James Aaron    85 85
+
+George Hahn   70 80
+
+David Lee        70 70
+
+ ",8,"텍스트에서 받아온 내용들중 점수는 int로 변환하고 (이름,점수,점수)를 하나의 튜플로 바꾸어 전체 사람들을 리스트로 변환한다. ",8,carol의 정보를 추가하고 앞의 점수와 뒤의 점수를 바꾸어 뒤의 점수를 내림차순으로 정렬한다. ,4,전체학생의 이름과 점수들을 내림차순으로 정렬한다. ,5,44,5,190
+김윤중,6577,21700141,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:51:26 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,TRUE,4,TRUE,4,FALSE,0,TRUE,4,TRUE,4,TRUE,4,TRUE,4,,0,,0,"list=[a,b,c,d,e]
+
+list[2] -> c
+
+string=""apple""
+
+string[3] -> r
+
+string[1:3] -> pp
+
+string[3]+string[0] -> la",10,"def test(x):
+
+  x +=1
+
+  print(x)
+
+함수 정의 파라메터는 로컬 변수라 딱히 기존 글로벌 위치에 해당하는 변수명을 사용해도 되지만 혼동을 일으킬 수 있어서 가능한 다른 변수명을 사용하기.
+
+함수 호출은 test(1) 이렇게 나 같은 경우에는 숫자가 들어가야하는 타입이다.
+
+결과는 2가 출력된다.",0,,0,,0,"i=0
+
+while(i<n):
+
+   space = ' '*(n-i-1)
+
+   pattern = '* '*(i+1)
+
+   print(space + pattern)
+
+   i+=1",20,"print("" ""*6+'*')
+for i in range(5):
+   print("" ""*(n-i-2) + '*', end='')
+   print("" ""*(2i+1), end='')
+   print('*')
+print('*'*13)",5,,0,,0,"L=[[0,False],[1,False],[2,False], ..., [n-1,False]] 상태에서 shuffle로 랜덤하게 섞인 상태가 된다.",8,"숫자를 입력시(n), L[n][1]==False 일 경우에 n을 리턴",4,"2개의 리스트가
+
+L1=[[?,False],[2,False],[?,False]]
+L2=[[?,False],[?,False],[2,False]]
+
+이런 형태인데 최종적으로
+
+L1=[[1,True],[2,True],[0,True]]
+L2=[[1,True],[0,True],[2,True]]
+
+2차 배열 요소가 False -> True로 바꾸기 위한 프로그램이다.",3,"L1=[[1,True],[2,True],[0,True]]
+L2=[[1,True],[0,True],[2,True]]",10,,0,,0,"((""Apple"",800), (""Grape"",1000), (""Persimmon"",300), (""Pear"",1500), (""Chestnut"",50))",5,"[[800,""Apple""],[1000,""Grape""],[300,""Persimmon""],[1500,""Pear""],[50,""Chestnut""]]",5,"{""Apple"":800,""Grape"":1000,""Persimmon"":300,""Pear"":1500,""Chestnut"":50}",5,,0,,0,"90 Korean Math History
+85 English Science
+95 Economics",16,"90 [""Korean"",""Math"",""History""]",8,"{90:[""Korean"",""Math"",""History""], 95:[""Economics""]}",4,"[""Economics""]",8,,0,,0,Math 75,4,english ? Not in the dictionary!,4,"quit를 입력하면 된다.
+
+read_a_subject함수에서 quit를 치면
+
+subject = quit가 들어가고 조건문에 의해서 break로 종료된다.",7,"mid_term1.txt에서 정보를 불러와
+
+{""Science"":90,""History"":95,""Economics"":90,""Math"":75,""English"":75,""Korean"":75}
+
+라는 딕셔너리 형성, 원하는 과목을 치면 과목과 점수를 출력함.",15,,0,,0,"Carrol Johnson 80 98
+
+Joseph Shin, 75, 90
+Henry Aaron   90 85
+James Aaron    85 85
+George Hahn    80 70
+David Lee      70 70",15,"mid_term2.txt에서 이름, 점수, 점수를 불러와서
+
+각줄 마다 예를 들어
+
+Henry Aaron, 90, 85 에서 rstrip()으로 오른쪽의 공백을 제거하고
+
+split("","")으로 [Henry Aaron, 90, 85] 이렇게 쪼개고
+
+15, 16줄에는 90, 85 문자를 숫자형으로 바꾼다.
+
+17줄에는 [Henry Aaron, 90, 85]를 튜플 (Henry Aaron, 90, 85)로 바꾼다.
+
+이후 빈 리스트에 append를 해서 모든 사람마다 반복한다.
+
+list_a = [(Henry Aaron, 90, 85),(George Hahn, 80, 70),
+(David Lee, 70, 70),(James Aaron, 85, 85),(Joseph Shin, 75, 90)]
+
+결과이다.",6,"list_a = [(Henry Aaron, 90, 85),(George Hahn, 80, 70),
+(David Lee, 70, 70),(James Aaron, 85, 85),(Joseph Shin, 75, 90)]
+
+여기서 (""Carrol Johnson"", 80, 98)를 리스트에 추가 시키고 record: (record[2],record[1]) 기준으로 내림차순으로 정렬한다.",6,과학 점수를 기준으로 높은 순으로 학생을 나열하는 프로그램이다.,4,47,2,204
+김윤섭,5340,21900170,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 12:00:02 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,여러개의 아이템들을 가지고 이,0,,0,,0,,0,,0,"count = 0
+
+while(count ! = n):
+
+   space = ' '*(n-count-1)
+
+   pattern = '* '*(count+1)
+
+   print(space + pattern)
+
+   count+=1",20,"for i in range(n):
+
+    if i != n-1 and i != 0:
+
+        print(' '*(n-i-1)+'*'+' '*(2*i-1)+'*')
+
+    elif i == 0:
+
+        print(' '*(n-i-1) + '*')
+
+    else:
+
+        print('* '*(i+1))",15,,0,,0,주어진 수 n을 가지고 0부터 n-1까지의 숫자를 랜덤한 순서로 저장한 리스트를 생성한다,5,"n을 입력 받아 그 수가 L리스트의 갯수보다 적고 0보다 같거나 크면, 또 L[n][1]의 결과값이 False이면 입력받은 n을 리턴한다.",8,"0, 1, 2라는 숫자가 각각 랜덤한 순서로 저장된 두 리스트 L1, L2에서 패어가 맞는 두 쌍의 숫자를 찾는 코드이다. n은 맞춘 패어의 갯수를 의미하고 m은 시도한 횟수를 의미한다.",10,"L1, L2리스트에는 
+
+(0, True), (1, True), (2,True)가
+
+랜덤한 순서로 저장된다.",8,,0,,0,"(800, 'Apple', 1000, 'Grape', 300, 'Persimmon', 1500, 'Pear', 50, 'Chestnut')",6,"[['Apple', 800], ['Grape', 1000], ['Persimmon', 300], ['Pear', 1500], ['Chestnut', 50]]",10,"{800: 'Apple', 1000: 'Grape', 300: 'Persimmon', 1500: 'Pear', 50: 'Chestnut'}",10,,0,,0,"90 Korean Math. History
+
+85 English Science
+
+95 Economics",16,"90 ['Korean', 'Math.', 'History']",8,"['English', 'Science']",8,Economics,6,,0,,0,"{'Science': 90. 'History': 95, 'Economics': 90, 'Math.': 75, 'English': 75, 'Korean': 75}
+
+'Math.' 75",4,"english ? Not in the dictionary!
+
+Enter a course: ",4,Enter a course: 에 quit을 입력한다,7,mid_term1.txt 파일에 기록된 과목별 점수들로 딕셔너리를 만들고 과목 명을 입력받아 점수를 출력하는 코드이다. 코드를 끝내기 위해서는 quit을 입력하면 된다.,13,,0,,0,"Carrol Johanson  80  98
+
+Joseph Shin      75  90
+
+Henory Aaron     90  85
+
+James Aaron      85  85
+
+George Hahn      80  70
+
+David Lee        70  70",16,"mid_term2.txt 파일에 저장된 이름과 점수를 인풋으로 그것들을 이름과 점수1, 점수2로 나눈 리스트를 아웃풋으로 만들어 내는 함수이다.",6,"Carrol Johnson 의 정보가 들어간 튜플을 리스트에 추가하고 리스트 안에 있는 내용들을 점수 2, 점수 1 순으로 정렬하는 함수이다.",8,이 프로그렘은 mid_term2.txt에 저장된 정보를 가지고 사람별 점수를 저장한 리스트를 만들어 높은 점수 순으로 화면에 출력하는 코드이다.,8,44,5,216
+김강산,7173,21801005,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:57:39 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,FALSE,0,TRUE,4,,0,"packing 의 반대로 어떠한 함수, 변수를 풀어서 보여줍니다.
+
+turn_right
+
+def turn_right(Hubo)
+
+for i int (3)
+
+hubo.turn_left.
+
+tup = ( 1, 2, 3, 4, 5)
+
+print (tup)
+
+1 2 3 4 5",4,"lists, tuples, strings 는 모두 ordered data의 모음입니다. 따라서 각각의 data는 index 값을 가지고 있고 그 index 값을 입력하면 그에 맞는 data가 출력 됩니다.
+
+tup = (1, 2, 3, 4, 5)
+
+tup(1) = 2
+
+split(x)를 사용하게 되면 변수안에 있는 x를 기준으로 변수들을 나누게 됩니다.
+
+.append(x)를 사용하게 되면 맨 끝에 새로운 변수 x를 추가하게 됩니다.
+
+tup.append(6)
+
+1 2 3 4 5 6",4,"hubo = Robot 이라고 하게 될때 Robot.move가 로봇을 앞으로 한칸 움직이는 함수였다면 hubo.move를 통해 로봇을 움직이게 할 수 있습니다.
+
+def turn_right(Hubo)
+
+for i int (3)
+
+hubo.turn_left
+
+하게 되었을때 turn_right(hubo)를 통해  hubo를 오른쪽으로 돌게 할 수 있습니다.",0,,0,,0,"while n > 0 :
+
+ i =+0 -1
+
+  space = ' '*(n-i-1)
+
+  pattern = '* '*(i+1)
+
+  print(space + pattern)
+
+ ",10,"for i in range(n):
+
+ while not n = i:
+
+   space = ' ' * (n-i-1)
+
+   pattern = '* ' + ' ' * (i)  +'*'
+
+else:
+
+  pattern = '* '*(i+1)
+
+  print(space + pattern)",5,,0,,0,L 이라는 빈 리스트에 n개의 변수를 랜덤하게 생성합니다.,3,n 값을 받아와 n이 0 또는 1이라면 그 값을 Return하고 아니라면 invaild input. Retry라고 print합니다.,2,n 값을 두개 받아와 func1과 func2를 실행시킨뒤 m값을 프린트합니다.,0,둘 다 1 값이 저장됩니다.,0,,0,,0,"(""Apple"", 800) , (""Grape"", 1000), (""Persimmon"",300),(""Pear"", 1500), (""Chestnut"", 50)",5,"[(800, ""Apple"") , (1000, ""Grape""), (300, ""Persimmon""), (1500, ""Pear""), (50, ""Chestnut"")]",5,"{""Apple"": 800, ""Grape"":1000, ""Persimmon"":300, ""Pear"": 1500, ""Chestnut"":50}",5,,0,,0,"[90, ""Korean"" ""Math."" ""History""], [85, ""Science"" ""English""], [95, ""Economics""]",7,"90 : ""Korean"", ""Math."", ""History""",4,"""Science""",4,"([""Economics"", 95], [""History"", 90], [""Korean"", 90], [""Math."", 90], [""English"", 85], [""Science"", 85])",0,,0,,0,"Math, 75",3,"(english, ""?  Not in the dictionary!"")",2,Enter a course: 에서 quit 을 입력하게 되면 break 되면서 끝납니다.,7,"mid_term1.txt"" 파일 안에 내가 찾는 과목의 성적이 있는지 찾고 있다면 성적을 보여줍니다. 없다면 없다고 알려줍니다. 또한 quit을 치게 되면 작동을 멈춥니다.",10,,0,,0,"Carrol Johnson, 80, 98
+
+Joseph Shin, 75, 90
+
+Henry Aaron, 90, 85
+
+James Aaron, 85, 85
+
+George Hahn, 80, 70
+
+David Lee, 70, 70",16,"list_of_items 라는 리스트를 만듭니다. ""mid_term2.txt"" 파일을 read mode로 엽니다. 그 후 파일에 있는 item들의 오른쪽 공백을 없애고 "","" 를 기준으로 item들을 나눕니다. 정렬해둔 item들을 tuple로 만든이후에 list_of_items 에 추가합니다. 파일을 닫고 list_of_items를 Return합니다.",8,"(""Carrol Johnson"", 80, 98)를 items_list에 추가하고 Science 성적에 따라 모든 item들을 내림차순으로 정렬한뒤의 값을 Return합니다.",6,"학생들의 이름, 수학과 과학 성적이 담긴 프로그램을 불러오고 파일 안에 없던 Carrol Johnson의 정보를 추가한 뒤 하나의 보기 깔끔한 리스트로 만들어 우리에게 보여줍니다.",7,43,6,133
+고예은,2825,21800018,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:53:10 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,FALSE,0,TRUE,4,,0,"모아져있던 요소들을 여러개의 변수로 남아서 담는 것을 unpacking 이라고 한다.
+
+즉,
+
+nums=1, 2, 3, 4 일때에
+
+a, b, c, d = nums
+
+print (a)
+
+=>1
+
+print(b)
+
+=>2
+
+print(c)
+
+=>3
+
+print(d)
+
+=4
+
+가 되는 것이 언패킹이다. 
+
+ ",12,"nums=[1, 2, 3, 4] 라는 리스트가 있다면,
+
+selection 은 리스트 안의 어떠한 변수를 고르는 것이다. 즉,
+
+print(nums[1])
+
+=>2
+
+로 나오는 것과 같이 리스트의 1번을 골라서 추출한다.
+
+ 
+
+slicing 이란, 들어있는 요소들을 어디까지 꺼내오고 싶은지를 잘라서 추출하는 것이다.
+
+즉
+
+print (nums[:2])
+
+=>1, 2
+
+로 2전까지 잘라서 추출하는 것이다.
+
+ 
+
+마지막으로, concatenation 이란, 더해주는 것.
+
+즉,
+
+nums = [1, 2, 3, 4]
+
+nums2 = [5, 6]
+
+numbers = nums + nums2
+
+print(numbers)
+
+=>[1, 2, 3, 4, 5, 6]
+
+이다.",14,,0,,0,,0,"while not i == n:
+
+     i = 0  
+
+     space = ' ' * (n - i - 1)
+
+     pattern = '*' * (i+1)
+
+     print (space + pattern)
+
+     i + = 1   ",15,,0,,0,,0,"L이라는 리스트를 만들고,
+
+0부터 n-1까지의 수를 랜덤으로 배정하여서 리스트 값으로 정하는 함수이다.",5,"사용자로부터 n이라는 값을 받았을 때,
+
+그 값이 리스트 L이 가진 변수 즉, L의 길이보다 짧거나, 1이면
+
+적합하지 않다고 보여주고
+
+아니어도 적합하지 않다고 다시 입력 하라고 보여주는 함수다.",5,"입력된 두 숫자가 
+
+랜덤으로 나열된 두 리스트의 위치값으로 추출되게 되는데,
+
+그 값이 똑같은지 추출하는 프로그램이다.",3,,0,,0,,0,"(800,Apple,1000,Grape,300,Persimmon,1500,Pear,50,Chestnut)",5,"Apple,800,Grape,1000,Persimmon,300,Pear,1500,Chestnut,50",5,"Apple,Grape,Persimmon,Pear,Chestnut",5,,0,,0,,0,,0,,0,,0,,0,,0,Math 75,3,english? Not in the dictionary!,4,"just type 'quit'.
+
+if quit is quit
+
+this code is break",7,"사용자가 어떠한 과목의 점수를 확인하고 싶으면,
+
+과목의 이름을 입력하여서, 그것에 맞는 점수를 알려주는 프로그램이다.",12,,0,,0,"Joseph Shin 75 90
+
+James Aaron 85 85
+
+Henry Aaron 90 85
+
+George Hahn 80 70
+
+David Lee 70 70
+
+Carrol Johnson 80 98",7,"midterm2에 있는 text를 file로 불러오고,
+
+문자는 tuple로 숫자는 integer로 변환하여서 list_of_items라는 비어있는 리스트에 저장한다.
+
+그렇게 list를 만든다.",8,"지정된 list에 Carrol  Johnson 80, 98 을 집어 넣는다.
+
+그리고 난 후에 알파벳으로 문자를 정렬(sort)하고 reverse해준다.
+
+sort하지 않고 append하지 않았다면
+
+output은 그저
+
+Henry Aaron 90 85
+
+George Hahn 80 70
+
+David Lee 70 70
+
+James Aaron 85 85
+
+Joseph Shin 75 90
+
+으로 나왔을 것이다.
+
+ ",4,학생의 수학과 과학점수를 나열하여 알파벳 순서 반대로 알려주는 프로그램이다.,5,46,3,147
+전종석,5061,21900645,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:51:10 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,,0,,12,,10,,0,,0,,0,,0,,5,,0,,0,,3,,3,,0,,0,,0,,0,,10,,10,,10,,0,,0,,8,,8,,8,,8,,0,,0,,2,,0,,7,,12,,0,,0,,8,,4,,4,,6,45,4,162
+박겸,4686,21800257,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:36:49 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,TRUE,4,FALSE,0,,0,"언팩킹 이란 튜플안에 있는 값들을 특정한 변수에 할당해주는 것을 의미한다. 예)
+
+tup1 = (1,2,3)
+
+a, b, c = tup1
+
+이렇게 적어주었을 때 변수 a, b, c에 1, 2, 3이 할당되게 된다.
+
+ ",12,"tuples의 selection, slicing, concatenation의 예이다.
+
+튜플을 다음과 같이 설정한다 tp1 = (3,4,5,6,7)
+
+selection은 말 그대로 튜플안의 일정한 값을 선택하는 것이다.
+
+다음과 같이 표현될 수 있다.
+
+tup1[0]이라고 했을 때 출력값은 3이 된다. 왜냐면 tup1 에서 첫번째 값이 3이고 첫번째값에는 0 그다음 1이렇게 순서가 할당되기 때문이다.다음은 tuple의 slicing 이다.
+
+tup1[1:3] 이라고 했을 때 출력값은 (4,5) 가 된다. 두번째 값부터4번째 값 이전까지 나타내는 것이다.
+
+tuple의 concatenation 은 합성을 의미한다.
+
+예로 tp1= (1,2) tp2= (3,4) 라고 했을때
+
+tp1+tp2를 실행하면 출력 값은 (1,2,3,4) 가 될 것이다.
+
+리스트도 마찬가지 원리가 적용된다.
+
+list1 = [1,2,3] 이라고 했을 때,
+
+selection 으로 list1[2] 의 출력값은 3, slicing으로 list1[1:] 하면 두번째 것부터 끝까지로 [2,3] 이 출력되고 concatenation 으로 list1 = [1,2,3] list2 = [4,5,6]으로 설정하고 list1+list2 를 해주었을 때 출력값은 [1,2,3,4,5,6]이 된다.",14,"named parameter는 default parameter로도 불린다. 그 이유는 값을 정해주기 때문에 더욱 유연한 parameter 지정이 가능해진다. 그것의 예이다.
+
+def create_circle(radius = 30, color=""yellow"") 이처럼 원을 그리는 함수의 parameter의 값을 미리 지정해주었다. 이것이 바로 named parameter 이다. 이것을 활용하면 함수를 좀더 다양하게 사용할 수 있다. 가령 달을 그린다고 했을 때, moon = create_circle(color=""red"") 이처럼 색의 값만 parameter로 나타내어도 기본적으로 반지름 값은 이미 지정된 30의 default값을 가지게 되는 것이다.  ",14,,0,,0,"k = 0 
+
+while k < n:
+
+    space = "" ""*(n-k-1)
+
+    pattern = '* '*(i+1)
+
+    print(space+pattern)
+
+    k += 1
+
+  ",20,"for i in range(n):
+
+space = "" ""*(n-i-1)
+
+space2 = "" ""*(
+
+star1 = '*'
+
+star2 = '*'
+
+k = 0
+
+while k<n :
+
+print 11, 9, 7, 5, 3, 1
+
+space = "" ""*(n-k-1)
+
+pattern = '* '*(i+1)
+
+print(space+pattern)
+
+k+= 1",3,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,45,4,87
+김평안,6668,21600171,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:57:17 UTC,1,TRUE,0,,0,FALSE,0,FALSE,0,FALSE,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"튜플에 있는 데이터를 분리해서 할당하는 것입니다. 예를 들면
+
+tup1=(255,188,0)
+
+x,y,z=tup1",12,"selection은 데이터 structure에서 한개의 데이터를 가져오는 겁니다. 이것의 예로 tup1[2].
+
+slicing은 data structure에서 여러개의 데이터를 가져오는 겁니다
+
+이것의 예로 list[1:3]
+
+concatenation은 두개의 data structure를 합쳐주는 것입니다.
+
+이것의 예로 a=list[1:3], b=list[4:7].    a+b
+
+ ",14,"함수를 정의할때 parameter의 이름은 함수를 call할때의 argument와 같은 필요는 없습니다. 하지만 순서와 갯수는 맞춰서 써야합니다. 
+
+def print_sum(a,b,c):
+
+    print(a,b,c)
+
+print_sum(x,y,z)",0,,0,,0,"p=n
+
+c=0
+
+while c!=n:
+
+     space=' '*(n-c-1)
+
+     pattern=""*""*(c+1)
+
+     print(space+pattern)
+
+     c+=1
+
+     ",20,"c=1
+
+for i in range(n):
+
+     if i=0:
+
+          space=' '*(n-i-1)
+
+          print(space+""*"")
+
+     if i>=1 and i<=(n-2):
+
+          space=' '*(n-i-1)
+
+          print(space+""*""+"" ""*c+""*"")
+
+          c+=2
+
+      else:
+
+          print(""*""*(2*n-1))",5,,0,,0,"func1(n)에서는 n을 받아서 list L에 0~n-1까지 숫자를 순서대로  False와 함께 리스트로 묶은 다음 넣어주고, 랜덤하게 섞습니다.",8,사용자로 부터 값을 받는데 그 값이 0보다 크고 리스트 L의 길이보다 작고 리스트L[입력값][1]이 False이면  입력값을 return해줍니다.,8,리스트 L1과 L2에 같은 데이터들이 순서에 상관없이 섞여있는데 L1과 L2에서 같은 데이터를 찾는 프로그램입니다.,5,"L1=[[1,True],[2,True],[0,True]]
+
+L2=[[1,True],[0,True],[2,True]]",10,,0,,0,"((800,""Apple""),(1000,""Grape""),(300,""Persimmon""),(1500,""Pear""),(50,""Chestnut""))",10,"[[""Apple"",800],[""Grape"",1000],[""Persimmon"",300],[""Pear"",1500],[""Chestnut"",50]]",10,"{800 : ""Apple"", 1000 : ""Grape"", 300 : ""Persimmon"",
+
+1500 : ""Pear"" , 50 : ""Chestnut""}",10,,0,,0,"90 ""Korean"" ""Math."" ""History""
+
+85  ""English"" ""Science""
+
+95  ""Economics""",14,"90 [""Korean"", ""Math"", ""History""]",8,"[""English"",""Science""]",8,"[""Economics""]",8,,0,,0,"""Math."" 75",4,"""english"" ""? Not in the dictionary!""",4,"""Enter a course:"" 가 떴을 때 quit를 입력하면 됩니다.",7,dictionary에 있는 과목중에 그 과목의 점수가 궁금하면 과목을 입력해서 점수를 알아낼 수 있는 프로그램입니다. 하지만 dictionary에 없는 것을 입력하면 dictionary에 없다고 뜨고 quit을 입력하면 프로그램을 멈춥니다.,13,,0,,0,"""Carrol Johnson  80  98""
+
+""Joseph Shin     75  90""
+
+""Henry Aaron     90  85""
+
+""James Aaron    85  85""
+
+""George Hahn     80  70""
+
+""David Lee       70  70""",16,input은 file입니다 이 파일에서 정보를 가져와서 list를 만들었습니다,4,리스트를 가져와서 하나의 데이터를 더 추가한 다음 리스트 안에 있는 튜플의 [2]크기와 [1]크기 순서로 정렬시켜서 리스트를 내보냈습니다.,6,학생들의 점수를 점수 순으로 정렬한 다음 배열에 맞춰서 프린트 하는 것입니다.,5,42,7,221
+김주희,3658,21800174,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 10:43:20 UTC,1,TRUE,0,,0,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,TRUE,4,FALSE,0,TRUE,4,TRUE,4,TRUE,4,,0,,0,,0,"음.. function definition 은 def 에 정의 하는것. 실행을 되지 않고,
+
+def turn_right(): 
+
+for i in range(3):
+
+hubo.turn_left()
+
+function calls은 정의 된 function을 불러 실행시키는 것. turn_right()",0,,0,,0,,0,"print ("" ""*(n-1) + ""*"")
+
+ 
+
+for i in range(1,n-1):
+
+   space = "" ""*(n-i-1)
+
+   pattern = ""*"" + "" ""*i + ""*""
+
+   print (space + pattern)
+
+ 
+
+print (""*""*n -""*"")
+
+ ",5,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,46,3,33
+김재홍,3568,21400176,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:12 UTC,1,TRUE,0,,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"A tuple에 묵여있는 elements를 tuple 바깥으로 꺼내는 것을 말합니다. 
+
+ex)
+
+r,g,b=(100,0,125) 이렇게 unpack을 하면 (100,0,125)라는 하나의 tuple이 r=100, g=0, b=125로 하나씩 할당 됩니다.",12,"selection이란, tuples,lists, 또는 strings에 묵여있는 elements중 하나를 골라내는 것을 말합니다.
+
+ex)
+
+tp1=(1,2,3,4,5)
+
+tp1[0]
+
+>> 1
+
+slicing이란, lists, tuples, or strings에서 원하는 elements를 index의 구간을 정하여 가져오는 것입니다.
+
+ex)
+
+tp1=(1,2,3,4,5)
+
+tp1[1:3]
+
+>>
+
+2, 3, 4",10,"named parameters를 사용하면 arguments와 parameters 사이에 positional correspondence 에 대해 신경을 쓰지 않아도 되어, arguments의 순서를 parameters 에 맞추지 않아도 함수가 잘 호출됩니다.
+
+ex)
+
+def create_circle(radius=30, color=""yellow""):
+
+sun=create(color=""blue"", radius=15) arguments 순서가 parameter의 순서와 달라도 함수가 호출됩니다.
+
+ ",14,,0,,0,"while n>0:
+
+    for i in range(n):
+
+           space="" ""*(n-i-1)
+
+           pattern=""*""*(i+1)
+
+           print(space+pattern)
+
+       break",5,"for i in range(n):
+
+      if i==0:
+
+          space = ' '*(n-i-1)
+
+          pattern =""*""
+
+          print(space+pattern)
+
+      elif 1<=i<n-1:
+
+          space = ' '*(n-i-1)
+
+          pattern=""*""+"" ""*(2*i-1)+""*""
+
+          print(space+pattern)
+
+      else:
+
+          space="" ""*(n-i-1)
+
+          pattern=""*""*(2i+1)
+
+          print(space+pattern)",10,,0,,0,"[[0,False], [1,False]......[n-1,False]] 이런 식의 list를 만들고, 리스트안의 elements들을 무작위로 섞어 L에 할당합니다.",10,"사용자의 입력 값을 받습니다. L이라는 리스트에 들어있는 숫자 범위에 맞는 입력 값만을 받습니다. 리스트에 있는 숫자 범위에 들어가지 않을 경우, 혹은 숫자가 아닌 값을 입력했을 경우 ""Invalid input. Please retry.""를 출력합니다.",8,"0,1,2 를 임으로 배치하고, 임의로 배치된 세 수의 초합을 추론하는 게임입니다.",2,"n,m값이 1씩 증가합",0,,0,,0,"((""Apple"", 800), (""Grape"",1000), (""Persimmon"",300), (""Pear"", 1500,) (""Chestnut"",50))",5,"[[800, ""Apple""], [1000,""Grape""], [300, ""Permission""], [1500,""Pear""], [50,""Chestnut""]]",5,"{""Apple"": 800, ""Grape"":1000, ""Persimmon"":300, ""Pear"": 1500, ""Chestnut"":50}",5,,0,,0,"[[90,""Koreans"", ""Math"", ""History""], [85,""English"", ""Science""],  [95,""Economics""]]",5,"90, Koreans, Math, History",6,"English, Science",6,Economics,6,,0,,0,"Math, 75",3,"english, not in the dictionary",3,사용자가 quit을 입력하면 프로그램이 terminate 됩니다.,7,"사용자가 file에 있는 과목명을 입력하면, 과목명과 점수를 출력하는 함수입니다. ",13,,0,,0,"(Joseph Shin, 75, 90), (Henry Aaron, 90, 85), (James Aaron, 85, 85), (Geroge Hahn, 80, 70), (David Lee, 70, 70)",5,"파일에서 정보를 불러오고, list_of_items 에 정보를 tuple의 형태로 저장합니다.",4,"(""Carrol Johnson"", 80, 98) 를 list에 추가한 후, 정렬하는 함수입니다. 정렬은 3번째에 있는 점수 기준으로 높은 점수 순으로 세웁니다. 3번째 점수가 같을 시 2번째 점수를 비교하여 정렬합니다.",8,"과학점수가 높은 순으로 list를 나열합니다.  과학점수가 같을 시, 수학 점수를 비교하여 높은 순으로 나열하는 프로그램입니다. 나열은 이름 수학점수 과학점수 순입니다.",8,43,6,176
+김예찬,5923,21600121,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:46 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"투플을 생성하고, 투플의 element 들의 갯수에 맞춰 변수들을 새로 생성하여 assign하게 되면, element들이 그 순서대로 변수들에게 각각 위치별 할당되는 것입니다. (투플을 푸는 것입니다.)
+
+예) number = (1, 2, 3)
+
+x, y, z = number 하면 그 순서대로
+
+x = 1, y=2, z=3의 값을 할당받게 됩니다.  ",12,"먼저, 예시로 투플과 리스트, 스트링을 생성해보겠습니다. 
+
+tp = (1, 2, 3) 
+
+lst = [1, 2, 3]
+
+str = ""a,b,c"" 
+
+ 
+
+Selection 은 자료구조 내의 각 인덱스에 해당하는 값을 받아오는 기능입니다. 
+
+예시) tp[0] = 1, lst[0] = 1, str[0] = 'a'
+
+Slicing 은 자료구조 속 여러 개의 element 들을 동시에 표현하는 기능입니다.
+
+예시) tp[1:3] = (2, 3)  lst[1:3] = [2, 3]   str[1:3] = 'bc' 
+
+Concatenation 은 두 개 이상의 자료구조들을 연결하여 합치는 기능입니다.
+
+예시) 대표적으로 tuple을 예로 들자면, tp1 = (1, 2, 3), tp2 = (4, 5, 6) 이라면
+
+tp1 + tp2 는 (1, 2, 3, 4, 5, 6) 이 됩니다. 다른 리스트와 스트링도 마찬가지로 적용됩니다. ",14,"named parameters 들은 function definition에서 parameter 들의 이름과 함께 기본값을 설정해주며 사용되고, 함수 호출에서는 다양한 모양으로 사용되는데 예시로 보자면,
+
+def create_circle(radius = 5, color = ""red""):
+
+      circle = Circle(radius) 
+
+      circle.setFillColor(color) 
+
+(이하생략)
+
+이런 식으로 원 만드는 함수를 named parameter를 사용하여 정의한다면, 기본값이 반지름 5, 빨간색으로 설정되는데 
+
+function call 에서 sun = create_circle( )  이렇게 parameter 를 입력 안하면, 설정한 default parameter로 원이 만들어지고 (반지름 5, 빨간색)
+
+moon = create_circle(20, ""yellow"") 로 호출하면 반지름 20, 노란색으로 parameter가 입력되어 함수가 실행됩니다. 
+
+특징은, 일반적인 positional correspondence 가 적용되지 않습니다. (function call 에서 arguements 순서 상관없다는 말)   ",14,,0,,0,"i = 0
+while n > 0:
+    space = "" ""*(n-i-1)
+    pattern = ""* ""*(i+1)
+    print(space + pattern)
+    i += 1
+    if i == n:
+        break",20,"for i in range(1, n+1):
+
+    if i ==1:
+        print("" ""*(7-i) + ""*"" + "" ""*(7-i))
+    elif i < n:
+        print("" ""*(7-i) + ""*"" + "" ""*(2*i-3) + ""*"" + "" ""*(7-i))
+    else:
+        print(""*""*i + ""*"" + ""*""*(i-2))",15,,0,,0,숫자(0~n-1)와 false 값을 담고있는 n 개의 리스트 element 들을 무작위로 섞은 리스트를 리턴하는 함수입니다.  ,10,"사용자로부터 입력값을 받아, 리스트 L의 element 갯수(n)보다 작은 경우 입력받은 값을 리턴하고, 아닐 경우 유효하지 않음을 보여 다시 입력하도록 하는 함수입니다.  (위의 코드에서는 3보다 작은 숫자만 받음)",8,사용자로부터 2 이하의 두 수를 입력받아서 두 수가 같을 때까지 걸린 시도 횟수를 나타내주는 프로그램입니다.,5,True 값 입,2,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,,0,44,5,120
+김석태,4592,21600082,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:39:00 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,TRUE,4,FALSE,0,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,TRUE,4,,0,언팩킹은 함수가 가지고 있는 변수들을 나타내는 것입니다.,0,"셀렉션은 튜플이나 리스트나 스트링에서 값 하나를 가져오는 것이고 슬라이싱은 어디서 부터 어디까지를 정해서 값을 가져오는 것이고 concatenation은 전체를 나타내는 것입니다. 
+
+ex) tup1 = (1, 2, 3, 4) selection: tup1[3] >>> 4 / slicing: tup1[1:] >>> (2, 3, 4)
+
+concatenation: tup1[] >>> (1, 2, 3, 4)  ",10,"글로벌로 선언된 파라미터는 모든 함수정의와 함수콜에서 적용되고 로컬로 선언된 파라미터는 그 함수 안에서만 적용된다. 
+
+ex) def func1(a):
+
+        a = a + 10
+
+       print(a)
+
+a= 10
+
+func1(a)   >>> 20
+
+print(a)   >>> 10
+
+ 
+
+ ",0,,0,,0,"while (i =< 7):
+
+   space = ' ' * (n-i-1)
+
+   pattern = '*' * (i+1)
+
+   i += 1
+
+   ",15," for i in range(n):
+
+     if (i == 0):
+
+         space = ' '*(n-i-1)
+
+         pattern = ('* '*1)
+
+         print(space + pattern)
+
+    elif (0 < i < 6):
+
+        space = ' '*(n-i-1)
+
+        pattern = ('*' * 1) + (' ' * (i - 1)) + ('*' * 1)
+
+        print(space + pattern)
+
+    else:
+
+        space = ' '*(n-i-1)
+
+        pattern = '* '*(i+1)
+
+        print(space + pattern)",10,,0,,0,"n이란 숫자값을 받아서 L이란 리스트를 만드는 것, 아이템의 순서는 랜덤하게 배치함",5,조건에 맞는 n을 설정하기 위한 함수,0,두 수를 비교하는 프로그램,0,"0, 4",0,,0,,0,"((800, ""Apple""), (1000, ""Grape""), (300, ""Persimmon""), (1500, ""Pear""), (50, ""Chestnut""))  ",10,"[(""Apple"", 800), (""Grape"", 1000), (""Persimmon"", 300), (""Pear"", 1500), (""Chestnut"", 50)]",8,"{800:""Apple"", 1000:""Grape"", 300:""Persimmon"", 1500:""Pear"", 50:""Chestnut""}  ",10,,0,,0,"90 ""Korean"" ""Math."" ""History""
+
+95 ""Economics""
+
+85 ""Science"" ""English""
+
+ ",14,"90, ""Korean"" ""Math."" ""History""",6,"""Science"" ""English""",5,"95 ""Economics""",6,,0,,0,"Math., 75",4,"english, not in the dictionary",4,Enter a course: 에다가 quit를 작성합니다.,7,과목과 그 과목의 점수가 적혀져 있는 텍스트 파일을 딕셔너리형태로 저장해 과목을 입력하면 점수를 볼 수 있게 해줍니다.,13,,0,,0,"Carrol Johnson  98  80    
+
+Joseph Shin      90  75
+
+Henry Aaron     85  90
+
+James Aaron     85  85
+
+George Hahn    70  80
+
+David Lee         70  70",10,"우선 list_of_items 라는 리스트를 만들고 mid_term2.txt 파일을 읽어온뒤 그 파일의 아이템들의 오른쪽 공백을 지워주고 "","" 로 나눈다음 아이템들의 점수들을 숫자형으로 변환한뒤 각각 아이템들을 튜플형태로 묶어 리스트형태로 합쳐줍니다. 그리고 파일을 닫고 이를 처음 만든 list_of_items이란 리스트에 적용합니다. ",8,"(""Carrol John"", 80, 98)이란 아이템을 list_a에 새로 추가하고 이 리스트를 아이템들의 점수를 서로 위치를 바꾸고 위치가 바뀐 두번째 점수를 기준으로 내림차순으로 아이템들을 정렬합니다. 예를 들어 Carrol의 점수인 80, 98이 위치가 바뀌어서 98, 80로 저장되고 앞에 점수 기준으로 정렬이 됩니다. ",4,mid_term2.txt 파일에 적혀있는 학생들의 이름과 점수들을 파악하고 딕셔너리 형태로 저장하여 중간에 학생 한명을 추가해 수학점수 기준으로 내림차순으로 정렬시키고 각각의 위치를 지정해줘서 보기 깔끔하고 쉽게 해줍니다. ,6,46,3,183
+김무혁,5798,21400083,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 12:01:01 UTC,1,TRUE,0,,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,TRUE,4,TRUE,4,TRUE,4,TRUE,4,,0,"unpacking은 하나의 list, dictionary, tuple등을 element들로 나눠서 다시 정의하는 것이다. 
+
+lst = ['a', 'b', 'c']
+
+str_1, str_2, str_3 = lst
+
+ ",12,"selection은 인덱스를 이용해 원하는 element를 분리하는 것이다.
+
+slicing은 인덱스를 이용해 원하는 element를 여러개 분리하는 것이다.
+
+concatenation은 두 개이상의 lists, tuples, strings 등을 하나로 합치는 것이다.
+
+tuple이나 string의 selection, slicing, concatenation은 같다. 
+
+tup =()
+
+tup1 = ('a', 'b', 'c')
+
+tup2 = ('d', 'e')
+
+print(tup[0], tup[-1]) # selection
+
+print(tup[1:2]) # sclicing
+
+tup = tup1 + tup2 # concatenation
+
+print(tup) 
+
+리스트도 위와 같이 가능하다. 
+
+lst1 = ['a', 'b', 'c']
+
+lst2 = ['d']
+
+print(lst1[0], lst1[0:2]) # selection, slicing
+
+lst3 = lst1 + lst2 # concatanation
+
+print(lst3)
+
+ ",14,"named parameter를 사용하려면 fuction call할 argument가 있으면 된다.
+
+def sum(parameter1, parameter2):
+
+    plus_value = parameter1 + parameter2
+
+    return plus_value
+
+num1 = 3
+
+num2 = 4
+
+print(sum(num1 + num2))
+
+ ",0,,0,,0,"i = 0
+
+while i < n:
+
+    space = ' ' * (n-i-1)
+
+    pattern = '* '* (i+1)
+
+    print(space + pattern)",15,"i = 0
+
+j = 0
+
+while i < n:
+
+   space = ' ' * (n-i-1)
+
+   if j == '0':
+
+      pattern = '*'
+
+      j = 1
+
+   elif i == n=1:
+
+      pattern = '*' * 13
+
+   else:
+
+      pattern = '*' + ' ' * j + '*'
+
+      j += 2
+
+   print(space + pattern)
+
+   i += 1",15,,0,,0,,0,,0,,0,,0,,0,,0,"((1000, 'Grape'), (800, 'Apple'), (300, 'Persimmon'))",7,"[['Grape', 1000], ['Apple', 800], ['Persimmon', 300]]",7,"{1000: 'Grape', 800: 'Apple', 300: 'Persimmon'}",7,,0,,0,90 Korean Math. History,5,85 English Science,4,95 Economics,4,"90['Korean', 'Math.', 'History']
+
+['English', 'Science']
+
+['Economics']",4,,0,,0,"{'History': 95, 'Economics': 90, 'Korean': 75, 'English': 75, 'Math.': 75, 'Science': 90}
+
+Enter a course:",0,English 75,0,quit 를 적는다.,7,이 프로그램은 txt파일에 저장되어 있는 중간고사 점수에 따른 과목이름을 찾아주는 것이다. 예를들어 내 영어 성적이 75점이라면 이 프로그램에 75를 적으면 75점 맞은 과목은 영어라는 것을 알려준다.,3,,0,,0,"Carrol Johnson   80  98
+
+Joseph Shin       75  90
+
+Henry Aaron      90  85
+
+James Aaron      85  85
+
+George Hahn     80  70
+
+David Lee          70  70",16,,0,,0,"중간고사 점수와 이름이 들어있는 txt를 불러와서 깔끔하게 정렬한다. 그리고 혹여나 빠져있는 사람이 있다면 추가할 수 도있고, 오름차순 내림차순에 대한 정렬도 가능하다.",4,45,4,148
+김다운,7174,21801006,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:33 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"unpack이란, 오른쪽에 미리 정의된값을 왼쪽에 할당하는 것을 뜻한다. 아래 예시 참고
+
+ex)
+
+position = 3.0, 4.0, 6.0
+
+x,y,z = position
+
+(x,y,z에 position의 각 값이 할당된다.)
+
+ ",12,"selection이란, 인덱스를 선택하여 값을 출력하는 것.
+
+slicing이란, 여러개의 element를 표시하는 것이다.
+
+concatenation이란, 두 개의 (tuple/list/string) 값을 붙여 새로운  (tuple/list/string) 값을 만드는 것.
+
+*tuple로 예시*
+
+tp1 = (1,2,3,4)
+
+tp2 = (5,6)
+
+<selection>
+
+tp1[2]
+
+>>> 3
+
+<slicing>
+
+tp1[1:3]
+
+>>>(2,3)
+
+<concatenation>
+
+tp1 +tp2
+
+>>>(1,2,3,4,5,6)",14,"parameter가 두개이상일 경우 ','로 구분하고 parameter가 존재할 경우 function call시 argument의 갯수와 동일해야한다.
+
+ 
+
+ex) 
+
+def absoltute(x):
+
+     if x<0:
+
+        return -x
+
+     return x
+
+print(absoltute(-x))
+
+ 
+
+absoltute(7)  ------argument는 7이며 parameter와 동일한 갯수",0,,0,,0,"i = 0
+
+while i > n:
+
+    space = ' '*(n-i-1)
+
+    pattern = '* '*(i+1)
+
+       return (space + pattern)
+
+ 
+
+ ",20," for i in range(n):
+
+     space = ' '*(n-i+2)
+
+     pattern = '* '*(i+1)
+
+     print(space + pattern)",5,,0,,0,"n의 값이 3이면 
+
+L은[ 0,False,1,False,2,False]이다.
+
+이 중 임의로 값을 뽑아 함수로 돌려준다.(return)",2,"while의 값이 참일 경우, 입력한 숫자의 값이 if 절의 조건을 충족하면 n(입력 숫자)반환하고 ""Invalid input. Retry."" 메세지를 출력한다. 이외는 ""Invalid input. Retry."" 바로 출력한다.",2,"L1[a][0] == L2[b][0]의 값이 같으면
+
+가지고 있는 리스트의 값이 같으므로 
+
+시도한 횟수를 출력한다.",2,"L1 = [2,0,1]
+
+L2 = [1,0,2]",2,,0,,0,"((""Apple"", 800),(""Grape"",1000),(""Persimmon"",300),(""Pear"",1500),( ""Chestnut"",50))",5,"[(""Apple"", 800),(""Grape"",1000),(""Persimmon"",300),(""Pear"",1500),( ""Chestnut"",50),[Apple"": 800, ""Grape"":1000, ""Persimmon"":300, ""Pear"": 1500, ""Chestnut"":50]]",5,"[(""Apple"":800),(""Grape"":1000),(""Persimmon"":300),(""Pear"":1500),( ""Chestnut"":50)]",5,,0,,0,"""Korean"" 90
+
+""English"" 85
+
+""Math."" 90
+
+""Science"" 85
+
+""History"" 90
+
+""Economics"" 95",5,"(90, [""Korean"",""Math."" ,""History""] )
+
+ ",6,"[""Korean"",""Math."",""History"",""Economics""]",4,"[""Economics"", 95]",4,,0,,0,"[math,75]",2,"[English,75]",0,file.close()를 해주어야한다.,0,각 과목 별 점수를 일목요연하게 보여준다.,2,,0,,0,"[(Carrol Johnson"", 80, 98),(""Joseph Shin"", 75, 90),(""Henry Aaron"", 90, 85),(""James Aaron"", 85, 85),(George Hahn, 80, 70),(""David Lee"", 70, 70)]",6,"공백제거, "",""로 구분한 각 아이템을 리스트별로 나누어 출력한다. ",3,"먼저 item_list 끝에 (""Carrol Johnson"", 80, 98)을 추가하고
+
+record를 입력하여 (record[2],record[1])을 출력하고 내림차순으로 정렬하는 것이다.
+
+                         ",4,리스트에 있는 item을  format string하여 저장하는 것이다.,4,45,4,138
+박민재,6650,21700257,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:32:01 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,"Unpacking means extracting a tuple into single variables. 
+(a,b,c,d)
+print(a)",2,"Since strings and tuples are immutable, the selection, slicing and concatenation enable re-creation. 
+ex) 'I love Handong' Here, we can divide this string through split(), resulting in 'i','love','handong'",0,"A parameter is a local variable, the name of an object which can only be recognized inside a function. 
+
+For example: def hello(a,b,c):
+
+                       x1 = a-b-c
+
+                       x2 = a+b+c
+
+                       return x1 + x2",0,,0,,0,"n=0
+
+while n<7:
+
+n=n+1
+
+space="" ""*(7-n)
+
+pattern-""*""*(n)
+
+print(space+pattern)
+
+ ",5,"for i in range(1,n):
+
+print("" ""*(n-i)+""*""*i+"" ""(n-i))
+
+ ",0,,0,,0,"먼저 list를 만든다. n값을 입력받으면, n값이 정수인지 확인하고 리스트에 n을 추가한다. 리스트안의 요소들을 랜덤으로 섞는다. L(리스트)를 리턴받는다. ",3,"True일 때, 정수(int) n을 입력받는다. 입력받은 n값이 0보다 크고 리스트안의 수들의 합보다 작으면 False 이고 n값을 리턴받는다. 아닐경우 잘못된 숫자임을 알려주고 n값을 다시 입력받는 메시지를 보낸다. ",2,"n값과 m값을을 사용자로부터 입력받았을 때, 두 수의 합이 지정해준 값3과 1사이인지 확인해준다. 이후에 list보다 큰 값이면 n에 1을 더하고 아니라면 입력받은 n값을 그대로 리스트에 추가시킨 후에 사용자에게 보여준다. ",0,n+=1 and m+=1,0,,0,,0,"('Apple, 800', 'Grape, 1000', 'Persimmon, 300', 'Pear, 1500', 'Chestnut, 50')",7,"[800, Apple,, 1000, Grape,, 300, Persimmon,, 1500, Pear,, 50, Chestnut]",7,"['Apple':800, 'Grape':1000, 'Persimmon':300 'Pear':1500, 'Chestnut':50]",5,,0,,0,"{90}
+
+{85}
+
+{90}
+
+{85}
+
+{90}
+
+{95}",4,"(90, Korean)
+
+(90, Math)
+
+(90, History)",3,"(English, Science)",6,(Economics[95]),5,,0,,0,"(Math, 75)",3,"(English, 75)",0,"type ""quit""",7,"과목명을 입력하면, 그 과목명에 해당하는 점수를 알려주는 프로그램이다. build_a_dict함수는 텍스트 파일을 불러와서 dictionary형태로 만들어주는 역할을 한다. read_a_subject함수는 값을 입력받고, 과목명이 dictionary에 해당되있는지 확인해주는 함수이다. main함수에서는 사용자가 quit을 입력하면 프로그램을 종료하고, 과목명을 입력하면 점수와 함꼐 결과를 보여주는 역할을 한다. ",15,,0,,0,"Carl Johnson, 80, 98
+
+Henry Aaron, 90, 85
+
+James Aaron, 85, 85
+
+Joseph Shin, 75, 90
+
+David Lee, 70, 70",8,"mid.term이라는 텍스트 파일을 불러와서 하나의 리스트로 만드는 함수이다. strip을 통해 item들 사이의 공백을 없애주고, split을 통하여 string들을 하나의 단어들로 break해준다. item[1],item[2]즉 점수들을 정수(integer)로 변환시켜준다. 마지막으로 하나의 tuple로 구성한다음 list에 추가(append)해준다. ",8,"기존에 있는 리스트에, (Carol Johnson, 80,98) item을 하나 더 추가시켜준다. lambda를 통하여 두 정수 아이템을 더한 후, 그 값을 기존에 리스트에 있던 값들과 비교하여 내림차순(큰수 부터 작은수로) 나열한다. ",4,리스트에 하나의 요소를 추가하고 높은 점수부터 낮은 점수로 나열해주는 함수이다. ,4,44,5,118
+박가영,4910,21900260,프로그래밍 I(Programming I) 01분반,3700,,2020-04-21 11:59:51 UTC,1,TRUE,0,,0,TRUE,4,TRUE,4,FALSE,0,FALSE,0,TRUE,4,FALSE,0,FALSE,0,FALSE,0,TRUE,4,TRUE,4,,0,,12,,14,,14,,0,,0,,15,,0,,0,,0,,10,,0,,0,,0,,0,,0,,10,,10,,10,,0,,0,,16,,8,,8,,0,,0,,0,,4,,4,,7,,12,,0,,0,,16,,8,,4,,7,44,5,209

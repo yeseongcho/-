@@ -1,0 +1,6 @@
+Science,90
+History,95
+Economics,90
+Math.,75
+English,75
+Korean,75

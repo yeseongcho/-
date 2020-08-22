@@ -1,0 +1,17 @@
+quiz 3
+
+1번
+(1) Circle.PI
+(2) Circle.PI
+(3) circle = Circle(r)
+(4) circle.display()
+
+2번
+Encapsulation
+Abstraction
+Inheritance
+
+2번
+(1) (1.00, 1.00),white
+(2) 10.0 314.0
+

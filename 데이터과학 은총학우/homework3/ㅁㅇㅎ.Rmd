@@ -1,0 +1,327 @@
+---
+title: '20190701'
+author: "eunchong"
+date: '2019 7 1 '
+output:
+  word_document: default
+  html_document: default
+---
+TPR = recall (전체 P중에 진짜 P) -> 높을수록 좋다
+FPR = 전체 N 중에 P 라고 착각 한 것의 비율 -> 낮을 수록 좋다 
+
+threshold가 0이 되면 recall이 1이 된다. 근데 FPR도 1이 된다. 
+threshold가 1이 되면 recall이 0이 된다(아무도 T라고 분류 안함). 그리고 FPR도 1이 된다. 
+
+# Regression model
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+train.df
+
+sv_reg_smoker <- tapply(train.df$charges_log, train.df$smoker, mean)
+sv_reg_smoker # regression model
+
+## train model
+train.df$pred_charges_log <- sv_reg_smoker[train.df$smoker]
+
+# ereor = real - pred
+train.df$error <- train.df$charges_log - train.df$pred_charges_log
+hist(train.df$error) # o에 가까운게 많을수록 좋음s=
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+MSE_train <- mean(train.df$error**2)
+MSE_train
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 단위 맞춰주기 
+
+10^0.29 # log10 해준거 다시 맞춰주기
+
+## test model 
+test.df$pred_charges_log <- sv_reg_smoker[test.df$smoker] ## 이거 중요함. 데이터 셋에 이거 안들어가 있음. 
+
+# ereor = real - pred
+test.df$error <- test.df$charges_log - test.df$pred_charges_log
+hist(test.df$error) # o에 가까운게 많을수록 좋음
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+MSE_test <- mean(test.df$error**2)
+MSE_test
+
+RMSE_test <- sqrt(MSE_test)
+RMSE_test # 단위 맞춰주기 
+
+```
+
+## RMSE가 작다는 것의 기준
+: sample standard deviation 보다 작아야 한다 
+
+## R제곱
+: 1 - RSS/sd
+```{r}
+RSS = sum(train.df$error ** 2)
+SStot = sum((train.df$charges_log-mean(train.df$charges_log))**2)
+
+1 - (RSS/SStot) # R^2
+
+####################################################
+test.df$pred_charges_log <- sv_reg_smoker[test.df$smoker]
+
+
+RMSE_test <- sqrt(mean((test.df$charges_log - test.df$pred_charges_log) ** 2))
+RMSE_test
+
+RMSE_train
+sd(train.df$charges_log)
+RMSE_test
+sd(test.df$charges_log)
+
+#R for our S.V. regression model
+# Rsq on Test set
+test.df$error <- test.df$charges_log - test.df$pred_charges_log
+RSS = sum(test.df$error ** 2) 
+RSS
+
+SStot = sum((test.df$charges_log - mean(test.df$charges_log)) ** 2)
+SStot
+
+Rsq = 1- RSS/SStot
+Rsq
+
+```
+
+• Try the variable region as a input variable for regression
+to predict charges_log
+▫ What is RMSE and R for the model
+
+```{r}
+sv_reg_region <- tapply(train.df$charges_log, train.df$region, mean)
+sv_reg_region # regression model
+
+## train model
+train.df$pred_charges_log <- sv_reg_region[train.df$region]
+
+# ereor = real - pred
+train.df$error <- train.df$charges_log - train.df$pred_charges_log
+hist(train.df$error) # o에 가까운게 많을수록 좋음
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+MSE_train <- mean(train.df$error**2)
+MSE_train
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 단위 맞춰주기 
+
+10^0.402 # log10 해준거 다시 맞춰주기
+
+## test model 
+test.df$pred_charges_log <- sv_reg_region[test.df$region] ## 이거 중요함. 데이터 셋에 이거 안들어가 있음. 
+
+# ereor = real - pred
+test.df$error <- test.df$charges_log - test.df$pred_charges_log
+hist(test.df$error) # o에 가까운게 많을수록 좋음
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+MSE_test <- mean(test.df$error**2)
+MSE_test
+
+RMSE_test <- sqrt(MSE_test)
+RMSE_test # 단위 맞춰주기 
+
+```
+
+```{r}
+RSS = sum(train.df$error ** 2)
+SStot = sum((train.df$charges_log-mean(train.df$charges_log))**2)
+
+1 - (RSS/SStot) # R^2
+
+####################################################
+test.df$pred_charges_log <- sv_reg_region[test.df$region]
+
+
+RMSE_test <- sqrt(mean((test.df$charges_log - test.df$pred_charges_log) ** 2))
+RMSE_test
+
+RMSE_train
+sd(train.df$charges_log)
+RMSE_test
+sd(test.df$charges_log)
+
+#R for our S.V. regression model
+# Rsq on Test set
+test.df$error <- test.df$charges_log - test.df$pred_charges_log
+RSS = sum(test.df$error ** 2) 
+RSS
+
+SStot = sum((test.df$charges_log - mean(test.df$charges_log)) ** 2)
+SStot
+
+Rsq = 1- RSS/SStot
+Rsq
+
+```
+
+
+# Continunos Variable for S.V Model
+```{r}
+sv_reg_smoker <- tapply(train.df$charges, train.df$smoker, mean)
+sv_reg_smoker # regression model
+
+## train model
+train.df$pred_charges <- sv_reg_smoker[train.df$smoker]
+
+# ereor = real - pred
+train.df$error <- train.df$charges - train.df$pred_charges
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(train.df$error**2)
+MSE_train 
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 7376.6
+
+
+## test model 
+test.df$pred_charges <- sv_reg_smoker[test.df$smoker] ## 이거 중요함. 데이터 셋에 이거 안들어가 있음. 
+
+# ereor = real - pred
+test.df$error <- test.df$charges - test.df$pred_charges
+hist(test.df$error) # o에 가까운게 많을수록 좋음
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+MSE_test <- mean(test.df$error**2)
+MSE_test
+
+RMSE_test <- sqrt(MSE_test)
+RMSE_test # 7855
+
+```
+
+```{r}
+RSS = sum(train.df$error ** 2)
+SStot = sum((train.df$charges - mean(train.df$charges))**2)
+
+1 - (RSS/SStot) # 64.4
+
+####################################################
+test.df$pred_charges <- sv_reg_smoker[test.df$smoker]
+
+
+RMSE_test <- sqrt(mean((test.df$charges - test.df$pred_charges) ** 2))
+RMSE_test
+
+RMSE_train # 7376.668
+sd(train.df$charges) #12372.36
+RMSE_test # 7855.289
+sd(test.df$charges) # 10952.97
+
+#R for our S.V. regression model
+# Rsq on Test set
+test.df$error <- test.df$charges - test.df$pred_charges
+RSS = sum(test.df$error ** 2) 
+RSS #15920034979
+
+SStot = sum((test.df$charges - mean(test.df$charges)) ** 2)
+SStot
+
+Rsq = 1- RSS/SStot
+Rsq # 0.3 
+
+
+```
+
+###################################################
+```{r}
+###cut.bmi <- quantile(train.df$bmi, probs=seq(0,1,0.0))
+
+###c(-Inf, cut.bmi[2,10], Inf)
+
+test.df$bmi_range <- cut(test.df$bmi, breaks = c( -Inf, 22.9, 25.3, 27.3, 28.7,30.2, 31.9, 33.5, 35.6, 38.3,Inf ))
+table(test.df$bmi_range)
+
+train.df$bmi_range <- cut(train.df$bmi, breaks = c(-Inf, 22.9, 25.3, 27.3, 28.7,30.2, 31.9, 33.5, 35.6, 38.3, Inf ))
+table(train.df$bmi_range)
+
+sv_reg_bmi <- tapply(train.df$charges, train.df$bmi_range, mean)
+sv_reg_bmi # regression model
+
+## train model
+train.df$pred_charges <- sv_reg_bmi[train.df$bmi_range]
+
+# ereor = real - pred
+train.df$error <- train.df$charges - train.df$pred_charges
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+
+
+MSE_train <- mean(train.df$error**2)
+MSE_train 
+
+RMSE_train <- sqrt(MSE_train)
+RMSE_train # 12057.57
+
+
+## test model 
+test.df$pred_charges <- sv_reg_bmi[test.df$bmi_range] ## 이거 중요함. 데이터 셋에 이거 안들어가 있음. 
+
+# ereor = real - pred
+test.df$error <- test.df$charges - test.df$pred_charges
+hist(test.df$error) # o에 가까운게 많을수록 좋음
+
+
+#제곱한 에러의 평균 = MSE : 작을수록 좋음 
+MSE_test <- mean(test.df$error**2)
+MSE_test
+
+RMSE_test <- sqrt(MSE_test)
+RMSE_test # 10698
+
+```
+
+```{r}
+RSS = sum(train.df$error ** 2)
+SStot = sum((train.df$charges - mean(train.df$charges))**2)
+
+1 - (RSS/SStot) # 4.93
+
+####################################################
+test.df$pred_charges <- sv_reg_smoker[test.df$smoker]
+
+
+RMSE_test <- sqrt(mean((test.df$charges - test.df$pred_charges) ** 2))
+RMSE_test
+
+RMSE_train # 7376.668
+sd(train.df$charges) #12372.36
+RMSE_test # 7855.289
+sd(test.df$charges) # 10952.97
+
+#R for our S.V. regression model
+# Rsq on Test set
+test.df$error <- test.df$charges - test.df$pred_charges
+RSS = sum(test.df$error ** 2) 
+RSS #29532201193
+
+SStot = sum((test.df$charges - mean(test.df$charges)) ** 2)
+SStot #30831671733
+
+Rsq = 1- RSS/SStot
+Rsq # 4.21
+
+
+
+
+```
+
